@@ -1,0 +1,46 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "统计",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}
+	    ,{
+            "path" : "pages/statistic/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "统计",
+				"navigationStyle": "custom",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/itemChange/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "更改项目",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/carDetail/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "车辆明细",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "统计",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#fff"
+	}
+}
