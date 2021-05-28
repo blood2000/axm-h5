@@ -23,6 +23,19 @@ npm run build
 
 ## 错误处理
 
+### xBuilder 提示找不到 mainfest.json
+
+```
+右键项目进行重新识别项目类型
+```
+
+### xbuilder 运行不了
+
+优先设置一下vue为全局组件
+```
+npm install -g @vue/cli
+```
+
 ### uni-request in ./src/config/request.js
 
 ```
