@@ -76,6 +76,12 @@ npm uninstall --save node-sass
 npm i --registry=https://registry.npm.taobao.org node-sass@4.14.1
 ```
 
+### 安装node-sass提示没有vendor目录的解决办法
+
+https://blog.csdn.net/guangbing8877/article/details/78470376
+
+新建 vender 文件夹.然后运行,npm rebuild node-sass --save-dev
+
 ----
 
 ## App端交互
