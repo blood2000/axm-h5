@@ -2,6 +2,8 @@
 
 ## 开发步骤
 
+
+
 ### 初始化项目
 
 ```
@@ -49,6 +51,15 @@ VUE_APP_BASE_HOST = 'http://192.168.30.160:8080'
 ```
 npm install -g @vue/cli
 ```
+
+### no such file or directory, scandir '/.../node_modules/node-sass/vendor'
+
+安装必要组件
+```
+npm install --registry=https://registry.npm.taobao.org node-sass --save-dev
+npm install --registry=https://registry.npm.taobao.org node-sass sass-loader --save-dev
+```
+
 
 ### uni-request in ./src/config/request.js
 
