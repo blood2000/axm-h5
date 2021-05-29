@@ -1,7 +1,7 @@
 import uniRequest from "uni-request";
 
 // 全局配置
-uniRequest.defaults.baseURL = '/apis';
+uniRequest.defaults.baseURL = process.env.VUE_APP_BASE_API;
 // uniRequest.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
