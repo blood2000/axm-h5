@@ -7,10 +7,10 @@
 	"transformPx": false,
 	/* h5 */
 	"h5": {
-		"devServer": {
+		/*"devServer": {
 			"proxy": {
 				"/apis": {
-					"target": "http://192.168.30.160:8080",
+					// "target": "http://192.168.30.160:8080",
 					"changeOrigin": true, //是否跨域
 					"secure": false, // 设置支持https协议的代理
 					"pathRewrite": {
@@ -18,7 +18,7 @@
 					}
 				}
 			}
-		},
+		},*/
 		"sdkConfigs": {
 			"maps": {}
 		},

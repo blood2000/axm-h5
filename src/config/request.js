@@ -15,8 +15,7 @@ uniRequest.interceptors.request.use(
 		config.headers['App-Version'] = '2.0';
 		config.headers['Terminal-Type'] = 'app';
 		// 请求携带token
-		config.headers['Authorization'] = '43be73e4-076b-407b-a236-dd3ff203be37'; // token先写死
-
+		config.headers['Authorization'] = '94c0e850-9392-457c-9b01-4a932a331325'; // token先写死
 		return config;
 	},
 	err => {

@@ -20,6 +20,20 @@ npm run serve
 npm run build
 ```
 
+## 多环境配置
+
+自身开发环境要配置后端接口地址时，采用新建本地开发配置文件来处理 `.env.development.local`
+
+配置内容如下
+
+```
+# 开发环境配置
+ENV = 'development'
+# 综合服务管理平台/开发环境
+VUE_APP_BASE_API = '/apis'
+# 接口访问地址，之后若要换成其它人的环境就在这个文件上进行配置
+VUE_APP_BASE_HOST = 'http://192.168.30.160:8080'
+```
 
 ## 错误处理
 
@@ -71,10 +85,10 @@ npm i --registry=https://registry.npm.taobao.org node-sass@4.14.1
   "App-Type": "2",
   "Terminal-Type": "app",
   "Authorization": "xxxxx-xxxxx-xxxxx-xxxxx-xxxxx",
-  "role-type": "1" /*  1调度者 2司机 */
+  "role-type": "1" 
 }
 ```
-
+注：role-type = 1 （1调度者 2司机）
 
 ### IOS端
 
