@@ -38,14 +38,6 @@ if (isiOS) {
 			});
 			responseCallback('js执行过了');
 		})
-		// bridge.callHandler('getLoginUserInfo', params, function(response) {
-		// 	console.log(response);
-		// 	uni.showToast({
-		// 		title: '123',
-		// 		icon: 'none',
-		// 		duration: 2000
-		// 	});
-		// });
 	})
 	setTimeout(() => {
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
@@ -61,11 +53,20 @@ if (isiOS) {
 // Android
 if (isAndroid) {
 	console.log('这是Android');
-	let params = {};
+	let params = {a:123};
 	if(Android){
 		Android.getLoginUserInfo(params);
 	}	
-}   
+}
+// 获取android传过来得数据
+function getLoginUserInfo(params){
+	uni.showToast({
+		title: '获取android传过来数据:' + JSON.stringify(params),
+		icon: 'none',
+		duration: 2000
+	});
+	console.log('获取android传过来得数据: ', params)
+}
 
 // 请求拦截
 uniRequest.interceptors.request.use(
