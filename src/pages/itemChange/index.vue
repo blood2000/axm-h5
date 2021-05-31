@@ -1,6 +1,6 @@
 <template>
 	<view class="change-item-page">
-		<scroll-view :scroll-y="true" :show-scrollbar="false" class="change-item-page__scroll">
+		<scroll-view :scroll-y="true" :show-scrollbar="false" @scrolltolower="pullDown" class="change-item-page__scroll">
 			<ItemCard 
 				class="change-item-page__scroll__item-card"
 				v-for="(item, index) in itemList" 
@@ -33,8 +33,20 @@
 		methods: {
 			getData(){
 				ListStatistics(this.queryParams).then(response => {
-					this.itemList = response.data.list || [];
+					// this.itemList = response.data.list || [];
+					if(response.data.list.length === 0) {
+						this.isEnd = true;
+						// console.log("ceshi")
+						return
+					}
+					this.itemList = [...this.itemList,...response.data.list]
 				});
+			},
+			pullDown() {
+				if(!this.isEnd) {
+					this.queryParams.pageNum++
+					this.getData()
+				}
 			}
 		}
 	}

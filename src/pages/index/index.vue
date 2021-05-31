@@ -3,7 +3,7 @@
 		<Header>
 			<text slot="title">统计</text>
 		</Header>
-		<scroll-view :scroll-y="true" :show-scrollbar="false" class="home-page__scroll">
+		<scroll-view :scroll-y="true" :show-scrollbar="false" @scrolltolower="pullDown" class="home-page__scroll">
 			<ItemCard 
 				v-for="item in itemList" 
 				:key="item.projectCode" 
@@ -29,17 +29,37 @@
 					pageNum: 1,
 					pageSize: 10
 				},
-				itemList: []
+				itemList: [],
+				// 是否无数据了
+				isEnd: false,
 			}
 		},
 		onLoad() {
 			this.getData();
 		},
+		// onReachBottom() {
+		// 	if(!this.isEnd) {
+		// 		this.queryParams.pageNum++
+		// 		this.getData()
+		// 	}
+		// },
 		methods: {
 			getData(){
 				ListStatistics(this.queryParams).then(response => {
-					this.itemList = response.data.list || [];
+					// this.itemList = response.data.list || [];
+					if(response.data.list.length === 0) {
+						this.isEnd = true;
+						// console.log("ceshi")
+						return
+					}
+					this.itemList = [...this.itemList,...response.data.list]
 				});
+			},
+			pullDown() {
+				if(!this.isEnd) {
+					this.queryParams.pageNum++
+					this.getData()
+				}
 			}
 		}
 	}
