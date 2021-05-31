@@ -3,14 +3,24 @@
 		<Header>
 			<text slot="title">统计</text>
 		</Header>
-		<scroll-view :scroll-y="true" :show-scrollbar="false" @scrolltolower="pullDown" class="home-page__scroll">
+		
+		<view class="home-page__scroll">
+			<ItemCard
+				v-for="item in itemList" 
+				:key="item.projectCode" 
+				:item-data="item"
+				place="home"
+			></ItemCard>
+		</view>
+		
+		<!-- <scroll-view :scroll-y="true" :show-scrollbar="false" @scrolltolower="pullDown" class="home-page__scroll">
 			<ItemCard 
 				v-for="item in itemList" 
 				:key="item.projectCode" 
 				:item-data="item"
 				place="home"
 			></ItemCard>
-		</scroll-view>
+		</scroll-view> -->
 	</view>
 </template>
 
@@ -37,12 +47,20 @@
 		onLoad() {
 			this.getData();
 		},
-		// onReachBottom() {
-		// 	if(!this.isEnd) {
-		// 		this.queryParams.pageNum++
-		// 		this.getData()
-		// 	}
-		// },
+		onPullDownRefresh() {
+			this.itemList = []
+			this.queryParams.pageNum = 1
+			this.getData()
+			uni.stopPullDownRefresh();  //停止下拉刷新动画
+		},
+		// 触底加载
+		onReachBottom() {
+			// console.log("触底")
+			if(!this.isEnd) {
+				this.queryParams.pageNum++
+				this.getData()
+			}
+		},
 		methods: {
 			getData(){
 				ListStatistics(this.queryParams).then(response => {
@@ -55,12 +73,12 @@
 					this.itemList = [...this.itemList,...response.data.list]
 				});
 			},
-			pullDown() {
-				if(!this.isEnd) {
-					this.queryParams.pageNum++
-					this.getData()
-				}
-			}
+			// pullDown() {
+			// 	if(!this.isEnd) {
+			// 		this.queryParams.pageNum++
+			// 		this.getData()
+			// 	}
+			// }
 		}
 	}
 </script>
@@ -68,13 +86,15 @@
 <style lang="scss" scoped>
 .home-page{
 	width: 100%;
-	height: 100%;
-	overflow: hidden;
+	// height: 100vh;
+	overflow: scroll;
 	&__scroll{
 		width: 100%;
 		height: calc(100% - 185rpx);
 		margin: 185rpx 22rpx 0;
 		box-sizing: border-box;
+		position: relative;
+		z-index: 1;
 	}
 }
 </style>

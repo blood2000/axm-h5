@@ -28,7 +28,9 @@
 			</view>
 			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 		</view>
-		<image class="top-bg1" src="../../static/tab_bg.png" mode=""></image>
+		<view class="top-bg1frame">
+			<image class="top-bg1" src="../../static/tab_bg.png" mode=""></image>
+		</view>
 	</view>
 </template>
 
@@ -103,11 +105,15 @@
 		width: 100%;
 	}
 }
-.top-bg1{
-	position: absolute;
+.top-bg1frame{
+	position: relative;
 	top: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 0;
+	height: 0;
+	width: 100%;
+}
+.top-bg1{
 	height: 350upx;
 	width: 100%;
 }
