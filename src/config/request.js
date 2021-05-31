@@ -30,9 +30,14 @@ if (isiOS) {
 			responseCallback('js执行过了');
 		})
 	})
-	WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-		console.log(response);
-	});
+	setupWebViewJavascriptBridge(function(bridge) {
+		bridge.callHandler('getLoginUserInfo',params,function(response) {
+			console.log(response);
+		});
+	})
+	// WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
+	// 	console.log(response);
+	// });
 }
 // Android
 if (isAndroid) {
@@ -53,7 +58,7 @@ uniRequest.interceptors.request.use(
 		config.headers['App-Version'] = '2.0';
 		config.headers['Terminal-Type'] = 'app';
 		// 请求携带token
-		config.headers['Authorization'] = 'b41df53c-81f8-4294-9f2d-2c8750988270'; // token先写死
+		config.headers['Authorization'] = '227dac58-76fa-45a9-94ff-af5e4156c8fa'; // token先写死
 		return config;
 	},
 	err => {
