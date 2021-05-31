@@ -1,8 +1,8 @@
 <template>
-	<view class="header">
+	<!-- <view class="header">
 		<view class="header-box">
 			<view class="status_bar">
-			  <!-- 这里是状态栏 -->
+			  这里是状态栏
 			</view>
 			<view class="header-box__title flex align-center justify-between">
 				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
@@ -14,6 +14,21 @@
 			<view class="circle-middle"></view>
 			<view class="circle-small"></view>
 		</view>
+	</view> -->
+	<view class="top">
+		<view class="top-frame">
+			<view class="status_bar">
+			  <!-- 这里是状态栏 -->
+			</view>
+			<view class="top-title flex align-center justify-between">
+				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
+				<view v-else style="width: 18upx;"></view>
+				<slot name="title"></slot>
+				<view style="width: 18upx;"></view>
+			</view>
+			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
+		</view>
+		<image class="top-bg1" src="../../static/tab_bg.png" mode=""></image>
 	</view>
 </template>
 
@@ -59,6 +74,44 @@
 </script>
 
 <style lang="scss" scoped>
+.top-frame{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	height: 185rpx;
+	width: 100%;
+	overflow: hidden;
+	.top-title{
+		line-height: calc(185rpx - var(--status-bar-height));
+		width: 100%;
+		padding: 0 20upx;
+		font-size: 36rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		position: relative;
+		top: 0;
+		left: 0;
+		z-index: 10;
+	}
+	.top-bg{
+		position: relative;
+		top: -92px;
+		z-index: 9;
+		height: 350upx;
+		width: 100%;
+	}
+}
+.top-bg1{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	height: 350upx;
+	width: 100%;
+}
+
 .header{
 	position: fixed;
 	width: 200%;
