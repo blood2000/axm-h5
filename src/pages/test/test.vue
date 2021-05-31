@@ -64,14 +64,15 @@
 			},
 			//注册回调函数，第一次连接时调用 初始化函数
 			initData(){
+				const _this = this;
 				this.connectWebViewJavascriptBridge(function(bridge) {
 					bridge.init(function(message, responseCallback) {
-						bridgeLog('默认接收收到来自Java数据： ' + message);
+						_this.bridgeLog('默认接收收到来自Java数据： ' + message);
 						var responseData = '默认接收收到来自Java的数据，回传数据给你';
 						responseCallback(responseData);
 					});
 					bridge.registerHandler("functionInJs", function(data, responseCallback) {
-						bridgeLog('指定接收收到来自Java数据： ' + data);
+						_this.bridgeLog('指定接收收到来自Java数据： ' + data);
 						var responseData = '指定接收收到来自Java的数据，回传数据给你';
 						responseCallback(responseData);
 					});
