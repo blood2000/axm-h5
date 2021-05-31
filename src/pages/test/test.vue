@@ -22,7 +22,16 @@
 			//发送消息给java代码
 			testClick() {
 				const _this = this;
-				var data = '发送消息给java代码全局接收';
+				const data = '发送消息给java代码全局接收';
+				//判断jsbridges是否存在
+				if (!window.WebViewJavascriptBridge) {
+					uni.showToast({
+						title: 'window.WebViewJavascriptBridge不存在',
+						icon: 'none',
+						duration: 2000
+					});
+					return;
+				}
 				//第一个参数要发送的数据 第二个参数js在被回调后具体执行方法，responseData为java层回传数据
 				window.WebViewJavascriptBridge.send(
 					data
@@ -34,8 +43,17 @@
 			//调用本地java方法
 			testClick1() {
 				const _this = this;
+				const data='发送消息给java代码指定接收';
+				//判断jsbridges是否存在
+				if (!window.WebViewJavascriptBridge) {
+					uni.showToast({
+						title: 'window.WebViewJavascriptBridge不存在',
+						icon: 'none',
+						duration: 2000
+					});
+					return;
+				}
 			    //第一个参数是 调用java的函数名字 第二个参数是要传递的数据 第三个参数js在被回调后具体执行方法，responseData为java层回传数据
-			    var data='发送消息给java代码指定接收';
 			    window.WebViewJavascriptBridge.callHandler(
 				    'submitFromWeb'
 				    ,data
@@ -68,12 +86,12 @@
 				this.connectWebViewJavascriptBridge(function(bridge) {
 					bridge.init(function(message, responseCallback) {
 						_this.bridgeLog('默认接收收到来自Java数据： ' + message);
-						var responseData = '默认接收收到来自Java的数据，回传数据给你';
+						const responseData = '默认接收收到来自Java的数据，回传数据给你';
 						responseCallback(responseData);
 					});
 					bridge.registerHandler("functionInJs", function(data, responseCallback) {
 						_this.bridgeLog('指定接收收到来自Java数据： ' + data);
-						var responseData = '指定接收收到来自Java的数据，回传数据给你';
+						const responseData = '指定接收收到来自Java的数据，回传数据给你';
 						responseCallback(responseData);
 					});
 				})
