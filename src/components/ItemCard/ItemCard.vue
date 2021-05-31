@@ -73,8 +73,12 @@
 				}
 			},
 			changeItem() {
-				uni.redirectTo({
-					url: '/pages/statistic/index?item=' + encodeURIComponent(JSON.stringify(this.itemData))
+				let pages = getCurrentPages(); // 获取当前页面栈的实例，以数组形式按栈的顺序给出，第一个元素为首页，最后一个元素为当前页面
+				let nowPage = pages[pages.length - 1]; //当前页页面实例
+				let prevPage = pages[pages.length - 2]; //上一页页面实例
+				prevPage.$vm.getItemData(this.itemData); // 给上一页綁定方法getItemData
+				uni.navigateBack({
+					delta: 1
 				});
 			}
 		}

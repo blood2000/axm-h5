@@ -50,6 +50,11 @@
 			};
 		},
 		watch: {
+			projectCode(val) {
+				if (val) {
+					this.getData();
+				}
+			},
 			queryDate(val) {
 				if (val) {
 					this.getData();

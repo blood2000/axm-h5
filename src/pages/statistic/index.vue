@@ -97,6 +97,11 @@
 			DateChange(e) {
 				this.queryDate = e.detail.value
 			},
+			getItemData(obj) {
+				if (obj) {
+					this.itemData = obj;
+				}
+			}
 		}
 	}
 </script>
