@@ -14,7 +14,7 @@
 			"style": {
 				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		}
 	    ,{
