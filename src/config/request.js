@@ -22,17 +22,24 @@ function setupWebViewJavascriptBridge(callback) {
 // ios
 if (isiOS) {
 	console.log('这是IOS');
-	let params = {};
+	let params = {a: 123};
 	//这也是固定的， OC 调JS ， 需要给OC调用的函数必须写在这个函数里面
 	setupWebViewJavascriptBridge(function(bridge) {
 		bridge.registerHandler('testJSFunction', function(data, responseCallback) {
-			alert('JS方法被调用:'+data);
+			uni.showToast({
+				title: 'JS方法被调用:'+data,
+				icon: 'none',
+				duration: 2000
+			});
 			responseCallback('js执行过了');
 		})
-	})
-	setupWebViewJavascriptBridge(function(bridge) {
-		bridge.callHandler('getLoginUserInfo',params,function(response) {
+		bridge.callHandler('getLoginUserInfo', params, function(response) {
 			console.log(response);
+			uni.showToast({
+				title: '123',
+				icon: 'none',
+				duration: 2000
+			});
 		});
 	})
 	// WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
