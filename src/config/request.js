@@ -25,6 +25,11 @@ if (isiOS) {
 	let params = {a: 123};
 	//这也是固定的， OC 调JS ， 需要给OC调用的函数必须写在这个函数里面
 	setupWebViewJavascriptBridge(function(bridge) {
+		uni.showToast({
+			title: '初始化完成',
+			icon: 'none',
+			duration: 2000
+		});
 		bridge.registerHandler('testJSFunction', function(data, responseCallback) {
 			uni.showToast({
 				title: 'JS方法被调用:'+data,
@@ -33,7 +38,17 @@ if (isiOS) {
 			});
 			responseCallback('js执行过了');
 		})
-		bridge.callHandler('getLoginUserInfo', params, function(response) {
+		// bridge.callHandler('getLoginUserInfo', params, function(response) {
+		// 	console.log(response);
+		// 	uni.showToast({
+		// 		title: '123',
+		// 		icon: 'none',
+		// 		duration: 2000
+		// 	});
+		// });
+	})
+	setTimeout(() => {
+		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
 			console.log(response);
 			uni.showToast({
 				title: '123',
@@ -41,10 +56,7 @@ if (isiOS) {
 				duration: 2000
 			});
 		});
-	})
-	// WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-	// 	console.log(response);
-	// });
+	}, 0)
 }
 // Android
 if (isAndroid) {
