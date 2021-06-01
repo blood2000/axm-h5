@@ -41,24 +41,9 @@ if (isiOS) {
 if (isAndroid) {
 	if(window.Android !== null && typeof(window.Android) !== 'undefined') {
 		const test = window.Android.callAndroid('hello!');
-		uni.showToast({
-			title: '获取android传过来数据:' + JSON.stringify(test),
-			icon: 'none',
-			duration: 2000
-		});
-		setHeaderParams(test);
+		setHeaderParams(JSON.parse(test));
 	}
 }
-// 获取android传过来得数据
-export const androidroidInfo = function(response){
-	uni.showToast({
-		title: '获取android传过来数据:' + JSON.stringify(response),
-		icon: 'none',
-		duration: 2000
-	});
-	setHeaderParams(response);
-}
-
 
 // 存到vuex
 function setHeaderParams(response) {
