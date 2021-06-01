@@ -1,65 +1,9 @@
 import uniRequest from "uni-request";
+import store from '../store';
 
 // 全局配置
 uniRequest.defaults.baseURL = process.env.VUE_APP_BASE_API;
-// uniRequest.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
-// 获取app请求头数据
-var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1; //android终端
-var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-// 这是必须要写的，用来初始化一些设置
-function setupWebViewJavascriptBridge(callback) {
-	if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
-	if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
-	window.WVJBCallbacks = [callback];
-	var WVJBIframe = document.createElement('iframe');
-	WVJBIframe.style.display = 'none';
-	WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
-	document.documentElement.appendChild(WVJBIframe);
-	setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
-}	
-// ios
-if (isiOS) {
-	console.log('这是IOS');
-	let params = {a: 123};
-	//这也是固定的， OC 调JS ， 需要给OC调用的函数必须写在这个函数里面
-	setupWebViewJavascriptBridge(function(bridge) {
-		bridge.registerHandler('testJSFunction', function(data, responseCallback) {
-			uni.showToast({
-				title: 'JS方法被调用:' + data,
-				icon: 'none',
-				duration: 2000
-			});
-			responseCallback('js执行过了');
-		})
-	})
-	setTimeout(() => {
-		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-			uni.showToast({
-				title: '获取ios传过来数据: ' + JSON.stringify(response),
-				icon: 'none',
-				duration: 2000
-			});
-		});
-	}, 0)
-}
-// Android
-if (isAndroid) {
-	console.log('这是Android');
-	let params = {a:123};
-	if(Android){
-		Android.getLoginUserInfo(params);
-	}	
-}
-// 获取android传过来得数据
-function getLoginUserInfo(response){
-	uni.showToast({
-		title: '获取android传过来数据:' + JSON.stringify(response),
-		icon: 'none',
-		duration: 2000
-	});
-}
 
 // 请求拦截
 uniRequest.interceptors.request.use(
@@ -70,8 +14,14 @@ uniRequest.interceptors.request.use(
 		config.headers['App-Type'] = '1';
 		config.headers['App-Version'] = '2.0';
 		config.headers['Terminal-Type'] = 'app';
+		// config.headers['Produce-Code'] = store.state.header.headerInfo['Produce-Code'];
+		// config.headers['App-Code'] = store.state.header.headerInfo['App-Code'];
+		// config.headers['App-Type'] = store.state.header.headerInfo['App-Type'];
+		// config.headers['App-Version'] = store.state.header.headerInfo['App-Version'];
+		// config.headers['Terminal-Type'] = store.state.header.headerInfo['Terminal-Type'];
 		// 请求携带token
 		config.headers['Authorization'] = '227dac58-76fa-45a9-94ff-af5e4156c8fa'; // token先写死
+		//config.headers['Authorization'] = store.state.header.headerInfo['Authorization'];
 		return config;
 	},
 	err => {
