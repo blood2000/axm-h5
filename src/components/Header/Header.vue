@@ -17,6 +17,9 @@
 	</view> -->
 	<view class="top">
 		<view class="top-frame">
+			<view class="top-bgframe1">
+				<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
+			</view>
 			<view class="status_bar">
 			  <!-- 这里是状态栏 -->
 			</view>
@@ -26,10 +29,9 @@
 				<slot name="title"></slot>
 				<view style="width: 18upx;"></view>
 			</view>
-			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 		</view>
-		<view class="top-bg1frame">
-			<image class="top-bg1" src="../../static/tab_bg.png" mode=""></image>
+		<view class="top-bgframe2">
+			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 		</view>
 	</view>
 </template>
@@ -97,15 +99,16 @@
 		left: 0;
 		z-index: 10;
 	}
-	.top-bg{
+	.top-bgframe1{
 		position: relative;
-		top: -92px;
-		z-index: 9;
-		height: 350upx;
+		top: 0;
+		left: 0;
+		height: 0;
 		width: 100%;
+		z-index: 9;
 	}
 }
-.top-bg1frame{
+.top-bgframe2{
 	position: relative;
 	top: 0;
 	left: 0;
@@ -113,7 +116,7 @@
 	height: 0;
 	width: 100%;
 }
-.top-bg1{
+.top-bg{
 	height: 350upx;
 	width: 100%;
 }
