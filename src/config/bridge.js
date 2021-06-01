@@ -46,6 +46,7 @@ if (isAndroid) {
 			icon: 'none',
 			duration: 2000
 		});
+		setHeaderParams(test);
 	}
 }
 // 获取android传过来得数据

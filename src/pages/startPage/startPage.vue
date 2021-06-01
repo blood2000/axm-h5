@@ -1,6 +1,6 @@
 <template>
 	<view>
-		启动页占位，在这里处理一些数据
+		test：{{ text }}
 	</view>
 </template>
 
@@ -9,7 +9,7 @@
 	export default {
 		data() {
 			return {
-				
+				text: ''
 			}
 		},
 		computed: {
@@ -22,6 +22,7 @@
 		},
 		mounted(){
 			//console.log(this.headerInfo)
+			this.text = JSON.stringify(this.headerInfo)
 		},
 		methods: {
 			
