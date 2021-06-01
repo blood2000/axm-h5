@@ -1,6 +1,7 @@
 <template>
 	<view>
-		test：{{ text }}
+		<view>加载页</view>
+		<view>test：{{ text }}</view>
 		<view>isAndroid: {{ isAndroid }}</view>
 		<view>isiOS: {{ isiOS }}</view>
 	</view>
@@ -11,7 +12,8 @@
 	export default {
 		data() {
 			return {
-				text: ''
+				text: '',
+				timer: null
 			}
 		},
 		computed: {
@@ -21,15 +23,28 @@
 			  isiOS: state => state.header.isiOS
 			})
 		},
-		onLoad(){
-			
-		},
 		mounted(){
-			//console.log(this.headerInfo)
 			this.text = JSON.stringify(this.headerInfo);
+			this.initData();
+		},
+		beforeDestroy() {
+			if (this.timer) clearInterval(this.timer);
 		},
 		methods: {
-			
+			initData() {
+				if (this.timer) clearInterval(this.timer);
+				this.timer = setInterval(() => {
+					if(window.sessionStorage.getItem('header') && window.sessionStorage.getItem('header').length > 0) {
+						clearInterval(this.timer);
+						uni.redirectTo({
+						    url: '/pages/index/index'
+						});
+					}
+				}, 100)
+				setTimeout(() => {
+					if (this.timer) clearInterval(this.timer);
+				}, 10 * 1000);
+			}
 		}
 	}
 </script>

@@ -28,7 +28,8 @@ if (isiOS) {
 	})
 	setTimeout(() => {
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-			setHeaderParams(response);
+			// setHeaderParams(response);
+			setSessionStorage(response);
 		});
 	}, 0)
 }
@@ -38,7 +39,8 @@ if (isAndroid) {
 	setDevice('isAndroid');
 	if(window.Android !== null && typeof(window.Android) !== 'undefined') {
 		const test = window.Android.callAndroid('hello!');
-		setHeaderParams(JSON.parse(test));
+		// setHeaderParams(JSON.parse(test));
+		setSessionStorage(JSON.parse(test))
 	}
 }
 
@@ -49,3 +51,19 @@ function setHeaderParams(response) {
 function setDevice(val) {
 	store.dispatch('getDeviceAction', val);
 }
+// 存到sessionStorage
+function setSessionStorage(val) {
+	window.sessionStorage.setItem('header', JSON.stringify(val));
+}
+
+// 前端开发测试使用
+// setTimeout(() => {
+// 	setSessionStorage({
+// 		'Produce-Code': '776ca8e240574192b6e0f69b417163df',
+// 		'App-Code': '9d3017728cb34eac947ba350c4e997be',
+// 		'App-Type': '1',
+// 		'App-Version': '2.0',
+// 		'Terminal-Type': 'app',
+// 		'Authorization': 'c1e7393d-bd3a-4393-888f-3f8c90d9a4ae'
+// 	})
+// }, 0)

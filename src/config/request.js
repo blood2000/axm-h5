@@ -6,22 +6,18 @@ uniRequest.defaults.baseURL = process.env.VUE_APP_BASE_API;
 uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // 请求拦截
+const headerInfo = JSON.parse(window.sessionStorage.getItem('header'));
 uniRequest.interceptors.request.use(
 	config => {
+		// console.log(store.state.header.headerInfo)
 		// header添加其他信息
-		config.headers['Produce-Code'] = '776ca8e240574192b6e0f69b417163df';
-		config.headers['App-Code'] = '9d3017728cb34eac947ba350c4e997be';
-		config.headers['App-Type'] = '1';
-		config.headers['App-Version'] = '2.0';
-		config.headers['Terminal-Type'] = 'app';
-		// config.headers['Produce-Code'] = store.state.header.headerInfo['Produce-Code'];
-		// config.headers['App-Code'] = store.state.header.headerInfo['App-Code'];
-		// config.headers['App-Type'] = store.state.header.headerInfo['App-Type'];
-		// config.headers['App-Version'] = store.state.header.headerInfo['App-Version'];
-		// config.headers['Terminal-Type'] = store.state.header.headerInfo['Terminal-Type'];
+		config.headers['Produce-Code'] = headerInfo['Produce-Code'];
+		config.headers['App-Code'] = headerInfo['App-Code'];
+		config.headers['App-Type'] = headerInfo['App-Type'];
+		config.headers['App-Version'] = headerInfo['App-Version'];
+		config.headers['Terminal-Type'] = headerInfo['Terminal-Type'];
 		// 请求携带token
-		config.headers['Authorization'] = '227dac58-76fa-45a9-94ff-af5e4156c8fa'; // token先写死
-		//config.headers['Authorization'] = store.state.header.headerInfo['Authorization'];
+		config.headers['Authorization'] = headerInfo['Authorization'];
 		return config;
 	},
 	err => {
