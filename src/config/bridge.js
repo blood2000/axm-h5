@@ -18,6 +18,7 @@ function setupWebViewJavascriptBridge(callback) {
 
 // ios
 if (isiOS) {
+	setDevice('isiOS');
 	let params = {a: 123};
 	// OC调JS，需要给OC调用的函数必须写在这个函数里面
 	setupWebViewJavascriptBridge(function(bridge) {
@@ -27,11 +28,6 @@ if (isiOS) {
 	})
 	setTimeout(() => {
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-			uni.showToast({
-				title: '获取ios传过来数据: ' + JSON.stringify(response),
-				icon: 'none',
-				duration: 2000
-			});
 			setHeaderParams(response);
 		});
 	}, 0)
@@ -39,6 +35,7 @@ if (isiOS) {
 
 // Android
 if (isAndroid) {
+	setDevice('isAndroid');
 	if(window.Android !== null && typeof(window.Android) !== 'undefined') {
 		const test = window.Android.callAndroid('hello!');
 		setHeaderParams(JSON.parse(test));
@@ -47,5 +44,8 @@ if (isAndroid) {
 
 // 存到vuex
 function setHeaderParams(response) {
-	store.dispatch('getLoginInfoAction', response)
+	store.dispatch('getLoginInfoAction', response);
+}
+function setDevice(val) {
+	store.dispatch('getDeviceAction', val);
 }
