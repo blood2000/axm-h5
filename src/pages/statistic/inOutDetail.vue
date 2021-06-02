@@ -37,6 +37,8 @@
 					</view>
 				</view>
 			</view>
+			<!-- 暂无数据 -->
+			<view v-if="dataList.length === 0" class="in-out-table__content__none">暂无数据</view>
 		</view>
 	</view>
 </template>
@@ -178,6 +180,13 @@
 					}
 				}
 			}
+		}
+		&__none{
+			height: 100rpx;
+			line-height: 100rpx;
+			text-align: center;
+			font-size: 26rpx;
+			color: #999;
 		}
 	}
 }
