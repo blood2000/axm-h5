@@ -42,8 +42,14 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import { ListVechicleDetails, ProjectDetails } from '../../config/service/statistic.js';
 	export default {
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
+		},
 		data() {
 			return {
 				modalName: null,
@@ -60,7 +66,8 @@
 				cardetaillist: []
 			};
 		},
-		onLoad(option) {
+		async onLoad(option) {
+			await this.$onLaunched;
 			this.info = JSON.parse(decodeURIComponent(option.item))
 			this.vehicleQuery.projectCode = this.info.projectCode;
 			this.vehicleQuery.queryDate = this.info.queryDate;
@@ -71,7 +78,7 @@
 		methods: {
 			// 获取列表信息
 			getData(){
-				ListVechicleDetails(this.vehicleQuery).then(response => {
+				ListVechicleDetails(this.vehicleQuery, this.headerInfo).then(response => {
 					this.cardetaillist = response.data || [];
 				});
 				const car = this.vehiclelist.find(response => {

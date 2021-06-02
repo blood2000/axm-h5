@@ -6,6 +6,10 @@ import store from './store'
 //与app桥接
 import './config/bridge.js'
 
+Vue.prototype.$onLaunched = new Promise(resolve => {
+	Vue.prototype.$isResolve = resolve;
+})
+
 Vue.prototype.$store = store
 Vue.config.productionTip = false
 

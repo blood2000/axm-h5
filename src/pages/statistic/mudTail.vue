@@ -30,6 +30,7 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import { MudtailDetails } from '../../config/service/statistic.js';
 	export default {
 		props: {
@@ -41,6 +42,11 @@
 				type: String,
 				default: null
 			}
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
 		},
 		data() {
 			return {
@@ -61,7 +67,8 @@
 				}
 			}
 		},
-		mounted() {
+		async mounted() {
+			await this.$onLaunched;
 			this.getData();
 		},
 		methods: {
@@ -69,7 +76,7 @@
 				MudtailDetails({
 					projectCode: this.projectCode,
 					queryDate: this.queryDate
-				}).then(response => {
+				}, this.headerInfo).then(response => {
 					this.total = response.data.total || 0;
 					this.muckardCounts = response.data.muckardCounts || [];
 					this.dataList = response.data.vechicleMuckards || [];

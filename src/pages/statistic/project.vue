@@ -34,6 +34,7 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import { ProjectDetails } from '../../config/service/statistic.js';
 	export default {
 		props: {
@@ -45,6 +46,11 @@
 				type: String,
 				default: null
 			}
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
 		},
 		data() {
 			return {
@@ -66,7 +72,8 @@
 				}
 			}
 		},
-		mounted() {
+		async mounted() {
+			await this.$onLaunched;
 			this.getData();
 		},
 		methods: {
@@ -74,7 +81,7 @@
 				ProjectDetails({
 					projectCode: this.projectCode,
 					queryDate: this.queryDate
-				}).then(response => {
+				}, this.headerInfo).then(response => {
 					this.countData = response.data || {};
 					if(response.data.vehicleCounts){
 						this.vehicleOdd = [];

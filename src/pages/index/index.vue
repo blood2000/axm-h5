@@ -25,6 +25,7 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import Header from '../../components/Header/Header.vue';
 	import ItemCard from '../../components/ItemCard/ItemCard.vue';
 	import { ListStatistics } from '../../config/service/statistic.js';
@@ -32,6 +33,11 @@
 		components: {
 			Header,
 			ItemCard
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
 		},
 		data() {
 			return {
@@ -44,7 +50,8 @@
 				isEnd: false,
 			}
 		},
-		onLoad() {
+		async onLoad() {
+			await this.$onLaunched;
 			this.getData();
 		},
 		onPullDownRefresh() {
@@ -63,7 +70,7 @@
 		},
 		methods: {
 			getData(){
-				ListStatistics(this.queryParams).then(response => {
+				ListStatistics(this.queryParams, this.headerInfo).then(response => {
 					// this.itemList = response.data.list || [];
 					if(response.data.list.length === 0) {
 						this.isEnd = true;

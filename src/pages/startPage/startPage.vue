@@ -23,9 +23,9 @@
 			  isiOS: state => state.header.isiOS
 			})
 		},
-		mounted(){
+		onLoad(){
 			this.text = JSON.stringify(this.headerInfo);
-			this.initData();
+			//this.initData();
 		},
 		beforeDestroy() {
 			if (this.timer) clearInterval(this.timer);
@@ -34,7 +34,7 @@
 			initData() {
 				if (this.timer) clearInterval(this.timer);
 				this.timer = setInterval(() => {
-					if(window.sessionStorage.getItem('header') && window.sessionStorage.getItem('header').length > 0) {
+					if(this.headerInfo['Authorization'] && this.headerInfo['Authorization'].length > 10) {
 						clearInterval(this.timer);
 						uni.redirectTo({
 						    url: '/pages/index/index'

@@ -6,18 +6,17 @@ uniRequest.defaults.baseURL = process.env.VUE_APP_BASE_API;
 uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // 请求拦截
-const headerInfo = JSON.parse(window.sessionStorage.getItem('header'));
+const headerInfo = store.state.header.headerInfo;
 uniRequest.interceptors.request.use(
 	config => {
-		// console.log(store.state.header.headerInfo)
 		// header添加其他信息
-		config.headers['Produce-Code'] = headerInfo['Produce-Code'];
-		config.headers['App-Code'] = headerInfo['App-Code'];
-		config.headers['App-Type'] = headerInfo['App-Type'];
-		config.headers['App-Version'] = headerInfo['App-Version'];
-		config.headers['Terminal-Type'] = headerInfo['Terminal-Type'];
+		//config.headers['Produce-Code'] = headerInfo['Produce-Code'];
+		//config.headers['App-Code'] = headerInfo['App-Code'];
+		//config.headers['App-Type'] = headerInfo['App-Type'];
+		//config.headers['App-Version'] = headerInfo['App-Version'];
+		//config.headers['Terminal-Type'] = headerInfo['Terminal-Type'];
 		// 请求携带token
-		config.headers['Authorization'] = headerInfo['Authorization'];
+		//config.headers['Authorization'] = headerInfo['Authorization'];
 		return config;
 	},
 	err => {

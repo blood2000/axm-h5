@@ -1,4 +1,5 @@
 <script>
+	import { mapState } from 'vuex'
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
@@ -8,6 +9,22 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
+		},
+		watch: {
+			headerInfo: {
+				handler(value) {
+					// 模拟拦截
+					if(JSON.stringify(value) !== '{}') {
+						this.$isResolve();
+					}
+				},
+				deep: true
+			}
 		}
 	}
 </script>

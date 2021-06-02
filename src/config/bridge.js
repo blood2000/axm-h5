@@ -28,8 +28,7 @@ if (isiOS) {
 	})
 	setTimeout(() => {
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-			// setHeaderParams(response);
-			setSessionStorage(response);
+			setHeaderParams(response);
 		});
 	}, 0)
 }
@@ -39,31 +38,33 @@ if (isAndroid) {
 	setDevice('isAndroid');
 	if(window.Android !== null && typeof(window.Android) !== 'undefined') {
 		const test = window.Android.callAndroid('hello!');
-		// setHeaderParams(JSON.parse(test));
-		setSessionStorage(JSON.parse(test))
+		setHeaderParams(JSON.parse(test));
 	}
 }
 
 // 存到vuex
 function setHeaderParams(response) {
-	store.dispatch('getLoginInfoAction', response);
+	store.dispatch('getLoginInfoAction', {
+		'Produce-Code': response['Produce-Code'],
+		'App-Code': response['App-Code'],
+		'App-Type': response['App-Type'],
+		'App-Version': response['App-Version'],
+		'Terminal-Type': response['Terminal-Type'],
+		'Authorization': response['Authorization']
+	});
 }
 function setDevice(val) {
 	store.dispatch('getDeviceAction', val);
 }
-// 存到sessionStorage
-function setSessionStorage(val) {
-	window.sessionStorage.setItem('header', JSON.stringify(val));
-}
 
 // 前端开发测试使用
 // setTimeout(() => {
-// 	setSessionStorage({
+// 	setHeaderParams({
 // 		'Produce-Code': '776ca8e240574192b6e0f69b417163df',
 // 		'App-Code': '9d3017728cb34eac947ba350c4e997be',
 // 		'App-Type': '1',
 // 		'App-Version': '2.0',
 // 		'Terminal-Type': 'app',
-// 		'Authorization': 'c1e7393d-bd3a-4393-888f-3f8c90d9a4ae'
+// 		'Authorization': '321846df-0466-4e8b-a378-4823be127558'
 // 	})
 // }, 0)

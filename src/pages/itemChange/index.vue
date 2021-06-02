@@ -14,8 +14,14 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import { ListStatistics } from '../../config/service/statistic.js';
 	export default {
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
+		},
 		data() {
 			return {
 				projectCode: null,
@@ -26,13 +32,14 @@
 				itemList: []
 			};
 		},
-		onLoad(option) {
+		async onLoad(option) {
+			await this.$onLaunched;
 			this.projectCode = option.projectCode;
 			this.getData();
 		},
 		methods: {
 			getData(){
-				ListStatistics(this.queryParams).then(response => {
+				ListStatistics(this.queryParams, this.headerInfo).then(response => {
 					// this.itemList = response.data.list || [];
 					if(response.data.list.length === 0) {
 						this.isEnd = true;
