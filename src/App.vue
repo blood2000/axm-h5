@@ -23,7 +23,8 @@
 						this.$isResolve();
 					}
 				},
-				deep: true
+				deep: true,
+				immediate: true
 			}
 		}
 	}
