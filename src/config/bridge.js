@@ -16,21 +16,27 @@ function setupWebViewJavascriptBridge(callback) {
 	setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
 }
 
+function iosPromise() {
+	return new Promise((resolve, reject) => {
+		// OC调JS，需要给OC调用的函数必须写在这个函数里面
+		setupWebViewJavascriptBridge(function(bridge) {
+			bridge.registerHandler('testJSFunction', function(data, responseCallback) {
+				responseCallback('js执行过了');
+			})
+			resolve();
+		})
+	})
+}
+
 // ios
 if (isiOS) {
 	setDevice('isiOS');
 	let params = {a: 123};
-	// OC调JS，需要给OC调用的函数必须写在这个函数里面
-	setupWebViewJavascriptBridge(function(bridge) {
-		bridge.registerHandler('testJSFunction', function(data, responseCallback) {
-			responseCallback('js执行过了');
-		})
-	})
-	setTimeout(() => {
+	iosPromise().then(() => {
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
 			setHeaderParams(response);
 		});
-	}, 0)
+	})
 }
 
 // Android
