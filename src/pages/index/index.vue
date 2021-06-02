@@ -13,6 +13,11 @@
 			></ItemCard>
 		</view>
 		
+		<!-- 弹框加载 -->
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="gray-text">加载中...</view>
+		</view>
+		
 		<!-- <scroll-view :scroll-y="true" :show-scrollbar="false" @scrolltolower="pullDown" class="home-page__scroll">
 			<ItemCard 
 				v-for="item in itemList" 
@@ -48,9 +53,12 @@
 				itemList: [],
 				// 是否无数据了
 				isEnd: false,
+				// 弹框加载
+				loadModal: false
 			}
 		},
 		async onLoad() {
+			this.loadModal = true;
 			await this.$onLaunched;
 			this.getData();
 		},
@@ -71,6 +79,7 @@
 		methods: {
 			getData(){
 				ListStatistics(this.queryParams, this.headerInfo).then(response => {
+					this.loadModal = false;
 					// this.itemList = response.data.list || [];
 					if(response.data.list.length === 0) {
 						this.isEnd = true;
@@ -78,6 +87,8 @@
 						return
 					}
 					this.itemList = [...this.itemList,...response.data.list]
+				}).catch(() => {
+					this.loadModal = false;
 				});
 			},
 			// pullDown() {
