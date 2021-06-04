@@ -104,7 +104,7 @@
 	width: 100%;
 	overflow: hidden;
 	.top-title{
-		line-height: 160upx;
+		line-height: 150upx;
 		width: 100%;
 		padding: 0 20upx;
 		font-size: 36rpx;
@@ -136,7 +136,7 @@
 	width: 100%;
 }
 .status_bar{
-	height: 25upx;
+	height: 35upx;
 }
 
 .header{
