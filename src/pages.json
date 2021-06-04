@@ -23,6 +23,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "更改项目",
+				"navigationStyle": "custom",
                 "enablePullDownRefresh": false
             }
             
@@ -32,6 +33,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "车辆明细",
+				"navigationStyle": "custom",
                 "enablePullDownRefresh": false
             }
             
