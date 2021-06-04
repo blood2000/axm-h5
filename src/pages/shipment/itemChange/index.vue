@@ -1,6 +1,6 @@
 <template>
 	<view class="change-item-page">
-		<WhiteHeader>
+		<WhiteHeader :showBack="true">
 			<text slot="title">更改项目</text>
 		</WhiteHeader>
 		<scroll-view :scroll-y="true" :show-scrollbar="false" @scrolltolower="pullDown" class="change-item-page__scroll">

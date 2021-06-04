@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<WhiteHeader>
+		<WhiteHeader :showBack="true">
 			<text slot="title">更改项目</text>
 		</WhiteHeader>
 		<view class="top-bar flex align-center justify-between bg-white">
