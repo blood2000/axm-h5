@@ -51,7 +51,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "代收协议",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		}
 		//电子合同入口 - 货主
@@ -60,7 +60,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "电子合同",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		}
 		//电子合同入口 - 司机
@@ -69,7 +69,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "电子合同",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		}
     ],
