@@ -66,11 +66,11 @@ function setDevice(val) {
 // 前端开发测试使用
 // setTimeout(() => {
 // 	setHeaderParams({
-// 		'Produce-Code': '776ca8e240574192b6e0f69b417163df',
-// 		'App-Code': '9d3017728cb34eac947ba350c4e997be',
-// 		'App-Type': '1',
-// 		'App-Version': '2.0',
-// 		'Terminal-Type': 'app',
-// 		'Authorization': '321846df-0466-4e8b-a378-4823be127558'
+// 		"Authorization":"280b01c7-5bab-42aa-ab17-4a3a40739409",
+// 		"App-Type":"1",
+// 		"App-Code":"80bb50e40895928e2dc0d101350a25d0",
+// 		"Terminal-Type":"app",
+// 		"App-Version":"2.0",
+// 		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
 // 	})
 // }, 0)
