@@ -3,7 +3,7 @@
 		<Header :showBack="true">
 			<text slot="title">统计</text>
 		</Header>
-		<scroll-view :scroll-y="true" :show-scrollbar="false" class="statistic-page__scroll">
+		<view class="statistic-page__scroll">
 			<ItemCard
 				class="statistic-page__item-card"
 				:item-data="itemData"
@@ -51,7 +51,7 @@
 					</view>
 				</view>
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -109,8 +109,9 @@
 <style lang="scss" scoped>
 .statistic-page{
 	width: 100%;
-	height: 100%;
-	overflow: hidden;
+	// height: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	&__item-card{
 		margin-bottom: 58rpx;
 	}
@@ -119,6 +120,8 @@
 		height: calc(100% - 185rpx);
 		margin: 185rpx 24rpx 0;
 		box-sizing: border-box;
+		position: relative;
+		z-index: 1;
 	}
 	&__content{
 		width: calc(100% - 44rpx);

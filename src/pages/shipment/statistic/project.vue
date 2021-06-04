@@ -106,7 +106,7 @@
 				}
 				console.log(quary);
 				uni.navigateTo({
-					url: '/pages/carDetail/index?item=' + encodeURIComponent(JSON.stringify(quary))
+					url: '/pages/shipment/carDetail/index?item=' + encodeURIComponent(JSON.stringify(quary))
 				});
 			}
 		}

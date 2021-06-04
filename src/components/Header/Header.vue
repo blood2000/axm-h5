@@ -47,7 +47,24 @@
 		data() {
 			return {
 				pages: {},
+				titleHeight: 0, //状态栏和导航栏的总高度
+				statusBarHeight: 0 ,//状态栏高度
+				naviBarHeight:0//导航栏高度
 			}
+		},
+		onLoad() {
+			const res = uni.getSystemInfoSync()
+			const system = res.platform
+			this.statusBarHeight = res.statusBarHeight
+			if (system === 'android') {
+				this.titleHeight = (48 + this.statusBarHeight)
+			} else if (system === 'ios') {
+				this.titleHeight = (44 + this.statusBarHeight)
+			}
+			this.naviBarHeight = this.titleHeight - this.statusBarHeight;
+			console.log(this.titleHeight);
+			console.log(this.statusBarHeight);
+			console.log(this.naviBarHeight);
 		},
 		onShow() {
 			this.pages = getCurrentPages();
@@ -83,11 +100,11 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	height: 185rpx;
+	height: 185upx;
 	width: 100%;
 	overflow: hidden;
 	.top-title{
-		line-height: calc(185rpx - var(--status-bar-height));
+		line-height: 150upx;
 		width: 100%;
 		padding: 0 20upx;
 		font-size: 36rpx;
@@ -95,8 +112,6 @@
 		font-weight: 500;
 		color: #FFFFFF;
 		position: relative;
-		top: 0;
-		left: 0;
 		z-index: 10;
 	}
 	.top-bgframe1{
@@ -119,6 +134,9 @@
 .top-bg{
 	height: 350upx;
 	width: 100%;
+}
+.status_bar{
+	height: 35upx;
 }
 
 .header{

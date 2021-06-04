@@ -1,10 +1,13 @@
 <template>
 	<view class="container">
+		<WhiteHeader :showBack="true">
+			<text slot="title">更改项目</text>
+		</WhiteHeader>
 		<view class="top-bar flex align-center justify-between bg-white">
 			<uni-dateformat :date="info.queryDate" format="yyyy/MM/dd"></uni-dateformat>
 			<view  @tap="showModal" data-target="RadioModal">车辆:{{ info.licenseNumber }} <text class="cuIcon-unfold text-gray marginleft" /></view>
 		</view>
-		<view style="height: 100upx;"></view>
+		<view style="height: 230upx;"></view>
 		<view class="cont-frame">
 			<view class="cont-title flex align-center justify-around">
 				<view class="cont-id">编号</view>
@@ -42,9 +45,13 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapState } from 'vuex';
+	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
 	import { ListVechicleDetails, ProjectDetails } from '@/config/service/statistic.js';
 	export default {
+		components: {
+			WhiteHeader
+		},
 		computed: {
 			...mapState({
 			  headerInfo: state => state.header.headerInfo
@@ -130,7 +137,7 @@
 	color: #333333;
 	.top-bar{
 		position: fixed;
-		top: 88upx;
+		top: 130upx;
 		left: 0;
 		width: 100%;
 		padding: 30upx 90upx;
