@@ -6,7 +6,7 @@ uniRequest.defaults.baseURL = process.env.VUE_APP_BASE_API;
 uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // 请求拦截
-const headerInfo = store.state.header.headerInfo;
+//const headerInfo = store.state.header.headerInfo;
 uniRequest.interceptors.request.use(
 	config => {
 		// header添加其他信息

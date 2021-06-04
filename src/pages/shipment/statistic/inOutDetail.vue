@@ -45,7 +45,7 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import { InOutDetails } from '../../config/service/statistic.js';
+	import { InOutDetails } from '@/config/service/statistic.js';
 	export default {
 		props: {
 			projectCode: {

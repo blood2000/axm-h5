@@ -31,9 +31,9 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import Header from '../../components/Header/Header.vue';
-	import ItemCard from '../../components/ItemCard/ItemCard.vue';
-	import { ListStatistics } from '../../config/service/statistic.js';
+	import Header from '@/components/Header/Header.vue';
+	import ItemCard from '@/components/ItemCard/ItemCard.vue';
+	import { ListStatistics } from '@/config/service/statistic.js';
 	export default {
 		components: {
 			Header,

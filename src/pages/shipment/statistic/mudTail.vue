@@ -33,7 +33,7 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import { MudtailDetails } from '../../config/service/statistic.js';
+	import { MudtailDetails } from '@/config/service/statistic.js';
 	export default {
 		props: {
 			projectCode: {

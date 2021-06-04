@@ -15,7 +15,7 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import { ListStatistics } from '../../config/service/statistic.js';
+	import { ListStatistics } from '@/config/service/statistic.js';
 	export default {
 		computed: {
 			...mapState({

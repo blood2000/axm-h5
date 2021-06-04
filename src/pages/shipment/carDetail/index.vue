@@ -43,7 +43,7 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import { ListVechicleDetails, ProjectDetails } from '../../config/service/statistic.js';
+	import { ListVechicleDetails, ProjectDetails } from '@/config/service/statistic.js';
 	export default {
 		computed: {
 			...mapState({

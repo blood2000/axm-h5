@@ -1,17 +1,8 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		// {
-		//     "path" : "pages/startPage/startPage",
-		//     "style" :                                                                                    
-		//     {
-		//         "navigationBarTitleText": "启动页",
-		//         "enablePullDownRefresh": false,
-		// 		"navigationStyle": "custom"
-		//     }
-		// }
-		// , 
+		//统计页入口 - 货主
 		{
-			"path": "pages/index/index",
+			"path": "pages/shipment/index/index",
 			"style": {
 				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
@@ -19,7 +10,7 @@
 			}
 		}
 	    ,{
-            "path" : "pages/statistic/index",
+            "path" : "pages/shipment/statistic/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "统计",
@@ -28,7 +19,7 @@
             }
         }
         ,{
-            "path" : "pages/itemChange/index",
+            "path" : "pages/shipment/itemChange/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "更改项目",
@@ -37,7 +28,7 @@
             
         }
         ,{
-            "path" : "pages/carDetail/index",
+            "path" : "pages/shipment/carDetail/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "车辆明细",
@@ -45,6 +36,42 @@
             }
             
         }
+		//统计页入口 - 司机
+        ,{
+            "path" : "pages/driver/index/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "统计",
+                "enablePullDownRefresh": true
+            }
+        }
+		//代收协议入口
+		,{
+		    "path" : "pages/protocol/collection",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "代收协议",
+		        "enablePullDownRefresh": true
+		    }
+		}
+		//电子合同入口 - 货主
+		,{
+		    "path" : "pages/protocol/contractShipment",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "电子合同",
+		        "enablePullDownRefresh": true
+		    }
+		}
+		//电子合同入口 - 司机
+		,{
+		    "path" : "pages/protocol/contractDriver",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "电子合同",
+		        "enablePullDownRefresh": true
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
