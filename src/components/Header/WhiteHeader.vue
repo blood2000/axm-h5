@@ -17,9 +17,7 @@
 		props:{
 			showBack: {
 				type: Boolean,
-				default: false,
-				statusBarHeight: '',
-				titleHeight: ''
+				default: false
 			}
 		},
 		data() {

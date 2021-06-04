@@ -41,15 +41,30 @@
 		props:{
 			showBack: {
 				type: Boolean,
-				default: false,
-				statusBarHeight: '',
-				titleHeight: ''
+				default: false
 			}
 		},
 		data() {
 			return {
 				pages: {},
+				titleHeight: 0, //状态栏和导航栏的总高度
+				statusBarHeight: 0 ,//状态栏高度
+				naviBarHeight:0//导航栏高度
 			}
+		},
+		onLoad() {
+			const res = uni.getSystemInfoSync()
+			const system = res.platform
+			this.statusBarHeight = res.statusBarHeight
+			if (system === 'android') {
+				this.titleHeight = (48 + this.statusBarHeight)
+			} else if (system === 'ios') {
+				this.titleHeight = (44 + this.statusBarHeight)
+			}
+			this.naviBarHeight = this.titleHeight - this.statusBarHeight;
+			console.log(this.titleHeight);
+			console.log(this.statusBarHeight);
+			console.log(this.naviBarHeight);
 		},
 		onShow() {
 			this.pages = getCurrentPages();
