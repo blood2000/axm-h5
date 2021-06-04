@@ -59,7 +59,7 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	height: 120upx;
+	height: 130upx;
 	width: 100%;
 	overflow: hidden;
 	background-color: #FFFFFF;
@@ -76,6 +76,6 @@
 	}
 }
 .status_bar{
-	height: 25upx;
+	height: 35upx;
 }
 </style>
