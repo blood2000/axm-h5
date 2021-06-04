@@ -49,7 +49,6 @@
 		methods: {
 			getData(){
 				getCollection(this.queryParams, this.headerInfo).then(response => {
-					console.log('response: ', response)
 					this.form = { ...response.data }
 				});
 			}
@@ -62,12 +61,15 @@
 	height: 100%;
 	padding: 0 60rpx;
 	background: #fff;
+	color: #444;
+	overflow-y: auto;
 	&__header{
 		text-align: center;
 		font-size: 36rpx;
 		font-weight: bold;
 		line-height: 100rpx;
 		padding-top: 30rpx;
+		color: #333;
 	}
 	&__before{
 		font-size: 29rpx;
