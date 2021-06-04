@@ -7,7 +7,7 @@
 			<uni-dateformat :date="info.queryDate" format="yyyy/MM/dd"></uni-dateformat>
 			<view  @tap="showModal" data-target="RadioModal">车辆:{{ info.licenseNumber }} <text class="cuIcon-unfold text-gray marginleft" /></view>
 		</view>
-		<view style="height: 220upx;"></view>
+		<view style="height: 230upx;"></view>
 		<view class="cont-frame">
 			<view class="cont-title flex align-center justify-around">
 				<view class="cont-id">编号</view>
@@ -137,7 +137,7 @@
 	color: #333333;
 	.top-bar{
 		position: fixed;
-		top: 120upx;
+		top: 130upx;
 		left: 0;
 		width: 100%;
 		padding: 30upx 90upx;
