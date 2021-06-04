@@ -63,12 +63,12 @@
 			handleItem() {
 				if(this.place === 'home'){
 					uni.navigateTo({
-						url: '/pages/statistic/index?item=' + encodeURIComponent(JSON.stringify(this.itemData))
+						url: '/pages/shipment/statistic/index?item=' + encodeURIComponent(JSON.stringify(this.itemData))
 					});
 				}
 				if(this.place === 'statistic'){
 					uni.navigateTo({
-						url: '/pages/itemChange/index?projectCode=' + this.itemData.projectCode
+						url: '/pages/shipment/itemChange/index?projectCode=' + this.itemData.projectCode
 					});
 				}
 			},

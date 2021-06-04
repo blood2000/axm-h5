@@ -41,7 +41,9 @@
 		props:{
 			showBack: {
 				type: Boolean,
-				default: false
+				default: false,
+				statusBarHeight: '',
+				titleHeight: ''
 			}
 		},
 		data() {
@@ -83,11 +85,11 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	height: 185rpx;
+	height: 185upx;
 	width: 100%;
 	overflow: hidden;
 	.top-title{
-		line-height: calc(185rpx - var(--status-bar-height));
+		line-height: 160upx;
 		width: 100%;
 		padding: 0 20upx;
 		font-size: 36rpx;
@@ -95,8 +97,6 @@
 		font-weight: 500;
 		color: #FFFFFF;
 		position: relative;
-		top: 0;
-		left: 0;
 		z-index: 10;
 	}
 	.top-bgframe1{
@@ -119,6 +119,9 @@
 .top-bg{
 	height: 350upx;
 	width: 100%;
+}
+.status_bar{
+	height: 25upx;
 }
 
 .header{
