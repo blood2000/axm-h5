@@ -115,6 +115,36 @@
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
+		},
+		//移动认证服务协议
+		{
+		    "path" : "pages/protocol/mobileService",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "移动认证服务协议",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		//天翼帐号服务协议
+		{
+		    "path" : "pages/protocol/tyService",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "天翼帐号服务协议",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		//天翼帐号隐私政策
+		{
+		    "path" : "pages/protocol/tyPrivacy",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "天翼帐号隐私政策",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
 		}
     ],
 	"globalStyle": {
