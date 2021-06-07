@@ -162,6 +162,7 @@
 		<view class="service-page__content">1、在接到提货通知后，按时提取货物，缴清应付费用。超过规定提货时，应向承运人交付保管费。</view>
 		<view class="service-page__content">2、收货人提货时应当按照约定的期限检验货物。对检验货物的期限没有约定或者约定不明确，依照法律规定。法律规定仍不明确的，应当在合理期限内检验货物。收货人在约定的期限或合理期限内对货物的数量、毁损等未提出异议的，视为承运人已经按照运输单证的记载交付的初步证据。</view>
 		
+		<view style="margin-bottom: 100rpx"></view>
 	</view>
 </template>
 

@@ -106,7 +106,7 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
-		//服务协议
+		//服务协议入口
 		,{
 		    "path" : "pages/protocol/service",
 		    "style" :                                                                                    
