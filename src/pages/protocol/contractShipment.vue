@@ -76,7 +76,7 @@
 					</uni-tr>
 					<uni-tr>
 						<uni-td><b>备注</b></uni-td>
-						<uni-td colspan="5">{{ form.shipperRemark }}</uni-td>
+						<uni-td colspan="5">{{ form.orderRemark }}</uni-td>
 					</uni-tr>
 			    </tbody>
 			</uni-table>
@@ -197,7 +197,7 @@
 					goodsName: '',
 					shipperCopeFee: '',
 					loadTime: '',
-					shipperRemark: ''
+					orderRemark: ''
 				}
 			}
 		},
