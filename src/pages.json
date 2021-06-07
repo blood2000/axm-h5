@@ -1,7 +1,16 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		//统计页入口 - 渣土
+		// 启动页
 		{
+			"path": "pages/startPage/index",
+			"style": {
+				"navigationBarTitleText": "启动页",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}
+		//统计页入口 - 渣土
+		,{
 			"path": "pages/finance/index/index",
 			"style": {
 				"navigationBarTitleText": "统计",
@@ -93,6 +102,16 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "电子合同",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		//服务协议
+		,{
+		    "path" : "pages/protocol/service",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "服务协议",
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
