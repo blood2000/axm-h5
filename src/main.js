@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import './common/css/icon.scss'
+import './common/css/index.scss'
 //引入vuex
 import store from './store'
 //与app桥接
