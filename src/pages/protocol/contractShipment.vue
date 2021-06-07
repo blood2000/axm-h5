@@ -1,6 +1,6 @@
 <template>
 	<view class="contract-page">
-		<view class="contract-page__header">（货主）福建大道成物流科技有限公司无车承运平台运输电子合同</view>
+		<view class="contract-page__header">福建大道成物流科技有限公司无车承运平台运输电子合同</view>
 		
 		<view class="contract-page__header-right">
 			<view class="text">合同编号：<text class="underline">{{ form.contractNo }}</text></view>
@@ -24,6 +24,59 @@
 		<view class="contract-page__content">根据《中华人民共和国合同法》及有关法律、法规的规定，为保证双方的合法权益，经甲乙双方协商一致，甲乙双方在自愿、平等、诚信的基础上签订本合同，以便双方共同遵守，本合同适用于福建大道成物流科技有限公司超好运网络货运平台（以下简称“超好运平台”）所有注册认证的货主会员。</view>
 		
 		<view class="contract-page__title">一、 乙方同意接受甲方委托，提供货物运输服务。货物信息表如下：</view>
+		<view class="contract-page__table">
+			<uni-table border emptyText="暂无数据">
+			    <tbody>
+					<uni-tr>
+					   <uni-td><b>起运地</b></uni-td>
+					   <uni-td>{{ form.startAddress }}</uni-td>
+					   <uni-td><b>发货人</b></uni-td>
+					   <uni-td>{{ form.consignor }}</uni-td>
+					   <uni-td><b>手机</b></uni-td>
+					   <uni-td>{{ form.consignorPhone }}</uni-td>
+					</uni-tr>
+					<uni-tr>
+						<uni-td><b>目的地</b></uni-td>
+						<uni-td>{{ form.endAddress }}</uni-td>
+						<uni-td><b>收货人</b></uni-td>
+						<uni-td>{{ form.consignee }}</uni-td>
+						<uni-td><b>手机</b></uni-td>
+						<uni-td>{{ form.consigneePhone }}</uni-td>
+					</uni-tr>
+					<uni-tr>
+						<uni-td><b>实际承运方</b></uni-td>
+						<uni-td>{{ form.driverName }}</uni-td>
+						<uni-td><b>联系电话</b></uni-td>
+						<uni-td>{{ form.driverPhone }}</uni-td>
+						<uni-td><b>货物名称</b></uni-td>
+						<uni-td>{{ form.goodsTypeName || form.goodsBigTypeName }}</uni-td>
+					</uni-tr>
+					<uni-tr>
+						<uni-td><b>最高配载</b></uni-td>
+						<uni-td>
+							{{ form.loadWeight }}
+							{{ form.stowageStatus == '0' ? '吨' : (form.stowageStatus == '1'? '立方': '车') }}
+						</uni-td>
+						<uni-td><b>货物描述</b></uni-td>
+						<uni-td>{{ form.goodsName }}</uni-td>
+						<uni-td><b>货主应付金额（元）</b></uni-td>
+						<uni-td>￥{{ form.shipperCopeFee }}</uni-td>
+					</uni-tr>
+					<uni-tr>
+						<uni-td><b>合同签订时间</b></uni-td>
+						<uni-td>{{ form.createTime }}</uni-td>
+						<uni-td><b>货物装车时间</b></uni-td>
+						<uni-td>{{ form.loadTime }}</uni-td>
+						<uni-td><b>是否开票</b></uni-td>
+						<uni-td>{{ '是' }}</uni-td>
+					</uni-tr>
+					<uni-tr>
+						<uni-td><b>备注</b></uni-td>
+						<uni-td colspan="5">{{ form.shipperRemark }}</uni-td>
+					</uni-tr>
+			    </tbody>
+			</uni-table>
+		</view>
 		
 		<view class="contract-page__title">二、运输方式</view>
 		<view class="contract-page__content">汽车公路运输。</view>
@@ -100,7 +153,7 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import { getCollection } from '@/config/service/protocol.js';
+	import { getContractByCode } from '@/config/service/protocol.js';
 	export default {
 		computed: {
 			...mapState({
@@ -109,7 +162,7 @@
 		},
 		data() {
 			return {
-				queryParams: {},
+				shipmentCode: '',
 				form: {
 					contractNo: 'DADAOCHENG2106041543464202',
 					createTime: '2021-06-04 15:43:45',
@@ -120,7 +173,23 @@
 					branchName: '福建大道成物流科技有限公司',
 					branchOrganizationCodeNo: '913713000673687316',
 					branchArea: '四川省成都市万塘路1号黄龙时代广场',
-					branchArtificialName: '测试支付宝'
+					branchArtificialName: '测试支付宝',
+					startAddress: '',
+					consignor: '',
+					consignorPhone: '',
+					endAddress: '',
+					consignee: '',
+					consigneePhone: '',
+					driverName: '',
+					driverPhone: '',
+					goodsTypeName: '',
+					goodsBigTypeName: '',
+					loadWeight: '',
+					stowageStatus: '',
+					goodsName: '',
+					shipperCopeFee: '',
+					loadTime: '',
+					shipperRemark: ''
 				}
 			}
 		},
@@ -130,7 +199,9 @@
 		},
 		methods: {
 			getData(){
-				
+				getContractByCode(this.shipmentCode, this.headerInfo).then(response => {
+					this.form = { ...response.data }
+				});
 			}
 		}
 	}
@@ -169,6 +240,21 @@
 		text-indent: 2em;
 		line-height: 40rpx;
 		margin: 30rpx 0;
+	}
+	&__table{
+		font-size: 26rpx;
+		font-weight: normal;
+		line-height: 40rpx;
+		margin: 30rpx 0;
+		.table--border, .uni-table-td{
+			border-color: #606266;
+		}
+		.uni-table-td{
+			min-width: 100rpx;
+			padding: 10rpx 12rpx;
+			text-align: center !important;
+			word-break: break-all;
+		}
 	}
 	&__title{
 		font-size: 28rpx;

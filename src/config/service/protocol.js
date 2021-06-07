@@ -9,3 +9,12 @@ export function getCollection(data, config) {
 	headers: config
   });
 }
+
+// 运输合同-货主/司机
+export function getContractByCode(code, config) {
+  return uniRequest({
+    url: '/transportation/orderContract/' + code,
+    method: 'get',
+	headers: config
+  });
+}
