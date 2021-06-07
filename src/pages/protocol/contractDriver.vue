@@ -1,5 +1,9 @@
 <template>
 	<view class="contract-page">
+		<WhiteHeader :showBack="true">
+			<text slot="title">更改项目</text>
+		</WhiteHeader>
+		
 		<view class="contract-page__header">福建大道成物流科技有限公司无车承运平台运输电子合同</view>
 		
 		<view class="contract-page__header-right">
@@ -136,7 +140,11 @@
 <script>
 	import { mapState } from 'vuex'
 	import { getContractByCode } from '@/config/service/protocol.js';
+	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
 	export default {
+		components: {
+			WhiteHeader
+		},
 		computed: {
 			...mapState({
 			  headerInfo: state => state.header.headerInfo
@@ -194,6 +202,7 @@
 	background: #fff;
 	color: #444;
 	overflow-y: auto;
+	padding-top: 130upx;
 	&__header{
 		text-align: center;
 		font-size: 36rpx;

@@ -44,6 +44,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "统计",
+				"navigationStyle": "custom",
                 "enablePullDownRefresh": true
             }
         }
@@ -53,6 +54,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "代收协议",
+				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
 		}
@@ -62,6 +64,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "电子合同",
+				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
 		}
@@ -71,6 +74,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "电子合同",
+				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
 		}

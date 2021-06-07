@@ -1,5 +1,8 @@
 <template>
 	<view class="collection-page">
+		<WhiteHeader :showBack="true">
+			<text slot="title">更改项目</text>
+		</WhiteHeader>
 		<view class="collection-page__header">收款委托函</view>
 		<view class="collection-page__before">致 福建大道成物流科技有限公司：</view>
 		<view class="collection-page__content">
@@ -17,7 +20,11 @@
 <script>
 	import { mapState } from 'vuex'
 	import { getCollection } from '@/config/service/protocol.js';
+	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
 	export default {
+		components: {
+			WhiteHeader
+		},
 		computed: {
 			...mapState({
 			  headerInfo: state => state.header.headerInfo
@@ -63,6 +70,7 @@
 	background: #fff;
 	color: #444;
 	overflow-y: auto;
+	padding-top: 130upx;
 	&__header{
 		text-align: center;
 		font-size: 36rpx;
