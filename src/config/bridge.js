@@ -34,7 +34,7 @@ if (isiOS) {
 	let params = {a: 123};
 	iosPromise().then(() => {
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
-			setHeaderParams(response);
+			saveAppParams(response);
 		});
 	})
 }
@@ -44,12 +44,12 @@ if (isAndroid) {
 	setDevice('isAndroid');
 	if(window.Android !== null && typeof(window.Android) !== 'undefined') {
 		const test = window.Android.callAndroid('hello!');
-		setHeaderParams(JSON.parse(test));
+		saveAppParams(JSON.parse(test));
 	}
 }
 
 // 存到vuex
-function setHeaderParams(response) {
+function saveAppParams(response) {
 	store.dispatch('getLoginInfoAction', {
 		'Produce-Code': response['Produce-Code'],
 		'App-Code': response['App-Code'],
@@ -58,6 +58,7 @@ function setHeaderParams(response) {
 		'Terminal-Type': response['Terminal-Type'],
 		'Authorization': response['Authorization']
 	});
+	store.dispatch('getStatusBarHeightAction', response['statusBarHeight']);
 }
 function setDevice(val) {
 	store.dispatch('getDeviceAction', val);
@@ -65,7 +66,7 @@ function setDevice(val) {
 
 // 前端开发测试使用
 // setTimeout(() => {
-// 	setHeaderParams({
+// 	saveAppParams({
 // 		"Authorization":"280b01c7-5bab-42aa-ab17-4a3a40739409",
 // 		"App-Type":"1",
 // 		"App-Code":"80bb50e40895928e2dc0d101350a25d0",

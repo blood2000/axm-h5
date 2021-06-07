@@ -2,7 +2,8 @@ const store = {
     state: {
 		isAndroid: false,
 		isiOS: false,
-        headerInfo: {}
+        headerInfo: {},
+		statusBarHeight: 0
     },
     getters: {
 		
@@ -19,7 +20,10 @@ const store = {
 				state.isAndroid = false;
 				state.isiOS = true;
 			}
-        }
+        },
+		getStatusBarHeight: (state, val) => {
+			state.statusBarHeight = val;
+		}
     },
     actions: {
         getLoginInfoAction: ({ commit }, val) => {
@@ -28,6 +32,9 @@ const store = {
 		getDeviceAction: ({ commit }, val) => {
 		    commit('getDevice', val)
 		},
+		getStatusBarHeightAction: ({ commit }, val) => {
+		    commit('getStatusBarHeight', val)
+		}
     }
 }
 export default store
