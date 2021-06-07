@@ -48,6 +48,17 @@
                 "enablePullDownRefresh": true
             }
         }
+		//统计页入口 - 车队
+		,{
+		    "path" : "pages/team/index/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "统计",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": true
+		    }
+		    
+		}
 		//代收协议入口
 		,{
 		    "path" : "pages/protocol/collection",
