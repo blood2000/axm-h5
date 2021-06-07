@@ -1,7 +1,7 @@
 <template>
 	<view class="collection-page">
 		<WhiteHeader :showBack="true">
-			<text slot="title">更改项目</text>
+			<text slot="title">代收协议</text>
 		</WhiteHeader>
 		<view class="collection-page__header">收款委托函</view>
 		<view class="collection-page__before">致 福建大道成物流科技有限公司：</view>
@@ -32,10 +32,6 @@
 		},
 		data() {
 			return {
-				queryParams: {
-					driverCode: '171ba3619c4e4ca4a6cfaab9982acf7a',
-					teamCode: '187b041064304aaea74f9369afb4b386'
-				},
 				form: {
 					driverName: '',
 					driverIdCard: '',
@@ -49,13 +45,13 @@
 				}
 			}
 		},
-		async onLoad(){
+		async onLoad(option){
 			await this.$onLaunched;
-			this.getData();
+			this.getData(option);
 		},
 		methods: {
-			getData(){
-				getCollection(this.queryParams, this.headerInfo).then(response => {
+			getData(option){
+				getCollection(option, this.headerInfo).then(response => {
 					this.form = { ...response.data }
 				});
 			}

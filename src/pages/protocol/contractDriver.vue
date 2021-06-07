@@ -1,7 +1,7 @@
 <template>
 	<view class="contract-page">
 		<WhiteHeader :showBack="true">
-			<text slot="title">更改项目</text>
+			<text slot="title">电子合同</text>
 		</WhiteHeader>
 		
 		<view class="contract-page__header">福建大道成物流科技有限公司无车承运平台运输电子合同</view>
@@ -152,7 +152,6 @@
 		},
 		data() {
 			return {
-				driverCode: '',
 				form: {
 					contractNo: 'DADAOCHENG2106041543464202',
 					createTime: '2021-06-04 15:43:45',
@@ -181,13 +180,13 @@
 				}
 			}
 		},
-		async onLoad(){
+		async onLoad(option){
 			await this.$onLaunched;
-			this.getData();
+			this.getData(option.code);
 		},
 		methods: {
-			getData(){
-				getContractByCode(this.driverCode, this.headerInfo).then(response => {
+			getData(code){
+				getContractByCode(code, this.headerInfo).then(response => {
 					this.form = { ...response.data }
 				});
 			}
