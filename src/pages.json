@@ -146,6 +146,16 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
+		//用户协议入口
+		,{
+		    "path" : "pages/protocol/user",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "用户协议",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
