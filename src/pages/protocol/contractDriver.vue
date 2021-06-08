@@ -7,22 +7,22 @@
 		<view class="contract-page__header">福建大道成物流科技有限公司无车承运平台运输电子合同</view>
 		
 		<view class="contract-page__header-right">
-			<view class="text">合同编号：<text class="underline">{{ form.contractNo }}</text></view>
-			<view class="text">签约时间：<text class="underline">{{ form.createTime }}</text></view>
+			<view class="text">合同编号：<text class="underline blue">{{ form.contractNo }}</text></view>
+			<view class="text">签约时间：<text class="underline blue">{{ form.createTime }}</text></view>
 		</view>
 	
 		<view class="contract-page__header-left">
-			<view>甲方：<text class="underline">{{ form.branchName }}</text></view>
-			<view>统一社会信用代码：<text class="underline">{{ form.branchOrganizationCodeNo }}</text></view>
-			<view>联系电话：<text class="underline">{{ form.branchPhone }}</text></view>
+			<view>甲方：<text>{{ form.branchName }}（固定显示）</text></view>
+			<view>统一社会信用代码：<text>{{ form.branchOrganizationCodeNo }}</text></view>
+			<view>联系电话：<text>{{ form.branchPhone }}</text></view>
 		</view>
 		
 		<view class="contract-page__header-left">
-			<view>乙方：<text class="underline">{{ form.driverName }}</text></view>
-			<view>车牌号码：<text class="underline">{{ form.licenseNumber }}</text></view>
-			<view>驾驶证号码(选填)：<text class="underline">{{ form.driverLicense }}</text></view>
-			<view>身份证号码：<text class="underline">{{ form.driverIdentificationNumber }}</text></view>
-			<view>联系电话：<text class="underline">{{ form.driverPhone }}</text></view>
+			<view class="blue">乙方：<text>{{ form.driverName }}</text></view>
+			<view class="blue">车牌号码：<text>{{ form.licenseNumber }}</text></view>
+			<view class="blue">驾驶证号码(选填)：<text>{{ form.driverLicense }}</text></view>
+			<view class="blue">身份证号码：<text>{{ form.driverIdentificationNumber }}</text></view>
+			<view class="blue">联系电话：<text>{{ form.driverPhone }}</text></view>
 		</view>
 		
 		<view class="contract-page__content">本合同适用于福建大道成物流科技有限公司超好运网络货运平台（以下简称“超好运平台”）所有注册认证的司机会员。甲乙双方达成交易，由甲方委托乙方完成货物运输。双方就货物运输事宜达成以下协议以资共守。</view>
@@ -33,50 +33,52 @@
 			    <tbody>
 					<uni-tr>
 					   <uni-td><b>起运地</b></uni-td>
-					   <uni-td>{{ form.startAddress }}</uni-td>
+					   <uni-td class="blue">{{ form.startAddress }}</uni-td>
 					   <uni-td><b>发货人</b></uni-td>
-					   <uni-td>{{ form.consignor }}</uni-td>
+					   <uni-td class="blue">{{ form.consignor }}</uni-td>
 					   <uni-td><b>手机</b></uni-td>
-					   <uni-td>{{ form.consignorPhone }}</uni-td>
+					   <uni-td class="blue">{{ form.consignorPhone }}</uni-td>
 					</uni-tr>
 					<uni-tr>
 						<uni-td><b>目的地</b></uni-td>
-						<uni-td>{{ form.endAddress }}</uni-td>
+						<uni-td class="blue">{{ form.endAddress }}</uni-td>
 						<uni-td><b>收货人</b></uni-td>
-						<uni-td>{{ form.consignee }}</uni-td>
+						<uni-td class="blue">{{ form.consignee }}</uni-td>
 						<uni-td><b>手机</b></uni-td>
-						<uni-td>{{ form.consigneePhone }}</uni-td>
+						<uni-td class="blue">{{ form.consigneePhone }}</uni-td>
 					</uni-tr>
 					<uni-tr>
 						<uni-td><b>实际承运方</b></uni-td>
-						<uni-td>{{ form.driverName }}</uni-td>
+						<uni-td class="blue">{{ form.driverName }}</uni-td>
 						<uni-td><b>联系电话</b></uni-td>
-						<uni-td>{{ form.driverPhone }}</uni-td>
+						<uni-td class="blue">{{ form.driverPhone }}</uni-td>
 						<uni-td><b>货物名称</b></uni-td>
-						<uni-td>{{ form.goodsTypeName || form.goodsBigTypeName }}</uni-td>
+						<uni-td class="blue">{{ form.goodsTypeName || form.goodsBigTypeName }}</uni-td>
 					</uni-tr>
 					<uni-tr>
-						<uni-td><b>最高配载</b></uni-td>
-						<uni-td>
+						<uni-td><b>计划数量</b></uni-td>
+						<uni-td class="blue">
 							{{ form.loadWeight }}
 							{{ form.stowageStatus == '0' ? '吨' : (form.stowageStatus == '1'? '立方': '车') }}
 						</uni-td>
 						<uni-td><b>货物描述</b></uni-td>
-						<uni-td>{{ form.goodsName }}</uni-td>
-						<uni-td><b>货主应付金额（元）</b></uni-td>
-						<uni-td>￥{{ form.deliveryFeeDeserved }}</uni-td>
+						<uni-td class="blue">{{ form.goodsName }}</uni-td>
+						<uni-td><b>货值（元）</b></uni-td>
+						<uni-td class="blue">￥{{ form.deliveryFeeDeserved }}</uni-td>
 					</uni-tr>
 					<uni-tr>
+						<uni-td><b>运费金额（元）</b></uni-td>
+						<uni-td class="blue">￥{{ form.deliveryFeeDeserved }}</uni-td>
 						<uni-td><b>合同签订时间</b></uni-td>
-						<uni-td>{{ form.createTime }}</uni-td>
-						<uni-td><b>货物装车时间</b></uni-td>
-						<uni-td>{{ form.loadTime }}</uni-td>
-						<uni-td><b>是否开票</b></uni-td>
-						<uni-td>{{ '是' }}</uni-td>
+						<uni-td class="blue">{{ form.createTime }}</uni-td>
+						<uni-td><b>货物装车截止时间</b></uni-td>
+						<uni-td class="blue">{{ form.loadTime }}</uni-td>
 					</uni-tr>
 					<uni-tr>
+						<uni-td><b>是否开票</b></uni-td>
+						<uni-td class="blue">{{ '是' }}</uni-td>
 						<uni-td><b>备注</b></uni-td>
-						<uni-td colspan="5">{{ form.orderRemark }}</uni-td>
+						<uni-td colspan="3" class="blue">{{ form.orderRemark }}</uni-td>
 					</uni-tr>
 			    </tbody>
 			</uni-table>
@@ -123,12 +125,12 @@
 	
 		<view class="contract-page__after">
 			<view class="contract-page__after__box">
-				<view class="text">甲方签字：<text class="underline">{{ form.branchName }}</text></view>
+				<view class="text">甲方签字：<text>{{ form.branchName }}</text></view>
 				<view class="text">(签章)</view>
 				<view class="text">时间：</view>
 			</view>
 			<view class="contract-page__after__box">
-				<view class="text">乙方签字：<text class="underline">{{ form.driverName }}</text></view>
+				<view class="text">乙方签字：<text class="blue">{{ form.driverName }}</text></view>
 				<view class="text">(签章)</view>
 				<view class="text">时间：</view>
 			</view>
@@ -153,36 +155,36 @@
 		data() {
 			return {
 				form: {
-					contractNo: '',
-					createTime: '',
-					branchName: '',
-					branchOrganizationCodeNo: '',
-					branchPhone: '',
-					driverName: '',
-					licenseNumber: '',
-					driverLicense: '',
-					driverIdentificationNumber: '',
-					driverPhone: '',
-					startAddress: '',
-					consignor: '',
-					consignorPhone: '',
-					endAddress: '',
-					consignee: '',
-					consigneePhone: '',
-					goodsTypeName: '',
-					goodsBigTypeName: '',
-					loadWeight: '',
-					stowageStatus: '',
-					goodsName: '',
-					deliveryFeeDeserved: '',
-					loadTime: '',
+					contractNo: 'DADAOCHENG202104151516270572',
+					createTime: '2021-04-15 15:16:28',
+					branchName: '福建大道成物流科技有限公司',
+					branchOrganizationCodeNo: '913713000673687316',
+					branchPhone: '400-8270-535',
+					driverName: '小余',
+					licenseNumber: '渝BX5363',
+					driverLicense: '333333333333333333',
+					driverIdentificationNumber: '333333333333333333',
+					driverPhone: '15880147817',
+					startAddress: '福建省福州市福清市',
+					consignor: '小周',
+					consignorPhone: '17850830479',
+					endAddress: '福建省福州市晋安区',
+					consignee: '西西',
+					consigneePhone: '15912455689',
+					goodsTypeName: '机械、设备、电器',
+					goodsBigTypeName: '机械、设备、电器',
+					loadWeight: '31.25',
+					stowageStatus: 0,
+					goodsName: '机械、设备、电器',
+					deliveryFeeDeserved: '0',
+					loadTime: '2021-04-16 15:06:00',
 					orderRemark: ''
 				}
 			}
 		},
 		async onLoad(option){
 			await this.$onLaunched;
-			this.getData(option.code);
+			//this.getData(option.code);
 		},
 		methods: {
 			getData(code){
@@ -267,6 +269,9 @@
 	
 	.underline{
 		text-decoration: underline;
+	}
+	.blue{
+		color: #0188fb;
 	}
 }
 </style>
