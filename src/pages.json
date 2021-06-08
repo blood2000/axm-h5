@@ -4,7 +4,7 @@
 		{
 			"path": "pages/startPage/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "启动页",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
