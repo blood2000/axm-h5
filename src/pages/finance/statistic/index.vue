@@ -118,7 +118,7 @@
 	&__scroll{
 		width: 100%;
 		height: calc(100% - 185rpx);
-		margin: 185rpx 24rpx 0;
+		margin: 0 24rpx;
 		box-sizing: border-box;
 		position: relative;
 		z-index: 1;
