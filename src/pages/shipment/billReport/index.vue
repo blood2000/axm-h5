@@ -9,42 +9,36 @@
 				</view>
 			</template>
 		</Header>
-		<scroll-view scroll-x class="bg-white nav">
-			<view class="flex text-center">
-				<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
-					<view class="flex flex-direction align-center justify-center">
-						<view class="">{{item.tag}}</view>
-						<view v-if="item.day==TabCur" class="tab-bottom"></view>
+		<view class="top-fixed">
+			<scroll-view scroll-x class="bg-white nav">
+				<view class="flex text-center">
+					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
+						<view class="flex flex-direction align-center justify-center">
+							<view class="">{{item.tag}}</view>
+							<view v-if="item.day==TabCur" class="tab-bottom"></view>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+			<view class="c-app-container" style="margin: 0; border-radius: 0;">
+				<view class="ly-flex-pack-around">
+					<view class="c-count-box">
+						<view class="count">786<text class="unit">单</text></view>
+						<view class="label">已接单</view>
+					</view>
+					<view class="c-count-box">
+						<view class="count">254<text class="unit">单</text></view>
+						<view class="label">已装货</view>
+					</view>
+					<view class="c-count-box">
+						<view class="count">234<text class="unit">单</text></view>
+						<view class="label">已卸货</text></view>
 					</view>
 				</view>
 			</view>
-		</scroll-view>
-		<view class="c-app-container">
-			<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
-				<view class="c-count-box">
-					<view class="count" v-number-format="25567"><text class="unit">个</text></view>
-					<view class="label">项目<text class="has-arrow"></text></view>
-				</view>
-				<view class="c-count-box">
-					<view class="count" v-number-format="25567"><text class="unit">个</text></view>
-					<view class="label">货源<text class="has-arrow"></text></view>
-				</view>
-			</view>
-			<view class="ly-flex-pack-around">
-				<view class="c-count-box">
-					<view class="count" v-number-format="25567"><text class="unit">单</text></view>
-					<view class="label">运费完成<text class="has-arrow"></text></view>
-				</view>
-				<view class="c-count-box">
-					<view class="count" v-number-format="25567"><text class="unit">元</text></view>
-					<view class="label">实付运费<text class="has-arrow"></text></view>
-				</view>
-				<view class="c-count-box">
-					<view class="count" v-number-format="25567"><text class="unit">元</text></view>
-					<view class="label">开票<text class="has-arrow"></text></view>
-				</view>
-			</view>
 		</view>
+		<view style="height: 260upx;"></view>
+		
 		
 		<view class="c-app-container">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
@@ -182,6 +176,15 @@
 	color: #FFFFFF;
 }
 // 时间筛选
+.nav{
+	border-bottom: 1upx solid #F2F2F3;
+}
+.top-fixed{
+	position: fixed;
+	left: 0;
+	z-index: 10;
+	width: 100%;
+}
 .onchoose{
 	font-size: 32upx;
 	font-family: PingFang SC;
