@@ -180,6 +180,16 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
+		//中国联通服务条款和隐私政策
+		,{
+		    "path" : "pages/protocol/ltService",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "中国联通服务条款和隐私政策",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
