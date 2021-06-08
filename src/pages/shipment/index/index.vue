@@ -27,7 +27,7 @@
 			</view>
 		</view>
 		
-		<view class="c-app-container">
+		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">货源统计</text>
 				<text class="button">查看更多</text>
@@ -62,7 +62,7 @@
 			</view>
 		</view>
 		
-		<view class="c-app-container">
+		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">运输统计</text>
 				<text class="button">查看更多</text>
@@ -70,7 +70,7 @@
 			<view class="chart-box"></view>
 		</view>
 		
-		<view class="c-app-container">
+		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">运费统计</text>
 				<text class="button">查看更多</text>
@@ -78,7 +78,7 @@
 			<view class="chart-box"></view>
 		</view>
 		
-		<view class="c-app-container">
+		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">开票统计</text>
 				<text class="button">查看更多</text>
