@@ -16,11 +16,11 @@
 		</view>
 	</view> -->
 	<view class="top">
-		<view class="top-frame">
+		<view class="top-frame" :style="{height: titleHeight + 'upx' }">
 			<view class="top-bgframe1">
 				<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 			</view>
-			<view class="status_bar">
+			<view :style="{height: statusBarHeight*2 + 'upx' }">
 			  <!-- 这里是状态栏 -->
 			</view>
 			<view class="top-title flex align-center justify-between">
@@ -33,10 +33,12 @@
 		<view class="top-bgframe2">
 			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 		</view>
+		<view :style="{height: titleHeight + 'upx' }"></view>
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	export default {
 		props:{
 			showBack: {
@@ -44,31 +46,31 @@
 				default: false
 			}
 		},
+		computed: {
+			...mapState({
+				// headerInfo: state => state.header.headerInfo,
+				statusBarHeight: state => state.header.statusBarHeight
+			})
+		},
 		data() {
 			return {
 				pages: {},
 				titleHeight: 0, //状态栏和导航栏的总高度
-				statusBarHeight: 0 ,//状态栏高度
 				naviBarHeight:0//导航栏高度
 			}
 		},
-		onLoad() {
-			const res = uni.getSystemInfoSync()
-			const system = res.platform
-			this.statusBarHeight = res.statusBarHeight
-			if (system === 'android') {
-				this.titleHeight = (48 + this.statusBarHeight)
-			} else if (system === 'ios') {
-				this.titleHeight = (44 + this.statusBarHeight)
-			}
-			this.naviBarHeight = this.titleHeight - this.statusBarHeight;
-			console.log(this.titleHeight);
-			console.log(this.statusBarHeight);
-			console.log(this.naviBarHeight);
-		},
-		onShow() {
+		beforeMount(){
 			this.pages = getCurrentPages();
 			console.log(this.pages);
+			this.titleHeight = this.statusBarHeight*2 + 120;
+			console.log(this.statusBarHeight);
+			console.log(this.titleHeight);
+		},
+		async onLoad() {
+			await this.$onLaunched;
+		},
+		onShow() {
+			
 		},
 		methods: {
 			back() {
@@ -100,11 +102,11 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	height: 185upx;
+	// height: 185upx;
 	width: 100%;
 	overflow: hidden;
 	.top-title{
-		line-height: 150upx;
+		line-height: 120upx;
 		width: 100%;
 		padding: 0 20upx;
 		font-size: 36rpx;

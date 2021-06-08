@@ -1,18 +1,22 @@
 <template>
-	<view class="top-frame">
-		<view class="status_bar">
-		  <!-- 这里是状态栏 -->
-		</view>
-		<view class="top-title flex align-center justify-between">
-			<text v-if="showBack" class="cuIcon-back" @click="back"></text>
-			<view v-else style="width: 18upx;"></view>
-			<slot name="title"></slot>
-			<view style="width: 18upx;"></view>
+	<view class="">
+		<view :style="{height: titleHeight + 'upx'}"></view>
+		<view class="top-frame" :style="{height: titleHeight + 'upx'}">
+			<view class="status_bar" :style="{height: statusBarHeight*2 + 'upx'}">
+			  <!-- 这里是状态栏 -->
+			</view>
+			<view class="top-title flex align-center justify-between">
+				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
+				<view v-else style="width: 18upx;"></view>
+				<slot name="title"></slot>
+				<view style="width: 18upx;"></view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	export default {
 		props:{
 			showBack: {
@@ -20,14 +24,24 @@
 				default: false
 			}
 		},
+		computed: {
+			...mapState({
+				// headerInfo: state => state.header.headerInfo,
+				statusBarHeight: state => state.header.statusBarHeight
+			})
+		},
 		data() {
 			return {
 				pages: {},
+				titleHeight: 0, //状态栏和导航栏的总高度
+				naviBarHeight:0//导航栏高度
 			}
 		},
-		onShow() {
+		beforeMount(){
 			this.pages = getCurrentPages();
-			console.log(this.pages);
+			this.titleHeight = this.statusBarHeight*2 + 95;
+		},
+		onShow() {
 		},
 		methods: {
 			back() {
