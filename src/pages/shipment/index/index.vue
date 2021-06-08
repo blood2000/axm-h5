@@ -32,6 +32,12 @@
 				<text class="text">货源统计</text>
 				<text class="button">查看更多</text>
 			</view>
+			<view class="c-app-container__box">
+				123
+			</view>
+			<view class="c-app-container__box">
+				456
+			</view>
 		</view>
 		
 		<view class="c-app-container">
@@ -39,6 +45,7 @@
 				<text class="text">运输统计</text>
 				<text class="button">查看更多</text>
 			</view>
+			<view class="chart-box"></view>
 		</view>
 		
 		<view class="c-app-container">
@@ -46,6 +53,7 @@
 				<text class="text">运费统计</text>
 				<text class="button">查看更多</text>
 			</view>
+			<view class="chart-box"></view>
 		</view>
 		
 		<view class="c-app-container">
@@ -53,6 +61,7 @@
 				<text class="text">开票统计</text>
 				<text class="button">查看更多</text>
 			</view>
+			<view class="chart-box"></view>
 		</view>
 	</view>
 </template>
@@ -72,6 +81,9 @@
 
 <style lang="scss" scoped>
 .shipment-index{
-	
+	.chart-box{
+		width: 100%;
+		height: 450rpx;
+	}
 }
 </style>

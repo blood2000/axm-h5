@@ -1,12 +1,29 @@
-// card
+/**
+ * <view class="c-app-container">
+ *     <view class="c-app-container__box"></view>
+ * 	   <view class="c-app-container__box"></view>
+ * </view>
+ */
 .c-app-container{
 	background: #FFFFFF;
 	border-radius: 30rpx;
 	margin: 24rpx 30rpx;
 	padding: 40rpx 0;
+	&__box{
+		margin: 0 24rpx;
+		padding: 40rpx 0;
+		&:not(:last-child){
+			border-bottom: 1rpx solid #F2F2F3;
+		}
+	}
 }
 
-// count-box
+/**
+ *  <view class="c-count-box">
+ *		<view class="count">{{ count }}<text class="unit">{{ unit }}</text></view>
+ *		<view class="label">{{ label }}<text class="has-arrow"></text></view>
+ *	</view>
+ */
 .c-count-box{
 	font-family: PingFang SC;
 	text-align: center;
@@ -39,7 +56,12 @@
 	}
 }
 
-// title
+/**
+ *  <view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
+		<text class="text">{{ title }}</text>
+		<text class="button">查看更多</text>
+	</view>
+ */
 .c-title-box{
 	font-family: PingFang SC;
 	>.text{
