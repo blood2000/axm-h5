@@ -26,7 +26,7 @@
 			<view class="top-title flex align-center justify-between">
 				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
 				<view v-else style="width: 18upx;"></view>
-				<slot v-if="tablist.length === 0" name="title"></slot>
+				<slot name="title"></slot>
 				<view style="width: 18upx;"></view>
 			</view>
 		</view>
@@ -48,12 +48,6 @@
 			showBg: {
 				type: Boolean,
 				default: true
-			},
-			tablist: {
-				type: Array,
-				default: function() {
-					return [];
-				}
 			}
 		},
 		computed: {
