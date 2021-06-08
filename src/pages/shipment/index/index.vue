@@ -33,10 +33,32 @@
 				<text class="button">查看更多</text>
 			</view>
 			<view class="c-app-container__box">
-				123
+				<view class="order-title">接单TOP3</view>
+				<view class="order-box">
+					<!-- v-for -->
+					<view v-for="(item, index) in orderList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
+						<view class="c-order-box__label ly-flex-align-center">
+							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+							<text class="name">煤炭</text>
+							<text class="address">宝安机场—华林广场</text>
+						</view>
+						<text class="c-order-box__count">486单</text>
+					</view>
+				</view>
 			</view>
 			<view class="c-app-container__box">
-				456
+				<view class="order-title">付款TOP3</view>
+				<view class="order-box">
+					<!-- v-for -->
+					<view v-for="(item, index) in peeList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
+						<view class="c-order-box__label ly-flex-align-center">
+							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+							<text class="name">煤炭</text>
+							<text class="address">宝安机场—华林广场</text>
+						</view>
+						<text class="c-order-box__count">486单</text>
+					</view>
+				</view>
 			</view>
 		</view>
 		
@@ -70,7 +92,8 @@
 	export default {
 		data() {
 			return {
-				
+				orderList: [{}, {}, {}],
+				peeList: [{}, {}, {}]
 			}
 		},
 		methods: {
@@ -81,6 +104,12 @@
 
 <style lang="scss" scoped>
 .shipment-index{
+	font-family: PingFang SC;
+	.order-title{
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #333333;
+	}
 	.chart-box{
 		width: 100%;
 		height: 450rpx;
