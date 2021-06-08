@@ -221,7 +221,7 @@
 	background: #fff;
 	color: #444;
 	overflow-y: auto;
-	padding-top: 130upx;
+	// padding-top: 130upx;
 	&__header{
 		text-align: center;
 		font-size: 36rpx;
