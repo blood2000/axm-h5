@@ -1,8 +1,8 @@
 <template>
 	<view class="collection-page">
-		<WhiteHeader :showBack="true">
+		<!-- <WhiteHeader :showBack="true">
 			<text slot="title">代收协议</text>
-		</WhiteHeader>
+		</WhiteHeader> -->
 		<view class="collection-page__header">收款委托函</view>
 		<view class="collection-page__before">致 福建大道成物流科技有限公司：</view>
 		<view class="collection-page__content">

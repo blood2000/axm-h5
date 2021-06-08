@@ -55,6 +55,30 @@
 				"enablePullDownRefresh": true
 			}
 		}
+		,{
+			"path": "pages/shipment/projectReport/index",
+			"style": {
+				"navigationBarTitleText": "项目报表",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		}
+		,{
+			"path": "pages/shipment/orderReport/index",
+			"style": {
+				"navigationBarTitleText": "货源报表",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		}
+		,{
+			"path": "pages/shipment/billReport/index",
+			"style": {
+				"navigationBarTitleText": "运输报表",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		}
 		//统计页入口 - 司机
         ,{
             "path" : "pages/driver/index/index",
@@ -155,33 +179,6 @@
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
-		},
-		//项目报表 - 货主
-		{
-			"path": "pages/shipment/projectReport/index",
-			"style": {
-				"navigationBarTitleText": "项目报表",
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
-			}
-		},
-		//货源报表 - 货主
-		{
-			"path": "pages/shipment/orderReport/index",
-			"style": {
-				"navigationBarTitleText": "货源报表",
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
-			}
-		},
-		//运输报表 - 货主
-		{
-			"path": "pages/shipment/billReport/index",
-			"style": {
-				"navigationBarTitleText": "运输报表",
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
-			}
 		}
     ],
 	"globalStyle": {

@@ -1,28 +1,28 @@
 <template>
 	<view class="contract-page">
-		<WhiteHeader :showBack="true">
+		<!-- <WhiteHeader :showBack="true">
 			<text slot="title">电子合同</text>
-		</WhiteHeader>
+		</WhiteHeader> -->
 		
 		<view class="contract-page__header">福建大道成物流科技有限公司无车承运平台运输电子合同</view>
 		
 		<view class="contract-page__header-right">
-			<view class="text">合同编号：<text class="underline">{{ form.contractNo }}</text></view>
-			<view class="text">签约时间：<text class="underline">{{ form.createTime }}</text></view>
+			<view class="text">合同编号：<text class="underline blue">{{ form.contractNo }}</text></view>
+			<view class="text">签约时间：<text class="underline blue">{{ form.createTime }}</text></view>
 		</view>
 	
 		<view class="contract-page__header-left">
-			<view>托运方(简称甲方)：<text class="underline">{{ form.shipmentCompanyName }}</text></view>
-			<view>统一社会信用代码：<text class="underline">{{ form.shipmentOrganizationCodeNo }}</text></view>
-			<view>住所：<text class="underline">{{ form.shipmentArea }}</text></view>
-			<view>法定代表人：<text class="underline">{{ form.shipmentName }}</text></view>
+			<view class="blue">托运方(简称甲方)：<text>{{ form.shipmentCompanyName }}</text></view>
+			<view class="blue">统一社会信用代码：<text>{{ form.shipmentOrganizationCodeNo }}</text></view>
+			<view class="blue">住所：<text>{{ form.shipmentArea }}</text></view>
+			<view class="blue">法定代表人：<text>{{ form.shipmentName }}</text></view>
 		</view>
 		
 		<view class="contract-page__header-left">
-			<view>承运方(简称乙方)：<text class="underline">{{ form.branchName }}</text></view>
-			<view>统一社会信用代码：<text class="underline">{{ form.branchOrganizationCodeNo }}</text></view>
-			<view>住所：<text class="underline">{{ form.branchArea }}</text></view>
-			<view>法定代表人：<text class="underline">{{ form.branchArtificialName }}</text></view>
+			<view>承运方(简称乙方)：<text>{{ form.branchName }}</text></view>
+			<view>统一社会信用代码：<text>{{ form.branchOrganizationCodeNo }}</text></view>
+			<view>住所：<text>{{ form.branchArea }}</text></view>
+			<view>法定代表人：<text>{{ form.branchArtificialName }}</text></view>
 		</view>
 		
 		<view class="contract-page__content">根据《中华人民共和国合同法》及有关法律、法规的规定，为保证双方的合法权益，经甲乙双方协商一致，甲乙双方在自愿、平等、诚信的基础上签订本合同，以便双方共同遵守，本合同适用于福建大道成物流科技有限公司超好运网络货运平台（以下简称“超好运平台”）所有注册认证的货主会员。</view>
@@ -33,66 +33,64 @@
 			    <tbody>
 					<uni-tr>
 					   <uni-td><b>起运地</b></uni-td>
-					   <uni-td>{{ form.startAddress }}</uni-td>
+					   <uni-td class="blue">{{ form.startAddress }}</uni-td>
 					   <uni-td><b>发货人</b></uni-td>
-					   <uni-td>{{ form.consignor }}</uni-td>
+					   <uni-td class="blue">{{ form.consignor }}</uni-td>
 					   <uni-td><b>手机</b></uni-td>
-					   <uni-td>{{ form.consignorPhone }}</uni-td>
+					   <uni-td class="blue">{{ form.consignorPhone }}</uni-td>
 					</uni-tr>
 					<uni-tr>
 						<uni-td><b>目的地</b></uni-td>
-						<uni-td>{{ form.endAddress }}</uni-td>
+						<uni-td class="blue">{{ form.endAddress }}</uni-td>
 						<uni-td><b>收货人</b></uni-td>
-						<uni-td>{{ form.consignee }}</uni-td>
+						<uni-td class="blue">{{ form.consignee }}</uni-td>
 						<uni-td><b>手机</b></uni-td>
-						<uni-td>{{ form.consigneePhone }}</uni-td>
+						<uni-td class="blue">{{ form.consigneePhone }}</uni-td>
 					</uni-tr>
 					<uni-tr>
 						<uni-td><b>实际承运方</b></uni-td>
-						<uni-td>{{ form.driverName }}</uni-td>
+						<uni-td class="blue">{{ form.driverName }}</uni-td>
 						<uni-td><b>联系电话</b></uni-td>
-						<uni-td>{{ form.driverPhone }}</uni-td>
+						<uni-td class="blue">{{ form.driverPhone }}</uni-td>
 						<uni-td><b>货物名称</b></uni-td>
-						<uni-td>{{ form.goodsTypeName || form.goodsBigTypeName }}</uni-td>
+						<uni-td class="blue">{{ form.goodsTypeName || form.goodsBigTypeName }}</uni-td>
 					</uni-tr>
 					<uni-tr>
-						<uni-td><b>最高配载</b></uni-td>
-						<uni-td>
+						<uni-td><b>计划数量</b></uni-td>
+						<uni-td class="blue">
 							{{ form.loadWeight }}
 							{{ form.stowageStatus == '0' ? '吨' : (form.stowageStatus == '1'? '立方': '车') }}
 						</uni-td>
 						<uni-td><b>货物描述</b></uni-td>
-						<uni-td>{{ form.goodsName }}</uni-td>
-						<uni-td><b>货主应付金额（元）</b></uni-td>
-						<uni-td>￥{{ form.shipperCopeFee }}</uni-td>
+						<uni-td class="blue">{{ form.goodsName }}</uni-td>
+						<uni-td><b>货值（元）</b></uni-td>
+						<uni-td class="blue">￥{{ form.shipperCopeFee }}</uni-td>
 					</uni-tr>
 					<uni-tr>
+						<uni-td><b>运费金额（元）</b></uni-td>
+						<uni-td class="blue">￥{{ form.shipperCopeFee }}</uni-td>
 						<uni-td><b>合同签订时间</b></uni-td>
-						<uni-td>{{ form.createTime }}</uni-td>
-						<uni-td><b>货物装车时间</b></uni-td>
-						<uni-td>{{ form.loadTime }}</uni-td>
-						<uni-td><b>是否开票</b></uni-td>
-						<uni-td>{{ '是' }}</uni-td>
+						<uni-td class="blue">{{ form.createTime }}</uni-td>
+						<uni-td><b>货物装车截止时间</b></uni-td>
+						<uni-td class="blue">{{ form.loadTime }}</uni-td>
 					</uni-tr>
 					<uni-tr>
+						<uni-td><b>是否开票</b></uni-td>
+						<uni-td class="blue">{{ '是' }}</uni-td>
 						<uni-td><b>备注</b></uni-td>
-						<uni-td colspan="5">{{ form.orderRemark }}</uni-td>
+						<uni-td colspan="3" class="blue">{{ form.orderRemark }}</uni-td>
 					</uni-tr>
 			    </tbody>
 			</uni-table>
 		</view>
 		
-		<view class="contract-page__title">二、运输方式</view>
-		<view class="contract-page__content">汽车公路运输。</view>
+		<view class="contract-page__title">二、运输方式：汽车公路运输。</view>
 		
-		<view class="contract-page__title">三、货物包装</view>
-		<view class="contract-page__content">甲方指定发货人须按照国家相关规定的标准进行包装；没有统一规定包装标准的，应根据保证货物运输安全的原则进行包装，不得在包装内私自夹带危险品和国家有关规定明令禁止托运的货物，以及与所发布货运信息不相符的货物，甲方保证所托运的货物不属于国家违禁品。</view>
+		<view class="contract-page__title">三、货物包装：甲方指定发货人须按照国家相关规定的标准进行包装；没有统一规定包装标准的，应根据保证货物运输安全的原则进行包装，不得在包装内私自夹带危险品和国家有关规定明令禁止托运的货物，以及与所发布货运信息不相符的货物，甲方保证所托运的货物不属于国家违禁品。</view>
 		
-		<view class="contract-page__title">四、运输期限</view>
-		<view class="contract-page__content">乙方应当在运单约定期限内将货物安全运输到约定地点。</view>
+		<view class="contract-page__title">四、运输期限：乙方应当在运单约定期限内将货物安全运输到约定地点。</view>
 		
-		<view class="contract-page__title red">五、运费支付</view>
-		<view class="contract-page__content red">甲方同意最迟不晚于发布运单之前，先向超好运平台指定的账户缴存不少于本单运费的预付运费和预付服务费。甲方在确认运单完成后，乙方委托超好运平台按照运单约定将甲方已预先缴纳的运费及服务费支付给乙方，乙方每笔运单收取甲方该笔运单运费的%作为服务费。具体的操作流程及操作规则以超好运平台规定的流程为准。</view>
+		<view class="contract-page__title red">五、运费支付：甲方同意最迟不晚于发布运单之前，先向超好运平台指定的账户缴存不少于本单运费的预付运费和预付服务费。甲方在确认运单完成后，乙方委托超好运平台按照运单约定将甲方已预先缴纳的运费及服务费支付给乙方，乙方每笔运单收取甲方该笔运单运费的%作为服务费。具体的操作流程及操作规则以超好运平台规定的流程为准。</view>
 		
 		<view class="contract-page__title">六、发票</view>
 		<view class="contract-page__content">
@@ -101,8 +99,7 @@
 			<view>3.乙方只能按照国家规定在运单符合开具增值税专用发票条件下开具，若由于甲方原因导致运单不符合开具增值税专用发票要求的，乙方有权拒绝开具相应的发票。</view>
 		</view>
 		
-		<view class="contract-page__title">七、运输义务与保管责任</view>
-		<view class="contract-page__content">甲方将待运输的货物装载到运输车辆上，乙方按运单约定核对清点货物数量并接收，视为运输义务的开始、保管责任的转移。乙方将货物送至运单指定地点，收货人未对货物数量提出异议，在超好运APP上做卸货确认，视为乙方已经按照运输单证的记载和要求交付货物，交付应视为运输义务的终止、保管责任的转移。乙方不承担在装货、卸货过程中的货物运输、货物安全、场地安全等一切责任。</view>
+		<view class="contract-page__title">七、运输义务与保管责任：甲方将待运输的货物装载到运输车辆上，乙方按运单约定核对清点货物数量并接收，视为运输义务的开始、保管责任的转移。乙方将货物送至运单指定地点，收货人未对货物数量提出异议，在超好运APP上做卸货确认，视为乙方已经按照运输单证的记载和要求交付货物，交付应视为运输义务的终止、保管责任的转移。乙方不承担在装货、卸货过程中的货物运输、货物安全、场地安全等一切责任。</view>
 		
 		<view class="contract-page__title">八、双方权利义务</view>
 		<view class="contract-page__content">
@@ -141,12 +138,12 @@
 		
 		<view class="contract-page__after">
 			<view class="contract-page__after__box">
-				<view class="text">甲方：<text class="underline">{{ form.shipmentCompanyName }}</text></view>
+				<view class="text">甲方：<text class="blue">{{ form.shipmentCompanyName }}</text></view>
 				<view class="text">法定代表人或授权代表(签名)：</view>
 				<view class="text">甲方(盖章)：</view>
 			</view>
 			<view class="contract-page__after__box">
-				<view class="text">乙方：<text class="underline">{{ form.branchName }}</text></view>
+				<view class="text">乙方：<text>{{ form.branchName }}</text></view>
 				<view class="text">法定代表人或授权代表(签名)：</view>
 				<view class="text">乙方(盖章)：</view>
 			</view>
@@ -171,38 +168,38 @@
 		data() {
 			return {
 				form: {
-					contractNo: 'DADAOCHENG2106041543464202',
-					createTime: '2021-06-04 15:43:45',
-					shipmentCompanyName: '福建大道成物流科技有限公司',
-					shipmentOrganizationCodeNo: '913713000673687316',
-					shipmentArea: '四川省成都市万塘路1号黄龙时代广场',
-					shipmentName: '测试支付宝',
+					contractNo: 'DADAOCHENG202104151516270905',
+					createTime: '2021-04-15 15:16:28',
+					shipmentCompanyName: '晨星company',
+					shipmentOrganizationCodeNo: '12345678',
+					shipmentArea: '福建省福州市晋安区福建省福州市晋安区王庄街道',
+					shipmentName: '小周',
 					branchName: '福建大道成物流科技有限公司',
 					branchOrganizationCodeNo: '913713000673687316',
-					branchArea: '四川省成都市万塘路1号黄龙时代广场',
-					branchArtificialName: '测试支付宝',
-					startAddress: '',
-					consignor: '',
-					consignorPhone: '',
-					endAddress: '',
-					consignee: '',
-					consigneePhone: '',
-					driverName: '',
-					driverPhone: '',
-					goodsTypeName: '',
-					goodsBigTypeName: '',
-					loadWeight: '',
-					stowageStatus: '',
-					goodsName: '',
-					shipperCopeFee: '',
-					loadTime: '',
+					branchArea: '福建省福州市福清市万达 写字楼A2-901',
+					branchArtificialName: '施联文',
+					startAddress: '福建省福州市福清市',
+					consignor: '小周',
+					consignorPhone: '17850830479',
+					endAddress: '福建省福州市晋安区',
+					consignee: '西西',
+					consigneePhone: '15912455689',
+					driverName: '小余',
+					driverPhone: '15880147817',
+					goodsTypeName: '机械、设备、电器',
+					goodsBigTypeName: '机械、设备、电器',
+					loadWeight: '31.25',
+					stowageStatus: 0,
+					goodsName: '机械、设备、电器',
+					shipperCopeFee: '0',
+					loadTime: '2021-04-16 15:06:00',
 					orderRemark: ''
 				}
 			}
 		},
 		async onLoad(option){
 			await this.$onLaunched;
-			this.getData(option.code);
+			//this.getData(option.code);
 		},
 		methods: {
 			getData(code){
@@ -287,6 +284,9 @@
 	
 	.underline{
 		text-decoration: underline;
+	}
+	.blue{
+		color: #0188fb;
 	}
 	.red{
 		color: red;

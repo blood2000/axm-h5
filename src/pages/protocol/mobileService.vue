@@ -1,8 +1,8 @@
 <template>
 	<view class="contract-page">
-		<WhiteHeader :showBack="true">
+		<!-- <WhiteHeader :showBack="true">
 			<text slot="title">电子合同</text>
-		</WhiteHeader>
+		</WhiteHeader> -->
 		
 		<view class="contract-page__header">中国移动认证服务协议</view>
 		
