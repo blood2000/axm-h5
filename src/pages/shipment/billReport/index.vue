@@ -1,5 +1,24 @@
 <template>
 	<view class="shipment-index">
+		<Header :showBack="true" :showBg="false">
+			<template slot="title">
+				<view class="tabs flex align-center">
+					<view v-for="(item, index) in tablist" :key="index" :class="activeName === item.tabName ? 'tabs-onbotton': 'tabs-botton'" @click="handleClick(item.tabName)">
+						{{ item.tabName }}
+					</view>
+				</view>
+			</template>
+		</Header>
+		<scroll-view scroll-x class="bg-white nav">
+			<view class="flex text-center">
+				<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
+					<view class="flex flex-direction align-center justify-center">
+						<view class="">{{item.tag}}</view>
+						<view v-if="item.day==TabCur" class="tab-bottom"></view>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
 		<view class="c-app-container">
 			<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
 				<view class="c-count-box">
@@ -93,11 +112,28 @@
 		data() {
 			return {
 				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}]
+				peeList: [{}, {}, {}],
+				// Tabs参数
+				tablist: [{ tabName: '运输报表' }, { tabName: '费用报表' }, { tabName: '开票报表' }],
+				timelist: [{ tag: '近七天', day: 7 }, { tag: '近一月', day: 30 }, { tag: '近半年', day: 180 }, { tag: '近一年', day: 365 }],
+				activeName: '运输报表',
+				TabCur: 7,
+				queryParams: {
+					startTime: null,
+					endTime: null
+				}
 			}
 		},
 		methods: {
-			
+			handleClick(e){
+				this.activeName = e;
+			},
+			tabSelect(e) {
+				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
+				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
+				console.log(this.queryParams);
+				this.TabCur = e;
+			}
 		}
 	}
 </script>
@@ -114,5 +150,50 @@
 		width: 100%;
 		height: 450rpx;
 	}
+}
+// 头部导航栏
+.tabs{
+	height: 75upx;
+	// width: 100%;
+	// margin: 0 30upx;
+	border-radius: 50upx;
+	background: rgba(255,255,255,0.2);
+}
+.tabs-onbotton{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 220upx;
+	height: 75upx;
+	font-weight: bold;
+	font-size: 28upx;
+	color: #4478E4;
+	border-radius: 50upx;
+	background-color: #FFFFFF;
+}
+.tabs-botton{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 200upx;
+	height: 75upx;
+	font-weight: bold;
+	font-size: 28upx;
+	color: #FFFFFF;
+}
+// 时间筛选
+.onchoose{
+	font-size: 32upx;
+	font-family: PingFang SC;
+	font-weight: bold;
+	color: #477AE4;
+}
+.tab-bottom{
+	position: relative;
+	bottom: 4upx;
+	width: 56upx;
+	height: 4upx;
+	background: #477AE4;
+	border-radius: 2upx;
 }
 </style>
