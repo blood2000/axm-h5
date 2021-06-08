@@ -1,8 +1,8 @@
 <template>
 	<view class="service-page">
-		<WhiteHeader :showBack="true">
+		<!-- <WhiteHeader :showBack="true">
 			<text slot="title">服务协议</text>
-		</WhiteHeader>
+		</WhiteHeader> -->
 		
 		<view class="service-page__header">服务协议</view>
 		

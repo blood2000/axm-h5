@@ -1,8 +1,8 @@
 <template>
 	<view class="contract-page">
-		<WhiteHeader :showBack="true">
+		<!-- <WhiteHeader :showBack="true">
 			<text slot="title">电子合同</text>
-		</WhiteHeader>
+		</WhiteHeader> -->
 		
 		<view class="contract-page__header">福建大道成物流科技有限公司无车承运平台运输电子合同</view>
 		
