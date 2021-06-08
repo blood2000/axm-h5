@@ -5,6 +5,8 @@ import './common/css/index.scss'
 import store from './store'
 //与app桥接
 import './config/bridge.js'
+//自定义指令
+import './directive'
 
 Vue.prototype.$onLaunched = new Promise(resolve => {
 	Vue.prototype.$isResolve = resolve;

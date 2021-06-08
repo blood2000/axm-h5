@@ -3,25 +3,25 @@
 		<view class="c-app-container">
 			<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
 				<view class="c-count-box">
-					<view class="count">234<text class="unit">个</text></view>
+					<view class="count" v-number-format="25567"><text class="unit">个</text></view>
 					<view class="label">项目<text class="has-arrow"></text></view>
 				</view>
 				<view class="c-count-box">
-					<view class="count">234<text class="unit">个</text></view>
+					<view class="count" v-number-format="25567"><text class="unit">个</text></view>
 					<view class="label">货源<text class="has-arrow"></text></view>
 				</view>
 			</view>
 			<view class="ly-flex-pack-around">
 				<view class="c-count-box">
-					<view class="count">234<text class="unit">单</text></view>
+					<view class="count" v-number-format="25567"><text class="unit">单</text></view>
 					<view class="label">运费完成<text class="has-arrow"></text></view>
 				</view>
 				<view class="c-count-box">
-					<view class="count">234<text class="unit">元</text></view>
+					<view class="count" v-number-format="25567"><text class="unit">元</text></view>
 					<view class="label">实付运费<text class="has-arrow"></text></view>
 				</view>
 				<view class="c-count-box">
-					<view class="count">234<text class="unit">元</text></view>
+					<view class="count" v-number-format="25567"><text class="unit">元</text></view>
 					<view class="label">开票<text class="has-arrow"></text></view>
 				</view>
 			</view>
