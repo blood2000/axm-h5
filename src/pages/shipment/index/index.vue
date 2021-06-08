@@ -72,7 +72,11 @@
 					<text class="text">运输统计</text>
 					<text class="button">查看更多</text>
 				</view>
-				<view class="chart-box" id="TransportChartRef"></view>
+				<LineChart 
+					class="chart-box"
+					:timeData="transportTime"
+					:countData="transportData"
+				></LineChart>
 			</view>
 			
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
@@ -80,7 +84,11 @@
 					<text class="text">运费统计</text>
 					<text class="button">查看更多</text>
 				</view>
-				<view class="chart-box" id="FeeChartRef"></view>
+				<LineChart 
+					class="chart-box"
+					:timeData="peeTime"
+					:countData="peeData"
+				></LineChart>
 			</view>
 			
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
@@ -88,7 +96,11 @@
 					<text class="text">开票统计</text>
 					<text class="button">查看更多</text>
 				</view>
-				<view class="chart-box" id="InvoiceChartRef"></view>
+				<LineChart 
+					class="chart-box"
+					:timeData="billTime"
+					:countData="billData"
+				></LineChart>
 			</view>
 		</view>
 	</view>
@@ -97,9 +109,11 @@
 <script>
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
+	import LineChart from '../components/lineChart.vue';
 	export default {
 		components: {
-			Header
+			Header,
+			LineChart
 		},
 		computed: {
 			...mapState({
@@ -109,7 +123,16 @@
 		data() {
 			return {
 				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}]
+				peeList: [{}, {}, {}],
+				// 运输统计
+				transportTime: [1, 2, 3, 4],
+				transportData: [1, 2, 3, 4],
+				// 运费统计
+				peeTime: [1, 2, 3, 4],
+				peeData: [1, 2, 3, 4],
+				// 开票统计
+				billTime: [1, 2, 3, 4],
+				billData: [1, 2, 3, 4]
 			}
 		},
 		async mounted() {

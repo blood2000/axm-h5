@@ -22,7 +22,7 @@ const store = {
 			}
         },
 		getStatusBarHeight: (state, val) => {
-			state.statusBarHeight = val;
+			state.statusBarHeight = val || 0;
 		}
     },
     actions: {
