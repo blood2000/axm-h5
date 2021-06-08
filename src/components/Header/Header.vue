@@ -26,11 +26,11 @@
 			<view class="top-title flex align-center justify-between">
 				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
 				<view v-else style="width: 18upx;"></view>
-				<slot name="title"></slot>
+				<slot v-if="tablist.length === 0" name="title"></slot>
 				<view style="width: 18upx;"></view>
 			</view>
 		</view>
-		<view class="top-bgframe2">
+		<view v-if="showBg" class="top-bgframe2">
 			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 		</view>
 		<view :style="{height: titleHeight + 'upx' }"></view>
@@ -44,6 +44,16 @@
 			showBack: {
 				type: Boolean,
 				default: false
+			},
+			showBg: {
+				type: Boolean,
+				default: true
+			},
+			tablist: {
+				type: Array,
+				default: function() {
+					return [];
+				}
 			}
 		},
 		computed: {
