@@ -1,13 +1,13 @@
 <template>
 	<view class="container">
 		<WhiteHeader :showBack="true">
-			<text slot="title">更改项目</text>
+			<text slot="title">车辆明细</text>
 		</WhiteHeader>
 		<view class="top-bar flex align-center justify-between bg-white">
 			<uni-dateformat :date="info.queryDate" format="yyyy/MM/dd"></uni-dateformat>
 			<view  @tap="showModal" data-target="RadioModal">车辆:{{ info.licenseNumber }} <text class="cuIcon-unfold text-gray marginleft" /></view>
 		</view>
-		<view style="height: 230upx;"></view>
+		<view style="height: 100upx;"></view>
 		<view class="cont-frame">
 			<view class="cont-title flex align-center justify-around">
 				<view class="cont-id">编号</view>
@@ -98,7 +98,7 @@
 				ProjectDetails({
 					projectCode: this.info.projectCode,
 					queryDate: this.info.queryDate
-				}).then(response => {
+				}, this.headerInfo).then(response => {
 					if(response.data.vehicleCounts){
 						this.vehiclelist = response.data.vehicleCounts;
 						this.getData();
@@ -137,7 +137,7 @@
 	color: #333333;
 	.top-bar{
 		position: fixed;
-		top: 130upx;
+		// top: 130upx;
 		left: 0;
 		width: 100%;
 		padding: 30upx 90upx;

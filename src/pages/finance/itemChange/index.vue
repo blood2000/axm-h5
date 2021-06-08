@@ -74,7 +74,7 @@
 	&__scroll{
 		width: 100%;
 		height: 100%;
-		margin: 152rpx 22rpx 0;
+		margin: 22rpx 22rpx 0;
 		box-sizing: border-box;
 	}
 }
