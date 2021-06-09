@@ -88,7 +88,15 @@
 				"navigationStyle": "custom",
                 "enablePullDownRefresh": true
             }
-        }
+        },{
+		    "path" : "pages/driver/billReport/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "项目报表",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": true
+		    }
+		}
 		//统计页入口 - 车队
 		,{
 		    "path" : "pages/team/index/index",
@@ -99,6 +107,30 @@
 		        "enablePullDownRefresh": true
 		    }
 		    
+		},{
+		    "path" : "pages/team/billReport/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "项目报表",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": true
+		    }
+		},{
+		    "path" : "pages/team/driverReport/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "司机报表",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": true
+		    }
+		},{
+		    "path" : "pages/team/vehicleReport/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "车辆报表",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": true
+		    }
 		}
 		//代收协议入口
 		,{
