@@ -15,22 +15,22 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(231544612.12) }}</text>
+							<text class="unit">万单</text>
 						</view>
 						<view class="label">已接单</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(231544612.12) }}</text>
+							<text class="unit">万单</text>
 						</view>
 						<view class="label">已装货</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(231544612.12) }}</text>
+							<text class="unit">万单</text>
 						</view>
 						<view class="label">已卸货</text></view>
 					</view>
