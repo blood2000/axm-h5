@@ -3,7 +3,7 @@
 		<Header :showBack="true" :showBg="false">
 			<template slot="title">
 				<view class="tabs flex align-center">
-					<view v-for="(item, index) in tablist" :key="index" :class="activeName === item.tabName ? 'tabs-onbotton': 'tabs-botton'" @click="handleClick(item.tabName)">
+					<view v-for="(item, index) in tablist" :key="index" :class="tab === item.tab ? 'tabs-onbotton': 'tabs-botton'" @click="handleClick(item.tab)">
 						{{ item.tabName }}
 					</view>
 				</view>
@@ -20,7 +20,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view v-if="activeName === '运输报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="tab === 1" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
@@ -45,7 +45,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="activeName === '费用报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="tab === 2" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
@@ -72,9 +72,9 @@
 				</view>
 			</view>
 		</view>
-		<view :style="activeName === '费用报表'? 'height: 332upx;':'height: 260upx;'"></view>
+		<view :style="tab === 2? 'height: 332upx;':'height: 260upx;'"></view>
 		
-		<uni-collapse v-if="activeName === '运输报表'" :accordion="true">
+		<uni-collapse v-if="tab === 1" :accordion="true">
 			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
@@ -105,7 +105,7 @@
 			</uni-collapse-item>
 		</uni-collapse>
 		
-		<uni-collapse v-if="activeName === '费用报表'" :accordion="true">
+		<uni-collapse v-if="tab === 2" :accordion="true">
 			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
@@ -146,10 +146,9 @@
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
 				// Tabs参数
-				tablist: [{ tabName: '运输报表' }, { tabName: '费用报表' }],
-				timelist: [{ tag: '近七天', day: 7 }, { tag: '近一月', day: 30 }, { tag: '近半年', day: 180 }, { tag: '近一年', day: 365 }],
-				activeName: '运输报表',
-				TabCur: 7,
+				tablist: [{ tabName: '运输报表', tab: 1 }, { tabName: '费用报表', tab: 2 }],
+				tab: 0,
+				day: 7,
 				queryParams: {
 					startTime: null,
 					endTime: null
@@ -222,7 +221,7 @@
 		},
 		methods: {
 			handleClick(e){
-				this.activeName = e;
+				this.tab = e;
 			},
 			tabSelect(e) {
 				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
