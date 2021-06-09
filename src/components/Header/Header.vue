@@ -109,7 +109,8 @@
 	// height: 185upx;
 	width: 100%;
 	overflow: hidden;
-	background-color: #3D6DCC;
+	background: url('/static/tab_bg.png') no-repeat;
+	background-size: 100% 350upx;
 	.top-title{
 		line-height: 120upx;
 		width: 100%;
