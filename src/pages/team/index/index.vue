@@ -4,19 +4,7 @@
 			<text slot="title">统计服务</text>
 		</Header>
 		
-		<view class="top-fixed">
-			<scroll-view scroll-x class="bg-white nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
-						<view class="flex flex-direction align-center justify-center">
-							<view class="">{{item.tag}}</view>
-							<view v-if="item.day==TabCur" class="tab-bottom"></view>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view style="height: 94upx;"></view>
+		<Screen v-model="TabCur" />
 		
 		<view class="scroll-box">
 			<view class="c-app-container">
@@ -158,20 +146,15 @@
 			  headerInfo: state => state.header.headerInfo
 			})
 		},
+		watch: {
+			TabCur(){
+				
+			}
+		},
 		data() {
 			return {
 				// 时间筛选
-				timelist: [
-					{ tag: '近七天', day: 1 }, 
-					{ tag: '近一月', day: 2 }, 
-					{ tag: '近半年', day: 3 }, 
-					{ tag: '近一年', day: 4 },
-				],
 				TabCur: 1,
-				queryParams: {
-					startTime: null,
-					endTime: null
-				},
 				// 用车统计
 				carList: [{}, {}, {}],
 				// 司机统计
@@ -205,11 +188,6 @@
 			
 		},
 		methods: {
-			tabSelect(e) {
-				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
-				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
-				this.TabCur = e;
-			},
 			carMore() {
 				uni.navigateTo({
 					url: '/pages/team/vehicleReport/index?day=' + this.TabCur
