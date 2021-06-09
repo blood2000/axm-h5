@@ -46,6 +46,7 @@
 					<text class="button" @click="transportMore(1)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="TransportRef"
 					:id="'transport'"
 					:timeData="transportTime"
 					:countData="transportData"
@@ -60,6 +61,7 @@
 					<text class="button" @click="transportMore(2)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="PeeRef"
 					:id="'pee'"
 					:timeData="peeTime"
 					:countData="peeData"
@@ -140,6 +142,7 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
+	import { getTransportData } from '@/config/service/team.js';
 	export default {
 		components: {
 			Header,
@@ -152,7 +155,7 @@
 		},
 		watch: {
 			TabCur(){
-				
+				this.getTransportFun();
 			}
 		},
 		data() {
@@ -164,16 +167,8 @@
 				// 司机统计
 				driverList: [{}, {}, {}],
 				// 运输统计
-				transportTime: [1, 2, 3, 4],
-				transportData: [{
-					name: '已接单',
-					data: [1, 2, 3, 4],
-					color: '#FFCF5B'
-				},{
-					name: '已卸货',
-					data: [6, 7, 8, 9],
-					color: '#477AE4'
-				}],
+				transportTime: [],
+				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
@@ -191,7 +186,7 @@
 		},
 		async mounted() {
 			await this.$onLaunched;
-			
+			this.getTransportFun();
 		},
 		methods: {
 			carMore() {
@@ -207,6 +202,33 @@
 			transportMore(tab) {
 				uni.navigateTo({
 					url: '/pages/team/billReport/index?day=' + this.TabCur + '&tab=' + tab
+				});
+			},
+			getTransportFun() {
+				getTransportData(this.TabCur, this.headerInfo).then(response => {
+					const { orderReceivingList, orderUnloadList } = response.data;
+					const orderArr = [];
+					const unloadArr = [];
+					this.transportTime = [];
+					orderReceivingList.forEach(el => {
+						this.transportTime.push(el.timeTag);
+						orderArr.push(el.waybill);
+					});
+					orderUnloadList.forEach(el => {
+						unloadArr.push(el.waybill);
+					});
+					this.transportData = [{
+						name: '已接单',
+						data: orderArr,
+						color: '#FFCF5B'
+					},{
+						name: '已卸货',
+						data: unloadArr,
+						color: '#477AE4'
+					}];
+					this.$nextTick(() => {
+						this.$refs['TransportRef'].initChart();
+					})
 				});
 			}
 		}
