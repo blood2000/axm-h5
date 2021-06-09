@@ -20,7 +20,10 @@
 
 /**
  *  <view class="c-count-box">
- *		<view class="count">{{ count }}<text class="unit">{{ unit }}</text></view>
+ *		<view class="count">
+			<text class="num">{{ num }}</text>
+			<text class="unit">{{ unit }}</text>
+		</view>
  *		<view class="label">{{ label }}<text class="has-arrow"></text></view>
  *	</view>
  */
@@ -28,9 +31,11 @@
 	font-family: PingFang SC;
 	text-align: center;
 	>.count{
-		font-size: 36rpx;
-		font-weight: bold;
-		color: #333333;
+		>.num{
+			font-size: 36rpx;
+			font-weight: bold;
+			color: #333333;
+		}
 		>.unit{
 			font-size: 18rpx;
 			font-weight: 500;
