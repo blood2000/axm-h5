@@ -3,21 +3,9 @@
 		<Header :showBack="true" :showBg="false">
 			<text slot="title">车辆报表</text>
 		</Header>
-		<view class="top-fixed">
-			<scroll-view scroll-x class="bg-white nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
-						<view class="flex flex-direction align-center justify-center">
-							<view class="">{{item.tag}}</view>
-							<view v-if="item.day==TabCur" class="tab-bottom"></view>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view style="height: 90upx;"></view>
+		<Screen v-model="queryParams.timeType" :showHistory="true" />
 		
-		<view class="c-app-container" style="padding-bottom: 15rpx;">
+		<view class="c-app-container" style="padding-bottom: 15rpx;" @click="show">
 			<view class="c-title-box ly-flex-align-center">
 				<text class="text">闽A1245</text>
 				<text class="param flex align-center justify-center">重卡 载重40吨</text>
@@ -59,31 +47,26 @@
 </template>
 
 <script>
+	import Screen from '@/components/Screen/Screen.vue';
 	export default {
+		components: {
+			Screen
+		},
 		data() {
 			return {
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
-				timelist: [{ tag: '近七天', day: 7 }, { tag: '近一月', day: 30 }, { tag: '近半年', day: 180 }, { tag: '近一年', day: 365 }, { tag: '历史总计', day: 0 }],
-				TabCur: 7,
 				queryParams: {
-					startTime: null,
-					endTime: null
+					timeType: 1
 				},
 			}
 		},
+		onLoad(options) {
+			this.queryParams.timeType = options.day - 0;
+		},
 		methods: {
-			tabSelect(e) {
-				if (e === 0){
-					this.TabCur = e;
-					this.queryParams.startTime = null;
-					this.queryParams.endTime = null;
-				}else{
-					this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
-					this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
-					console.log(this.queryParams);
-					this.TabCur = e;
-				}
+			show(){
+				console.log(this.queryParams);
 			}
 		}
 	}
@@ -102,30 +85,6 @@
 		height: 450rpx;
 	}
 }
-// 时间筛选
-.nav{
-	border-bottom: 1upx solid #F2F2F3;
-}
-.top-fixed{
-	position: fixed;
-	left: 0;
-	z-index: 10;
-	width: 100%;
-}
-.onchoose{
-	font-size: 32upx;
-	font-family: PingFang SC;
-	font-weight: bold;
-	color: #477AE4;
-}
-.tab-bottom{
-	position: relative;
-	bottom: 4upx;
-	width: 56upx;
-	height: 4upx;
-	background: #477AE4;
-	border-radius: 2upx;
-}
 .min .num {
 	font-size: 32upx;
 }
@@ -139,24 +98,5 @@
 	font-family: PingFang SC;
 	font-weight: 500;
 	color: #477AE4;
-}
-.order-load{
-	padding: 0 24upx;
-}
-.order-icon{
-	margin: 8upx 40upx 6upx;
-	width: 6upx;
-	height: 44upx;
-}
-.order-loadimg{
-	width: 40upx;
-	height: 36upx;
-	margin-right: 7upx;
-}
-.order-loadname{
-	font-size: 24upx;
-	font-family: PingFang SC;
-	font-weight: 500;
-	color: #333333;
 }
 </style>
