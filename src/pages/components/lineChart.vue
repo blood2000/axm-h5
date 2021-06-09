@@ -94,78 +94,90 @@
 				this.setOption();
 			},
 			setOption() {
-			  // 构造数据
-			  this.chart.setOption({
-				grid: {
-				  left: '5%',
-				  right: '5%',
-				  bottom: '3%',
-				  top: '20%',
-				  containLabel: true
-				},
-				xAxis: {
-				  type: 'category',
-				  // x轴字体样式
-				  axisLabel: {
-					show: true,
-					textStyle: {
-					  color: '#333333'
-					}
-				  },
-				  // x轴颜色
-				  axisLine: {
-					lineStyle: {
-					  color: '#E9E9E9'
-					}
-				  },
-				  data: this.timeData
-				},
-				yAxis: {
-				  name: this.unit + '/' + this.unitTime,
-				  nameTextStyle: {
-					color: '#333333',
-					paddingLeft: '2%'
-				  },
-				  type: 'value',
-				  minInterval: 1, // 只显示整数
-				  axisLine: {
-					show: true,
-					lineStyle: {
-					  color: '#E9E9E9'
-					}
-				  },
-				  // y轴字体样式
-				  axisLabel: {
-					show: true,
-					textStyle: {
-					  color: '#333333'
-					}
-				  },
-				  // 网格样式
-				  splitLine: {
-					show: false
-				  },
-				  axisTick: {
-					show: false// 隐藏y坐标轴刻度
-				  }
-				},
-				tooltip: {
-				  trigger: 'axis',
-				  axisPointer: {
-					lineStyle: {
-					  color: '#3F5C84'
-					}
-				  },
-				  borderColor: 'rgba(0, 0, 0, 0)',
-				  backgroundColor: 'rgba(70, 70, 70, 0.5)',
-				  textStyle: {
-					color: '#ffffff'
-				  }
-				},
-				series: this.seriesData
-			  });
+				this.chart.setOption({
+					legend: {
+						show: true,
+						left: '5%',
+						top: '9%',
+						icon: 'circle',
+						itemWidth: 6,
+						itemHeight: 6,
+						textStyle: {
+							color: '#333333',
+							fontSize: 9
+						},
+						data: this.legendData
+					},
+					grid: {
+						left: '5%',
+						right: '5%',
+						bottom: '3%',
+						top: '36%',
+						containLabel: true
+					},
+					xAxis: {
+						type: 'category',
+						// x轴字体样式
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: '#333333'
+							}
+						},
+						// x轴颜色
+						axisLine: {
+							lineStyle: {
+								color: '#E9E9E9'
+							}
+						},
+						data: this.timeData
+					},
+					yAxis: {
+						name: this.unit + '/' + this.unitTime,
+						nameTextStyle: {
+							color: '#333333',
+							paddingLeft: '2%'
+						},
+						type: 'value',
+						minInterval: 1, // 只显示整数
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: '#E9E9E9'
+							}
+						},
+						// y轴字体样式
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: '#333333'
+							}
+						},
+						// 网格样式
+						splitLine: {
+							show: false
+						},
+						axisTick: {
+							show: true // y坐标轴刻度
+						}
+					},
+					tooltip: {
+						//trigger: 'axis',
+						triggerOn: 'mousemove|click',
+						axisPointer: {
+							lineStyle: {
+								color: '#3F5C84'
+							}
+						},
+						borderColor: 'rgba(0, 0, 0, 0)',
+						backgroundColor: 'rgba(70, 70, 70, 0.5)',
+						textStyle: {
+							color: '#ffffff'
+						}
+					},
+					series: this.seriesData
+				});
 			},
-			
 			
 		}
 	}
@@ -173,7 +185,6 @@
 
 <style lang="scss" scoped>
 .chart-container{
-	padding-top: 100rpx;
 	position: relative;
 	.lengend-box{
 		max-width: 334rpx;
@@ -221,7 +232,7 @@
 	}
 	.chart-box{
 		width: 100%;
-		height: 370rpx;
+		height: 450rpx;
 	}
 }
 </style>
