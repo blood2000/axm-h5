@@ -4,6 +4,20 @@
 			<text slot="title">统计服务</text>
 		</Header>
 		
+		<view class="top-fixed">
+			<scroll-view scroll-x class="bg-white nav">
+				<view class="flex text-center">
+					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
+						<view class="flex flex-direction align-center justify-center">
+							<view class="">{{item.tag}}</view>
+							<view v-if="item.day==TabCur" class="tab-bottom"></view>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+		<view style="height: 94upx;"></view>
+		
 		<view class="scroll-box">
 			<view class="c-app-container">
 				<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
@@ -143,6 +157,19 @@
 		},
 		data() {
 			return {
+				// 时间筛选
+				timelist: [
+					{ tag: '近七天', day: 7 }, 
+					{ tag: '近一月', day: 30 }, 
+					{ tag: '近半年', day: 180 }, 
+					{ tag: '近一年', day: 365 },
+				],
+				TabCur: 7,
+				queryParams: {
+					startTime: null,
+					endTime: null
+				},
+				// 货源统计
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
 				// 运输统计
@@ -183,6 +210,11 @@
 			
 		},
 		methods: {
+			tabSelect(e) {
+				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
+				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
+				this.TabCur = e;
+			},
 			itemMore() {
 				uni.navigateTo({
 					url: '/pages/shipment/projectReport/index'
@@ -213,6 +245,31 @@
 		font-size: 28rpx;
 		font-weight: 500;
 		color: #333333;
+	}
+	
+	// 时间筛选
+	.nav{
+		border-bottom: 1upx solid #F2F2F3;
+	}
+	.top-fixed{
+		position: fixed;
+		left: 0;
+		z-index: 10;
+		width: 100%;
+	}
+	.onchoose{
+		font-size: 32upx;
+		font-family: PingFang SC;
+		font-weight: bold;
+		color: #477AE4;
+	}
+	.tab-bottom{
+		position: relative;
+		bottom: 4upx;
+		width: 56upx;
+		height: 4upx;
+		background: #477AE4;
+		border-radius: 2upx;
 	}
 }
 </style>
