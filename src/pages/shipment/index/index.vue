@@ -145,6 +145,7 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
+	import { getStatisticData, getOrderData, getTransportData, getFeeData, getBillData } from '@/config/service/shipment.js';
 	export default {
 		components: {
 			Header,
@@ -189,7 +190,7 @@
 				peeTime: [1, 2, 3, 4],
 				peeData: [{
 					name: '实付金额',
-					data: [1, 2, 3, 4],
+					data: [1, 2, 4, 3],
 					color: '#55C876'
 				}],
 				peeUnit: '元',
@@ -207,7 +208,11 @@
 		},
 		async mounted() {
 			await this.$onLaunched;
-			
+			// this.getStatisticFun();
+			// this.getOrderFun();
+			// this.getTransportFun();
+			// this.getFeeFun();
+			// this.getBillFun();
 		},
 		methods: {
 			tabSelect(e) {
@@ -229,6 +234,46 @@
 				uni.navigateTo({
 					url: '/pages/shipment/billReport/index?day=' + this.TabCur + '&tab=' + tab
 				});
+			},
+			getStatisticFun() {
+				getStatisticData({
+					number: 7,
+					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
+				}, this.headerInfo).then(response => {
+					
+				})
+			},
+			getOrderFun() {
+				getOrderData({
+					number: 7,
+					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
+				}, this.headerInfo).then(response => {
+					
+				})
+			},
+			getTransportFun() {
+				getTransportData({
+					number: 7,
+					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
+				}, this.headerInfo).then(response => {
+					
+				})
+			},
+			getFeeFun() {
+				getFeeData({
+					number: 7,
+					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
+				}, this.headerInfo).then(response => {
+					
+				})
+			},
+			getBillFun() {
+				getBillData({
+					number: 7,
+					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
+				}, this.headerInfo).then(response => {
+					
+				})
 			}
 		}
 	}

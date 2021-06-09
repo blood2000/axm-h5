@@ -197,16 +197,7 @@
 					color: '#55C876'
 				}],
 				peeUnit: '元',
-				peeUnitTime: '天',
-				// 开票统计
-				billTime: [1, 2, 3, 4],
-				billData: [{
-					name: '已开票金额',
-					data: [1, 2, 3, 4],
-					color: '#7E5DEB'
-				}],
-				billUnit: '元',
-				billUnitTime: '天'
+				peeUnitTime: '天'
 			}
 		},
 		async mounted() {

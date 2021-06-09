@@ -64,7 +64,7 @@
 						data: el.data,
 						type: 'line',
 						symbol: 'circle',
-						symbolSize: 4,
+						symbolSize: 2,
 						color: el.color,
 						itemStyle: {
 							normal: {
@@ -85,13 +85,14 @@
 			}
 		},
 		async mounted() {
-			//await this.$onLaunched;
+			await this.$onLaunched;
 			this.initChart();
 		},
 		methods: {
 			initChart() {
 				this.chart = echarts.init(document.getElementById(this.id));
 				this.setOption();
+				this.showToolTip();
 			},
 			setOption() {
 				this.chart.setOption({
@@ -162,11 +163,11 @@
 						}
 					},
 					tooltip: {
-						//trigger: 'axis',
-						triggerOn: 'mousemove|click',
+						trigger: 'axis',
+						triggerOn: 'none',
 						axisPointer: {
 							lineStyle: {
-								color: '#3F5C84'
+								color: 'rgba(55, 55, 55, 0)'
 							}
 						},
 						borderColor: 'rgba(0, 0, 0, 0)',
@@ -178,7 +179,14 @@
 					series: this.seriesData
 				});
 			},
-			
+			showToolTip() {
+				this.chart.dispatchAction({
+					type: 'showTip',
+					seriesIndex: 0,
+					dataIndex: this.seriesData[0].data.length - 1,
+					position: [-1000, 0]
+				});
+			}
 		}
 	}
 </script>
