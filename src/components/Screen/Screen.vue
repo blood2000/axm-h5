@@ -34,7 +34,7 @@
 		},
 		watch:{
 			value(val) {
-				// console.log(val);
+				console.log(val);
 				this.day = val;
 			},
 			day(val) {
@@ -42,6 +42,7 @@
 			}
 		},
 		beforeMount(){
+			this.day = this.value
 			if (this.showHistory){
 				this.timelist = [
 					...this.timelist,
