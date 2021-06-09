@@ -20,7 +20,7 @@
 			<view class="top-bgframe1">
 				<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
 			</view>
-			<view :style="{height: statusBarHeight*2 + 'upx' }">
+			<view :style="{height: statusBarHeight + 'upx' }">
 			  <!-- 这里是状态栏 -->
 			</view>
 			<view class="top-title flex align-center justify-between">
@@ -66,7 +66,7 @@
 		beforeMount(){
 			this.pages = getCurrentPages();
 			console.log(this.pages);
-			this.titleHeight = this.statusBarHeight*2 + 120;
+			this.titleHeight = this.statusBarHeight + 120;
 			console.log(this.statusBarHeight);
 			console.log(this.titleHeight);
 		},

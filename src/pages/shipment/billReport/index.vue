@@ -20,7 +20,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="activeName === '运输报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
@@ -45,68 +45,132 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="activeName === '费用报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+				<view class="ly-flex-pack-around">
+					<view class="c-count-box">
+						<view class="count" style="margin-bottom: 30upx;">
+							<text class="num" style="font-size: 32upx;" v-number-format="234"></text>
+							<text class="unit">单</text>
+						</view>
+						<view class="count">
+							<text class="num" v-number-format="1252631"></text>
+							<text class="unit">元</text>
+						</view>
+						<view class="label">已核算</view>
+					</view>
+					<view class="c-count-box">
+						<view class="count" style="margin-bottom: 30upx;">
+							<text class="num" style="font-size: 32upx;" v-number-format="234"></text>
+							<text class="unit">单</text>
+						</view>
+						<view class="count">
+							<text class="num" v-number-format="1252631"></text>
+							<text class="unit">元</text>
+						</view>
+						<view class="label">已申请</view>
+					</view>
+					<view class="c-count-box">
+						<view class="count" style="margin-bottom: 30upx;">
+							<text class="num" style="font-size: 32upx;" v-number-format="234"></text>
+							<text class="unit">单</text>
+						</view>
+						<view class="count">
+							<text class="num" v-number-format="1252631"></text>
+							<text class="unit">元</text>
+						</view>
+						<view class="label">已打款</text></view>
+					</view>
+				</view>
+			</view>
+			<view v-if="activeName === '开票报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+				<view class="ly-flex-pack-around">
+					<view class="c-count-box">
+						<view class="count">
+							<text class="num" v-number-format="25567"></text>
+							<text class="unit">元</text>
+						</view>
+						<view class="label">待申请</view>
+					</view>
+					<view class="c-count-box">
+						<view class="count">
+							<text class="num" v-number-format="25567"></text>
+							<text class="unit">元</text>
+						</view>
+						<view class="label">已申请</view>
+					</view>
+					<view class="c-count-box">
+						<view class="count">
+							<text class="num" v-number-format="25567"></text>
+							<text class="unit">元</text>
+						</view>
+						<view class="label">已开票</text></view>
+					</view>
+				</view>
+			</view>
 		</view>
 		<view style="height: 260upx;"></view>
 		
-		
-		<view class="c-app-container">
-			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
-				<text class="text">货源统计</text>
-				<text class="button">查看更多</text>
-			</view>
-			<view class="c-app-container__box">
-				<view class="order-title">接单TOP3</view>
-				<view class="order-box">
-					<!-- v-for -->
-					<view v-for="(item, index) in orderList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
-						<view class="c-order-box__label ly-flex-align-center">
-							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-							<text class="name">煤炭</text>
-							<text class="address">宝安机场—华林广场</text>
+		<uni-collapse v-if="activeName === '运输报表'" :accordion="true">
+			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
+				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
+					<view class="time">{{ cont.time }}</view>
+					<view class="ly-flex-pack-around">
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">单</text>
+							</view>
+							<view class="label">已接单</view>
 						</view>
-						<text class="c-order-box__count">486单</text>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">单</text>
+							</view>
+							<view class="label">已装货</view>
+						</view>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">单</text>
+							</view>
+							<view class="label">已卸货</text></view>
+						</view>
 					</view>
 				</view>
-			</view>
-			<view class="c-app-container__box">
-				<view class="order-title">付款TOP3</view>
-				<view class="order-box">
-					<!-- v-for -->
-					<view v-for="(item, index) in peeList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
-						<view class="c-order-box__label ly-flex-align-center">
-							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-							<text class="name">煤炭</text>
-							<text class="address">宝安机场—华林广场</text>
+			</uni-collapse-item>
+		</uni-collapse>
+		
+		<uni-collapse v-if="activeName === '开票报表'" :accordion="true">
+			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
+				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
+					<view class="time">{{ cont.time }}</view>
+					<view class="ly-flex-pack-around">
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">元</text>
+							</view>
+							<view class="label">待申请</view>
 						</view>
-						<text class="c-order-box__count">486单</text>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">元</text>
+							</view>
+							<view class="label">已申请</view>
+						</view>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">元</text>
+							</view>
+							<view class="label">已开票</text></view>
+						</view>
 					</view>
 				</view>
-			</view>
-		</view>
-		
-		<view class="c-app-container">
-			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
-				<text class="text">运输统计</text>
-				<text class="button">查看更多</text>
-			</view>
-			<view class="chart-box"></view>
-		</view>
-		
-		<view class="c-app-container">
-			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
-				<text class="text">运费统计</text>
-				<text class="button">查看更多</text>
-			</view>
-			<view class="chart-box"></view>
-		</view>
-		
-		<view class="c-app-container">
-			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
-				<text class="text">开票统计</text>
-				<text class="button">查看更多</text>
-			</view>
-			<view class="chart-box"></view>
-		</view>
+			</uni-collapse-item>
+		</uni-collapse>
 	</view>
 </template>
 
@@ -124,7 +188,71 @@
 				queryParams: {
 					startTime: null,
 					endTime: null
-				}
+				},
+				accordion: [{
+						id: 0,
+						title: '3月',
+						content: [{
+							time: '3月5日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						},{
+							time: '3月4日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						},{
+							time: '3月3日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						}],
+						animation: true
+					},
+					{
+						id: 1,
+						title: '2月',
+						content: [{
+							time: '2月5日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						},{
+							time: '2月4日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						},{
+							time: '2月3日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						}],
+						animation: true
+					},
+					{
+						id: 2,
+						title: '1月',
+						content: [{
+							time: '1月5日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						},{
+							time: '1月4日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						},{
+							time: '1月3日',
+							jiedan: '126',
+							zhuanghuo: '135',
+							xiehuo: '256'
+						}],
+						animation: true
+					}
+				],
 			}
 		},
 		methods: {
@@ -207,5 +335,51 @@
 	height: 4upx;
 	background: #477AE4;
 	border-radius: 2upx;
+}
+// 手风琴样式
+::v-deep .uni-collapse{
+	background-color: #00000000;
+}
+::v-deep .uni-collapse-cell{
+	margin: 20upx 24upx 0;
+	border-radius: 12upx;
+	overflow: hidden;
+	border: 0;
+}
+::v-deep .uni-collapse-cell__title{
+	background-color: rgba(68, 120, 228, 0.15);
+	font-size: 28upx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #4478E4;
+	line-height: 32upx;
+}
+::v-deep .uni-collapse-cell--hide .uni-collapse-cell__title{
+	background-color: #FFFFFF;
+	font-size: 28upx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #4478E4;
+	line-height: 32upx;
+}
+::v-deep .uni-collapse-cell__content{
+	background-color: #FFFFFF;
+}
+.min{
+	border-bottom: 1upx solid #F2F2F3;
+	margin: 0 30upx;
+	border-radius: 0;
+	// padding: 40upx 30upx;
+}
+.min .num {
+	font-size: 32upx;
+}
+.time{
+	margin: 0 0 50upx;
+	font-size: 28upx;
+	font-family: PingFang SC;
+	font-weight: bold;
+	color: #333333;
+	line-height: 32upx;
 }
 </style>
