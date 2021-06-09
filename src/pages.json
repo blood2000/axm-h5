@@ -92,7 +92,15 @@
 		    "path" : "pages/driver/billReport/index",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "项目报表",
+		        "navigationBarTitleText": "运输报表",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": true
+		    }
+		},{
+		    "path" : "pages/driver/vehicleReport/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "车辆报表",
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": true
 		    }
@@ -111,7 +119,7 @@
 		    "path" : "pages/team/billReport/index",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "项目报表",
+		        "navigationBarTitleText": "运输报表",
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": true
 		    }
