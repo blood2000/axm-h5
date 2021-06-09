@@ -1,16 +1,9 @@
 import uniRequest from "../request.js";
-import {
-	ApiListStatistics,
-	ApiProjectDetails,
-	ApiInOutDetails,
-	ApiMudtailDetails,
-	ApiListVechicleDetails
-} from "../api.js";
 
 // 统计首页
 export function ListStatistics(data, config) {
   return uniRequest({
-    url: ApiListStatistics,
+    url: '/transportation/statistics/pageStatisticsProject',
     method: 'get',
     data: data,
 	headers: config
@@ -19,7 +12,7 @@ export function ListStatistics(data, config) {
 // 项目统计
 export function ProjectDetails(data, config) {
   return uniRequest({
-    url: ApiProjectDetails,
+    url: '/transportation/statistics/getStatisticsProject',
     method: 'get',
     data: data,
 	headers: config
@@ -28,7 +21,7 @@ export function ProjectDetails(data, config) {
 // 出入明细
 export function InOutDetails(data, config) {
   return uniRequest({
-    url: ApiInOutDetails,
+    url: '/transportation/statistics/getInOutDetails',
     method: 'get',
     data: data,
 	headers: config
@@ -37,7 +30,7 @@ export function InOutDetails(data, config) {
 // 泥尾统计
 export function MudtailDetails(data, config) {
   return uniRequest({
-    url: ApiMudtailDetails,
+    url: '/transportation/statistics/getStatisticsMudtail',
     method: 'get',
     data: data,
 	headers: config
@@ -46,7 +39,7 @@ export function MudtailDetails(data, config) {
 // 车辆明细
 export function ListVechicleDetails(data, config) {
   return uniRequest({
-    url: ApiListVechicleDetails,
+    url: '/transportation/statistics/listVechicleDetails',
     method: 'get',
     data: data,
 	headers: config
