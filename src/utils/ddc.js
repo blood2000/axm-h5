@@ -42,12 +42,25 @@ export function parseTime(time, pattern) {
 
 
 export function numberFormat(val){
-	if(typeof val === "number"){
-		var str = val.toString();
-		var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
-		val =  str.replace(reg,"$1,");
-		return val;
+	if (val > 9999){
+		const num = (Math.floor(val/100)/100);
+		if(typeof num === "number"){
+			var str = num.toString();
+			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+			val =  str.replace(reg,"$1,");
+			return val;
+		}else{
+			return 0;
+		}
 	}else{
-		return 0;
+		if(typeof val === "number"){
+			var str = val.toString();
+			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+			val =  str.replace(reg,"$1,");
+			return val;
+		}else{
+			return 0;
+		}
 	}
+	
 }
