@@ -140,7 +140,7 @@
 				tablist: [{ tabName: '运输报表', tab: 1 }, { tabName: '费用报表', tab: 2 }],
 				tab: 1,
 				queryParams: {
-					timeType: null
+					timeType: 1
 				},
 				accordion: [{
 						id: 0,

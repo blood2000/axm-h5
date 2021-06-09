@@ -99,7 +99,7 @@
 				</view>
 			</view>
 		</view>
-		<view style="height: 260upx;"></view>
+		<view :style="tab === 2? 'height: 242upx;':'height: 170upx;'"></view>
 		
 		<uni-collapse v-if="tab === 1" :accordion="true">
 			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
@@ -126,6 +126,37 @@
 								<text class="unit">单</text>
 							</view>
 							<view class="label">已卸货</text></view>
+						</view>
+					</view>
+				</view>
+			</uni-collapse-item>
+		</uni-collapse>
+		
+		<uni-collapse v-if="tab === 2" :accordion="true">
+			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
+				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
+					<view class="time">{{ cont.time }}</view>
+					<view class="ly-flex-pack-around">
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">单</text>
+							</view>
+							<view class="label">已核算</view>
+						</view>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">单</text>
+							</view>
+							<view class="label">已申请</view>
+						</view>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num" v-number-format="25567"></text>
+								<text class="unit">单</text>
+							</view>
+							<view class="label">已打款</text></view>
 						</view>
 					</view>
 				</view>
