@@ -39,3 +39,15 @@ export function parseTime(time, pattern) {
   });
   return time_str;
 }
+
+
+export function numberFormat(val){
+	if(typeof val === "number"){
+		var str = val.toString();
+		var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+		val =  str.replace(reg,"$1,");
+		return val;
+	}else{
+		return 0;
+	}
+}

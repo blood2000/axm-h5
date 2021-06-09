@@ -7,12 +7,13 @@ import store from './store'
 import './config/bridge.js'
 //自定义指令
 import './directive'
-import { parseTime } from './utils/ddc.js';
+import { parseTime, numberFormat } from './utils/ddc.js';
 
 Vue.prototype.$onLaunched = new Promise(resolve => {
 	Vue.prototype.$isResolve = resolve;
 })
 Vue.prototype.parseTime = parseTime;
+Vue.prototype.numberFormat = numberFormat;
 Vue.prototype.$store = store
 Vue.config.productionTip = false
 
