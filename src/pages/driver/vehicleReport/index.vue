@@ -1,7 +1,7 @@
 <template>
 	<view class="shipment-index">
 		<Header :showBack="true" :showBg="false">
-			<text slot="title">司机报表</text>
+			<text slot="title">车辆报表</text>
 		</Header>
 		<view class="top-fixed">
 			<scroll-view scroll-x class="bg-white nav">
@@ -19,28 +19,35 @@
 		
 		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-align-center">
-				<text class="text">张三</text>
-				<text class="phone">15980277720</text>
+				<text class="text">闽A1245</text>
+				<text class="param flex align-center justify-center">重卡 载重40吨</text>
 			</view>
 			<view class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num" v-number-format="245"></text>
-							<text class="unit">单</text>
+							<text class="unit">趟</text>
 						</view>
-						<view class="label">已接单</view>
+						<view class="label">运输次数</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num" v-number-format="786"></text>
-							<text class="unit">辆</text>
+							<text class="unit">吨</text>
 						</view>
-						<view class="label">已卸货</view>
+						<view class="label">载重</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num" v-number-format="886"></text>
+							<text class="unit">公里</text>
+						</view>
+						<view class="label">车程</text></view>
+					</view>
+					<view class="c-count-box">
+						<view class="count">
+							<text class="num" v-number-format="1245"></text>
 							<text class="unit">元</text>
 						</view>
 						<view class="label">运费</text></view>
@@ -122,13 +129,16 @@
 .min .num {
 	font-size: 32upx;
 }
-.phone{
-	margin-top: 4upx;
+.param{
+	width: 213upx;
+	height: 47upx;
+	background: rgba(71, 122, 228, 0.14);
+	border-radius: 24upx;
 	margin-left: 24upx;
-	font-size: 28upx;
+	font-size: 24upx;
 	font-family: PingFang SC;
 	font-weight: 500;
-	color: #999999;
+	color: #477AE4;
 }
 .order-load{
 	padding: 0 24upx;

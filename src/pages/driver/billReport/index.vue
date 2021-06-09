@@ -20,7 +20,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view v-if="activeName === '项目报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="activeName === '运输报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
@@ -56,7 +56,7 @@
 							<text class="num" v-number-format="1252631"></text>
 							<text class="unit">元</text>
 						</view>
-						<view class="label">代付款</view>
+						<view class="label">待付款</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
@@ -74,7 +74,7 @@
 		</view>
 		<view :style="activeName === '费用报表'? 'height: 332upx;':'height: 260upx;'"></view>
 		
-		<uni-collapse v-if="activeName === '项目报表'" :accordion="true">
+		<uni-collapse v-if="activeName === '运输报表'" :accordion="true">
 			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
@@ -119,7 +119,7 @@
 								<text class="num" v-number-format="25567"></text>
 								<text class="unit">元</text>
 							</view>
-							<view class="label">代付款</view>
+							<view class="label">待付款</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count" style="margin-bottom: 30upx;">
@@ -146,9 +146,9 @@
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
 				// Tabs参数
-				tablist: [{ tabName: '项目报表' }, { tabName: '费用报表' }],
+				tablist: [{ tabName: '运输报表' }, { tabName: '费用报表' }],
 				timelist: [{ tag: '近七天', day: 7 }, { tag: '近一月', day: 30 }, { tag: '近半年', day: 180 }, { tag: '近一年', day: 365 }],
-				activeName: '项目报表',
+				activeName: '运输报表',
 				TabCur: 7,
 				queryParams: {
 					startTime: null,
