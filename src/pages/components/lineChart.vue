@@ -65,6 +65,8 @@
 				this.showToolTip();
 			},
 			setData() {
+				this.seriesData = [];
+				this.legendData = [];
 				this.countData.forEach(el => {
 					this.seriesData.push({
 						name: el.name,

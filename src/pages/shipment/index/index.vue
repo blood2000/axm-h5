@@ -4,19 +4,7 @@
 			<text slot="title">统计服务</text>
 		</Header>
 		
-		<view class="top-fixed">
-			<scroll-view scroll-x class="bg-white nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
-						<view class="flex flex-direction align-center justify-center">
-							<view class="">{{item.tag}}</view>
-							<view v-if="item.day==TabCur" class="tab-bottom"></view>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view style="height: 94upx;"></view>
+		<Screen v-model="TabCur" />
 		
 		<view class="scroll-box">
 			<view class="c-app-container">
@@ -159,20 +147,19 @@
 			  headerInfo: state => state.header.headerInfo
 			})
 		},
+		watch: {
+			TabCur(){
+				this.getStatisticFun();
+				this.getOrderFun();
+				this.getTransportFun();
+				this.getPeeFun();
+				this.getBillFun();
+			}
+		},
 		data() {
 			return {
 				// 时间筛选
-				timelist: [
-					{ tag: '近七天', day: 1 }, 
-					{ tag: '近一月', day: 2 }, 
-					{ tag: '近半年', day: 3 }, 
-					{ tag: '近一年', day: 4 },
-				],
 				TabCur: 1,
-				queryParams: {
-					startTime: null,
-					endTime: null
-				},
 				statisticData: {
 					goodsCount: 0,
 					projectCount: 0,
@@ -209,11 +196,6 @@
 			this.getBillFun();
 		},
 		methods: {
-			tabSelect(e) {
-				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
-				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
-				this.TabCur = e;
-			},
 			itemMore() {
 				uni.navigateTo({
 					url: '/pages/shipment/projectReport/index?day=' + this.TabCur
@@ -245,6 +227,7 @@
 					const { orderReceivedStatisticsVo, unloadedStatisticsVo } = response.data;
 					const orderArr = [];
 					const unloadArr = [];
+					this.transportTime = [];
 					if(orderReceivedStatisticsVo){
 						orderReceivedStatisticsVo.forEach(el => {
 							this.transportTime.push(el.createTime);
@@ -274,6 +257,7 @@
 			getPeeFun() {
 				getPeeData(this.TabCur, this.headerInfo).then(response => {
 					const arr = [];
+					this.peeTime = [];
 					response.data.forEach(el => {
 						this.peeTime.push(el.createTime);
 						arr.push(el.numberStatistics);
@@ -291,6 +275,7 @@
 			getBillFun() {
 				getBillData(this.TabCur, this.headerInfo).then(response => {
 					const arr = [];
+					this.billTime = [];
 					response.data.forEach(el => {
 						this.billTime.push(el.createTime);
 						arr.push(el.numberStatistics);
