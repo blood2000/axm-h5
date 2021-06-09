@@ -11,21 +11,21 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ numberFormat(statisticData.waybillFinishNum) }}</text>
 							<text class="unit">单</text>
 						</view>
 						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ numberFormat(statisticData.actualFreight) }}</text>
 							<text class="unit">元</text>
 						</view>
 						<view class="label" @click="transportMore(2)">实收运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ numberFormat(statisticData.transportCar) }}</text>
 							<text class="unit">辆</text>
 						</view>
 						<view class="label" @tap="carMore">运输车辆<text class="has-arrow"></text></view>
@@ -39,6 +39,7 @@
 					<text class="button" @click="transportMore(1)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="TransportRef"
 					:id="'transport'"
 					:timeData="transportTime"
 					:countData="transportData"
@@ -53,6 +54,7 @@
 					<text class="button" @click="transportMore(2)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="PeeRef"
 					:id="'pee'"
 					:timeData="peeTime"
 					:countData="peeData"
@@ -70,7 +72,7 @@
 					<view class="order-box">
 						用车
 						<text class="unit">(辆)</text>
-						<text class="count" v-number-format="78655"></text>
+						<text class="count">{{ numberFormat(carNum) }}</text>
 					</view>
 				</view>
 				<view class="c-app-container__box" style="padding-top: 0;">
@@ -78,14 +80,19 @@
 					<view v-for="(item, index) in carList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 						<view class="c-order-box__label ly-flex-align-center">
 							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-							<text class="name">闽A12345</text>
+							<text class="name">{{ item.licenseNumber }}</text>
 						</view>
-						<text class="c-order-box__count">486单</text>
+						<text class="c-order-box__count">{{ item.count }}单</text>
 					</view>
 				</view>
 			</view>
 			
 		</view>
+	
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="gray-text">加载中...</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -93,6 +100,7 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
+	import { getStatisticData, getTransportData, getPeeData, getCarData } from '@/config/service/driver.js';
 	export default {
 		components: {
 			Header,
@@ -105,41 +113,43 @@
 		},
 		watch: {
 			TabCur(){
-				
+				this.getStatisticFun();
+				this.getTransportFun();
+				this.getPeeFun();
+				this.getCarFun();
 			}
 		},
 		data() {
 			return {
 				TabCur: 1,
+				statisticData: {
+					waybillFinishNum: 0,
+					actualFreight: 0,
+					transportCar: 0
+				},
 				// 用车统计
-				carList: [{}, {}, {}],
+				carNum: 0,
+				carList: [],
 				// 运输统计
-				transportTime: [1, 2, 3, 4],
-				transportData: [{
-					name: '已接单',
-					data: [1, 2, 3, 4],
-					color: '#FFCF5B'
-				},{
-					name: '已卸货',
-					data: [6, 7, 8, 9],
-					color: '#477AE4'
-				}],
+				transportTime: [],
+				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
-				peeTime: [1, 2, 3, 4],
-				peeData: [{
-					name: '实收金额',
-					data: [1, 2, 3, 4],
-					color: '#55C876'
-				}],
+				peeTime: [],
+				peeData: [],
 				peeUnit: '元',
-				peeUnitTime: '天'
+				peeUnitTime: '天',
+				// 加载中
+				loadModal: false
 			}
 		},
 		async mounted() {
 			await this.$onLaunched;
-			
+			this.getStatisticFun();
+			this.getTransportFun();
+			this.getPeeFun();
+			this.getCarFun();
 		},
 		methods: {
 			carMore() {
@@ -151,6 +161,47 @@
 				uni.navigateTo({
 					url: '/pages/driver/billReport/index?day=' + this.TabCur + '&tab=' + tab
 				});
+			},
+			getStatisticFun() {
+				getStatisticData(this.TabCur, this.headerInfo).then(response => {
+					this.statisticData = response.data;
+				})
+			},
+			getTransportFun() {
+				getTransportData(this.TabCur, this.headerInfo).then(response => {
+					this.transportTime = response.data.xtime;
+					this.transportData = [{
+						name: '已接单',
+						data: response.data.orderReceivedList,
+						color: '#FFCF5B'
+					},{
+						name: '已卸货',
+						data: response.data.unloadedList,
+						color: '#477AE4'
+					}];
+					this.$nextTick(() => {
+						this.$refs['TransportRef'].initChart();
+					})
+				})
+			},
+			getPeeFun() {
+				getPeeData(this.TabCur, this.headerInfo).then(response => {
+					this.peeTime = response.data.xtime;
+					this.peeData = [{
+						name: '实收金额',
+						data: response.data.actualAmountList,
+						color: '#55C876'
+					}];
+					this.$nextTick(() => {
+						this.$refs['PeeRef'].initChart();
+					})
+				})
+			},
+			getCarFun() {
+				getCarData(this.TabCur, this.headerInfo).then(response => {
+					this.carNum = response.data.carNum;
+					this.carList = response.data.carStatisticsList;
+				})
 			}
 		}
 	}

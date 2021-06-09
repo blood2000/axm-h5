@@ -128,6 +128,10 @@
 				</view>
 			</view>
 			
+			<view class="cu-load load-modal" v-if="loadModal">
+				<view class="gray-text">加载中...</view>
+			</view>
+			
 		</view>
 	</view>
 </template>
@@ -180,7 +184,9 @@
 					color: '#55C876'
 				}],
 				peeUnit: '元',
-				peeUnitTime: '天'
+				peeUnitTime: '天',
+				// 加载中
+				loadModal: false
 			}
 		},
 		async mounted() {

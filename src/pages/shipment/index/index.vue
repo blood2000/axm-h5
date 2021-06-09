@@ -129,6 +129,11 @@
 				></LineChart>
 			</view>
 		</view>
+	
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="gray-text">加载中...</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -184,7 +189,9 @@
 				billTime: [],
 				billData: [],
 				billUnit: '元',
-				billUnitTime: '天'
+				billUnitTime: '天',
+				// 加载中
+				loadModal: false
 			}
 		},
 		async mounted() {
