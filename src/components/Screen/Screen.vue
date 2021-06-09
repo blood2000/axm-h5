@@ -1,5 +1,5 @@
 <template>
-	<view :value="value" class="top-fixed">
+	<view :value="value" class="screen">
 		<scroll-view scroll-x class="bg-white nav">
 			<view class="flex text-center">
 				<view class="cu-item flex-sub" :class="item.day==day?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
@@ -68,12 +68,6 @@
 	z-index: 10;
 	width: 100%;
 	border-bottom: 1upx solid #F2F2F3;
-}
-.top-fixed{
-	// position: fixed;
-	// left: 0;
-	// z-index: 10;
-	// width: 100%;
 }
 .onchoose{
 	font-size: 32upx;
