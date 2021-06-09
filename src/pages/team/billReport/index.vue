@@ -65,8 +65,8 @@
 		</view>
 		<view :style="tab === 2? 'height: 242upx;':'height: 170upx;'"></view>
 		
-		<uni-collapse v-if="tab === 1" :accordion="true">
-			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
+		<uni-collapse v-if="tab === 1" :accordion="true" @change="change">
+			<uni-collapse-item v-for="item in accordion" :key="item.id" :name="item.title" :title="item.title" :show-animation="item.animation" >
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
 					<view class="ly-flex-pack-around">
@@ -96,8 +96,8 @@
 			</uni-collapse-item>
 		</uni-collapse>
 		
-		<uni-collapse v-if="tab === 2" :accordion="true">
-			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
+		<uni-collapse v-if="tab === 2" :accordion="true" @change="change">
+			<uni-collapse-item v-for="item in accordion" :key="item.id" :name="item.title" :title="item.title" :show-animation="item.animation">
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
 					<view class="ly-flex-pack-around">
@@ -217,6 +217,9 @@
 		methods: {
 			handleClick(e){
 				this.tab = e;
+			},
+			change(e){
+				console.log(e);
 			}
 		}
 	}
