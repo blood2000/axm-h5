@@ -17,9 +17,9 @@
 	</view> -->
 	<view class="top">
 		<view class="top-frame" :style="{height: titleHeight + 'upx' }">
-			<view class="top-bgframe1">
-				<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
-			</view>
+			<!-- <view class="top-bgframe1">
+				<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
+			</view> -->
 			<view :style="{height: statusBarHeight + 'upx' }">
 			  <!-- 这里是状态栏 -->
 			</view>
@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view v-if="showBg" class="top-bgframe2">
-			<image class="top-bg" src="../../static/tab_bg.png" mode=""></image>
+			<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
 		</view>
 		<view :style="{height: titleHeight + 'upx' }"></view>
 	</view>
@@ -109,6 +109,8 @@
 	// height: 185upx;
 	width: 100%;
 	overflow: hidden;
+	background: url('/static/tab_bg.png') no-repeat;
+	background-size: 100% 350upx;
 	.top-title{
 		line-height: 120upx;
 		width: 100%;

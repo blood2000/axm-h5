@@ -3,19 +3,7 @@
 		<Header :showBack="true" :showBg="false">
 			<text slot="title">货源报表</text>
 		</Header>
-		<view class="top-fixed">
-			<scroll-view scroll-x class="bg-white nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
-						<view class="flex flex-direction align-center justify-center">
-							<view class="">{{item.tag}}</view>
-							<view v-if="item.day==TabCur" class="tab-bottom"></view>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view style="height: 90upx;"></view>
+		<Screen v-model="queryParams.timeType" :showHistory="true" />
 		
 		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
@@ -75,85 +63,17 @@
 			return {
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
-				timelist: [{ tag: '近七天', day: 7 }, { tag: '近一月', day: 30 }, { tag: '近半年', day: 180 }, { tag: '近一年', day: 365 }],
-				TabCur: 7,
 				queryParams: {
-					startTime: null,
-					endTime: null
+					timeType: 1
 				},
-				accordion: [{
-						id: 0,
-						title: '3月',
-						content: [{
-							time: '3月5日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '3月4日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '3月3日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						}],
-						animation: true
-					},
-					{
-						id: 1,
-						title: '2月',
-						content: [{
-							time: '2月5日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '2月4日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '2月3日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						}],
-						animation: true
-					},
-					{
-						id: 2,
-						title: '1月',
-						content: [{
-							time: '1月5日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '1月4日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '1月3日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						}],
-						animation: true
-					}
-				],
+			}
+		},
+		onLoad(options) {
+			if (options) {
+				this.queryParams.timeType = options.day - 0;
 			}
 		},
 		methods: {
-			tabSelect(e) {
-				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
-				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
-				console.log(this.queryParams);
-				this.TabCur = e;
-			}
 		}
 	}
 </script>
@@ -172,28 +92,11 @@
 	}
 }
 // 时间筛选
-.nav{
-	border-bottom: 1upx solid #F2F2F3;
-}
 .top-fixed{
 	position: fixed;
 	left: 0;
 	z-index: 10;
 	width: 100%;
-}
-.onchoose{
-	font-size: 32upx;
-	font-family: PingFang SC;
-	font-weight: bold;
-	color: #477AE4;
-}
-.tab-bottom{
-	position: relative;
-	bottom: 4upx;
-	width: 56upx;
-	height: 4upx;
-	background: #477AE4;
-	border-radius: 2upx;
 }
 .min .num {
 	font-size: 32upx;
