@@ -23,14 +23,14 @@
 				<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ statisticData.projectCount }}</text>
 							<text class="unit">个</text>
 						</view>
 						<view class="label" @tap="itemMore">项目<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ statisticData.goodsCount }}</text>
 							<text class="unit">个</text>
 						</view>
 						<view class="label" @tap="orderMore">货源<text class="has-arrow"></text></view>
@@ -39,21 +39,21 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ statisticData.waybillCompletedCount }}</text>
 							<text class="unit">单</text>
 						</view>
 						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ statisticData.sumShipperRealPay }}</text>
 							<text class="unit">元</text>
 						</view>
 						<view class="label" @click="transportMore(2)">实付运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
+							<text class="num">{{ statisticData.sumInvoicedAmountApplied }}</text>
 							<text class="unit">元</text>
 						</view>
 						<view class="label" @click="transportMore(3)">开票<text class="has-arrow"></text></view>
@@ -73,10 +73,10 @@
 						<view v-for="(item, index) in orderList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 							<view class="c-order-box__label ly-flex-align-center">
 								<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-								<text class="name">煤炭</text>
-								<text class="address">宝安机场—华林广场</text>
+								<text class="name">{{ item.goodsBigTypeName }}</text>
+								<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
 							</view>
-							<text class="c-order-box__count">486单</text>
+							<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 						</view>
 					</view>
 				</view>
@@ -87,10 +87,10 @@
 						<view v-for="(item, index) in peeList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 							<view class="c-order-box__label ly-flex-align-center">
 								<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-								<text class="name">煤炭</text>
-								<text class="address">宝安机场—华林广场</text>
+								<text class="name">{{ item.goodsBigTypeName }}</text>
+								<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
 							</view>
-							<text class="c-order-box__count">486单</text>
+							<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 						</view>
 					</view>
 				</view>
@@ -102,6 +102,7 @@
 					<text class="button" @click="transportMore(1)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="TransportRef"
 					:id="'transport'"
 					:timeData="transportTime"
 					:countData="transportData"
@@ -116,6 +117,7 @@
 					<text class="button" @click="transportMore(2)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="PeeRef"
 					:id="'pee'"
 					:timeData="peeTime"
 					:countData="peeData"
@@ -130,6 +132,7 @@
 					<text class="button" @click="transportMore(3)">查看更多</text>
 				</view>
 				<LineChart 
+					ref="BillRef"
 					:id="'bill'"
 					:timeData="billTime"
 					:countData="billData"
@@ -145,7 +148,7 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
-	import { getStatisticData, getOrderData, getTransportData, getFeeData, getBillData } from '@/config/service/shipment.js';
+	import { getStatisticData, getOrderData, getTransportData, getPeeData, getBillData } from '@/config/service/shipment.js';
 	export default {
 		components: {
 			Header,
@@ -170,49 +173,40 @@
 					startTime: null,
 					endTime: null
 				},
+				statisticData: {
+					goodsCount: 0,
+					projectCount: 0,
+					sumInvoicedAmountApplied: 0,
+					sumShipperRealPay: 0,
+					waybillCompletedCount: 0
+				},
 				// 货源统计
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
 				// 运输统计
-				transportTime: [1, 2, 3, 4],
-				transportData: [{
-					name: '已接单',
-					data: [1, 2, 3, 4],
-					color: '#FFCF5B'
-				},{
-					name: '已卸货',
-					data: [6, 7, 8, 9],
-					color: '#477AE4'
-				}],
+				transportTime: [],
+				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
-				peeTime: [1, 2, 3, 4],
-				peeData: [{
-					name: '实付金额',
-					data: [1, 2, 4, 3],
-					color: '#55C876'
-				}],
+				peeTime: [],
+				peeData: [],
 				peeUnit: '元',
 				peeUnitTime: '天',
 				// 开票统计
-				billTime: [1, 2, 3, 4],
-				billData: [{
-					name: '已开票金额',
-					data: [1, 2, 3, 4],
-					color: '#7E5DEB'
-				}],
+				billTime: [],
+				billData: [],
 				billUnit: '元',
 				billUnitTime: '天'
 			}
 		},
 		async mounted() {
 			await this.$onLaunched;
-			// this.getStatisticFun();
-			// this.getOrderFun();
-			// this.getTransportFun();
-			// this.getFeeFun();
-			// this.getBillFun();
+			this.getStatisticFun();
+			this.getOrderFun();
+			this.getTransportFun();
+			this.getPeeFun();
+			this.getBillFun();
 		},
 		methods: {
 			tabSelect(e) {
@@ -236,43 +230,79 @@
 				});
 			},
 			getStatisticFun() {
-				getStatisticData({
-					number: 7,
-					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
-				}, this.headerInfo).then(response => {
-					
+				getStatisticData(this.TabCur, this.headerInfo).then(response => {
+					this.statisticData = response.data;
 				})
 			},
 			getOrderFun() {
-				getOrderData({
-					number: 7,
-					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
-				}, this.headerInfo).then(response => {
-					
+				getOrderData(this.TabCur, this.headerInfo).then(response => {
+					this.orderList = response.data.receivingOrdersStatisticsVos;
+					this.peeList = response.data.paymentStatisticsVos;
 				})
 			},
 			getTransportFun() {
-				getTransportData({
-					number: 7,
-					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
-				}, this.headerInfo).then(response => {
+				getTransportData(this.TabCur, this.headerInfo).then(response => {
+					const { orderReceivedStatisticsVo, unloadedStatisticsVo } = response.data;
+					const orderArr = [];
+					const unloadArr = [];
+					if(orderReceivedStatisticsVo){
+						orderReceivedStatisticsVo.forEach(el => {
+							this.transportTime.push(el.createTime);
+							orderArr.push(el.numberStatistics);
+						});
+					}
+					if(unloadedStatisticsVo){
+						unloadedStatisticsVo.forEach(el => {
+							unloadArr.push(el.numberStatistics)
+						});
+					}
+					this.transportData = [{
+						name: '已接单',
+						data: orderArr,
+						color: '#FFCF5B'
+					},{
+						name: '已卸货',
+						data: unloadArr,
+						color: '#477AE4'
+					}]
+					this.$nextTick(() => {
+						this.$refs['TransportRef'].initChart();
+					})
 					
 				})
 			},
-			getFeeFun() {
-				getFeeData({
-					number: 7,
-					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
-				}, this.headerInfo).then(response => {
-					
+			getPeeFun() {
+				getPeeData(this.TabCur, this.headerInfo).then(response => {
+					const arr = [];
+					response.data.forEach(el => {
+						this.peeTime.push(el.createTime);
+						arr.push(el.numberStatistics);
+					});
+					this.peeData = [{
+						name: '实付金额',
+						data: arr,
+						color: '#55C876'
+					}];
+					this.$nextTick(() => {
+						this.$refs['PeeRef'].initChart();
+					})
 				})
 			},
 			getBillFun() {
-				getBillData({
-					number: 7,
-					shipperCode: '67390c07e9fa4fd0b78b9383e62bd84a'
-				}, this.headerInfo).then(response => {
-					
+				getBillData(this.TabCur, this.headerInfo).then(response => {
+					const arr = [];
+					response.data.forEach(el => {
+						this.billTime.push(el.createTime);
+						arr.push(el.numberStatistics);
+					});
+					this.billData = [{
+						name: '已开票金额',
+						data: arr,
+						color: '#7E5DEB'
+					}];
+					this.$nextTick(() => {
+						this.$refs['BillRef'].initChart();
+					})
 				})
 			}
 		}

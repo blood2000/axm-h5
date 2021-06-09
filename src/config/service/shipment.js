@@ -1,51 +1,62 @@
 import uniRequest from "../request.js";
 
 // 首页数据统计
-export function getStatisticData(data, config) {
+export function getStatisticData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
+    url: '/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
     method: 'get',
-    data: data,
+    data: {
+		timeType: timeType
+	},
 	headers: config
   });
 }
 
 // 首页货源统计
-export function getOrderData(data, config) {
+export function getOrderData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
+    url: '/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
     method: 'get',
-    data: data,
+    data: {
+    	timeType: timeType,
+		topNumber: 3
+    },
 	headers: config
   });
 }
 
 // 首页运输统计
-export function getTransportData(data, config) {
+export function getTransportData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
+    url: '/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
     method: 'get',
-    data: data,
+    data: {
+    	timeType: timeType
+    },
 	headers: config
   });
 }
 
 // 首页运费统计
-export function getFeeData(data, config) {
+export function getPeeData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
+    url: '/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
     method: 'get',
-    data: data,
+    data: {
+    	timeType: timeType
+    },
 	headers: config
   });
 }
 
 // 首页开票统计
-export function getBillData(data, config) {
+export function getBillData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
+    url: '/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
     method: 'get',
-    data: data,
+    data: {
+    	timeType: timeType
+    },
 	headers: config
   });
 }

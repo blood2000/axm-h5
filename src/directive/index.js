@@ -8,6 +8,8 @@ Vue.directive('number-format', {
 			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
 			val =  str.replace(reg,"$1,");
 			el.innerText = val;
+		}else{
+			el.innerText = 0;
 		}
     }
 })

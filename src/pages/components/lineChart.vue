@@ -1,7 +1,7 @@
 <template>
 	<view class="chart-container">
-		<view class="lengend-box ly-flex-v ly-flex-pack-justify">
-			<view class="time ly-flex-pack-start">4月28日</view>
+		<view v-show="seriesData.length > 0" class="lengend-box ly-flex-v ly-flex-pack-justify">
+			<view class="time ly-flex-pack-start">{{ today }}</view>
 			<view class="legend ly-flex-pack-start">
 				<view class="legend-item ly-flex-align-center" v-for="(item, index) in legendData" :key="index">
 					<text class="round" :style="{background: item.color}"></text>
@@ -44,22 +44,29 @@
 				default: ''
 			}
 		},
-		computed:{
-			legendData() {
-				const arr = [];
-				this.countData.forEach(el => {
-					arr.push({
-						color: el.color,
-						name: el.name,
-						count: el.data[el.data.length - 1]
-					});
-				})
-				return arr;
+		computed: {
+			today(){
+				const today = new Date();
+				return (today.getMonth() + 1) + '月' + today.getDate() + '日'
+			}
+		},
+		data() {
+			return {
+				chart: null,
+				legendData: [],
+				seriesData: [],
+			}
+		},
+		methods: {
+			initChart() {
+				this.chart = echarts.init(document.getElementById(this.id));
+				this.setData();
+				this.setOption();
+				this.showToolTip();
 			},
-			seriesData() {
-				const arr = [];
+			setData() {
 				this.countData.forEach(el => {
-					arr.push({
+					this.seriesData.push({
 						name: el.name,
 						data: el.data,
 						type: 'line',
@@ -76,23 +83,13 @@
 						}
 					})
 				})
-				return arr;
-			}
-		},
-		data() {
-			return {
-				chart: null
-			}
-		},
-		async mounted() {
-			await this.$onLaunched;
-			this.initChart();
-		},
-		methods: {
-			initChart() {
-				this.chart = echarts.init(document.getElementById(this.id));
-				this.setOption();
-				this.showToolTip();
+				this.countData.forEach(el => {
+					this.legendData.push({
+						color: el.color,
+						name: el.name,
+						count: el.data[el.data.length - 1]
+					});
+				})
 			},
 			setOption() {
 				this.chart.setOption({
@@ -164,7 +161,7 @@
 					},
 					tooltip: {
 						trigger: 'axis',
-						triggerOn: 'none',
+						//triggerOn: 'none',
 						axisPointer: {
 							lineStyle: {
 								color: 'rgba(55, 55, 55, 0)'
@@ -180,12 +177,12 @@
 				});
 			},
 			showToolTip() {
-				this.chart.dispatchAction({
-					type: 'showTip',
-					seriesIndex: 0,
-					dataIndex: this.seriesData[0].data.length - 1,
-					position: [-1000, 0]
-				});
+				// this.chart.dispatchAction({
+				// 	type: 'showTip',
+				// 	seriesIndex: 0,
+				// 	dataIndex: this.seriesData[0].data.length - 1,
+				// 	position: [-1000, 0]
+				// });
 			}
 		}
 	}
