@@ -50,7 +50,7 @@
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
 				<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 					<text class="text">货源统计</text>
-					<text class="button">查看更多</text>
+					<text class="button" @tap="orderMore">查看更多</text>
 				</view>
 				<view class="c-app-container__box">
 					<view class="order-title">接单TOP3</view>
