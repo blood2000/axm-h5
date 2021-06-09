@@ -12,21 +12,21 @@
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.waybillFinishNum) }}</text>
-							<text class="unit">单</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.waybillFinishNum) }}单</text>
 						</view>
 						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.actualFreight) }}</text>
-							<text class="unit">元</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.actualFreight) }}元</text>
 						</view>
 						<view class="label" @click="transportMore(2)">实收运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.transportCar) }}</text>
-							<text class="unit">辆</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.transportCar) }}辆</text>
 						</view>
 						<view class="label" @tap="carMore">运输车辆<text class="has-arrow"></text></view>
 					</view>
@@ -71,7 +71,7 @@
 				<view class="c-app-container__box">
 					<view class="order-box">
 						用车
-						<text class="unit">(辆)</text>
+						<text class="unit">({{ numberFormatUnit(carNum) }}辆)</text>
 						<text class="count">{{ numberFormat(carNum) }}</text>
 					</view>
 				</view>

@@ -12,14 +12,14 @@
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.projectCount) }}</text>
-							<text class="unit">个</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.projectCount) }}个</text>
 						</view>
 						<view class="label" @tap="itemMore">项目<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.goodsCount) }}</text>
-							<text class="unit">个</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.goodsCount) }}个</text>
 						</view>
 						<view class="label" @tap="orderMore">货源<text class="has-arrow"></text></view>
 					</view>
@@ -28,21 +28,21 @@
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.waybillCompletedCount) }}</text>
-							<text class="unit">单</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.waybillCompletedCount) }}单</text>
 						</view>
 						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.sumShipperRealPay) }}</text>
-							<text class="unit">元</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.sumShipperRealPay) }}元</text>
 						</view>
 						<view class="label" @click="transportMore(2)">实付运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num">{{ numberFormat(statisticData.sumInvoicedAmountApplied) }}</text>
-							<text class="unit">元</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.sumInvoicedAmountApplied) }}元</text>
 						</view>
 						<view class="label" @click="transportMore(3)">开票<text class="has-arrow"></text></view>
 					</view>

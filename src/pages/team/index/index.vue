@@ -11,29 +11,29 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="255"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(10000) }}</text>
+							<text class="unit">{{ numberFormatUnit(10000) }}单</text>
 						</view>
 						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="255"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(255) }}</text>
+							<text class="unit">{{ numberFormatUnit(255) }}元</text>
 						</view>
 						<view class="label" @click="transportMore(2)">实收运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="255"></text>
-							<text class="unit">人</text>
+							<text class="num">{{ numberFormat(255) }}</text>
+							<text class="unit">{{ numberFormatUnit(255) }}人</text>
 						</view>
 						<view class="label" @tap="driverMore">活跃司机<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="255"></text>
-							<text class="unit">辆</text>
+							<text class="num">{{ numberFormat(255) }}</text>
+							<text class="unit">{{ numberFormatUnit(255) }}辆</text>
 						</view>
 						<view class="label" @tap="carMore">用车<text class="has-arrow"></text></view>
 					</view>
@@ -78,13 +78,13 @@
 				<view class="c-app-container__box ly-flex-pack-justify">
 					<view class="order-box">
 						总车辆
-						<text class="unit">(辆)</text>
-						<text class="count" v-number-format="78655"></text>
+						<text class="unit">({{ numberFormatUnit(15202) }}辆)</text>
+						<text class="count">{{ numberFormat(15202) }}</text>
 					</view>
 					<view class="order-box">
 						活跃车辆
-						<text class="unit">(辆)</text>
-						<text class="count" v-number-format="78655"></text>
+						<text class="unit">({{ numberFormatUnit(15202) }}辆)</text>
+						<text class="count">{{ numberFormat(15202) }}</text>
 					</view>
 				</view>
 				<view class="c-app-container__box">
@@ -108,13 +108,13 @@
 				<view class="c-app-container__box ly-flex-pack-justify">
 					<view class="order-box">
 						总司机
-						<text class="unit">(人)</text>
-						<text class="count" v-number-format="78655"></text>
+						<text class="unit">({{ numberFormatUnit(255) }}人)</text>
+						<text class="count">{{ numberFormat(255) }}</text>
 					</view>
 					<view class="order-box">
 						活跃司机
-						<text class="unit">(人)</text>
-						<text class="count" v-number-format="78655"></text>
+						<text class="unit">({{ numberFormatUnit(255) }}人)</text>
+						<text class="count">{{ numberFormat(255) }}</text>
 					</view>
 				</view>
 				<view class="c-app-container__box">
@@ -210,13 +210,17 @@
 					const orderArr = [];
 					const unloadArr = [];
 					this.transportTime = [];
-					orderReceivingList.forEach(el => {
-						this.transportTime.push(el.timeTag);
-						orderArr.push(el.waybill);
-					});
-					orderUnloadList.forEach(el => {
-						unloadArr.push(el.waybill);
-					});
+					if(orderReceivingList){
+						orderReceivingList.forEach(el => {
+							this.transportTime.push(el.timeTag);
+							orderArr.push(el.waybill);
+						});
+					}
+					if(orderUnloadList){
+						orderUnloadList.forEach(el => {
+							unloadArr.push(el.waybill);
+						});
+					}
 					this.transportData = [{
 						name: '已接单',
 						data: orderArr,

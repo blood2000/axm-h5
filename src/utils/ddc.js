@@ -42,25 +42,30 @@ export function parseTime(time, pattern) {
 
 
 export function numberFormat(val){
-	if (val > 9999){
-		const num = (Math.floor(val/100)/100);
-		if(typeof num === "number"){
-			var str = num.toString();
-			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
-			val =  str.replace(reg,"$1,");
-			return val;
+	let num = 0;
+	if(typeof val === "number"){
+		if(val > 9999){
+			num = (Math.floor(val/100)/100);
 		}else{
-			return 0;
+			num = val;
+		}
+		let str = num.toString();
+		let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+		num =  str.replace(reg,"$1,");
+		return num;
+	}else{
+		return 0
+	}
+}
+
+export function numberFormatUnit(val){
+	if(typeof val === "number"){
+		if(val > 9999){
+			return '万';
+		}else{
+			return '';
 		}
 	}else{
-		if(typeof val === "number"){
-			var str = val.toString();
-			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
-			val =  str.replace(reg,"$1,");
-			return val;
-		}else{
-			return 0;
-		}
+		return '';
 	}
-	
 }
