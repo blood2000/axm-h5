@@ -42,7 +42,7 @@
 							<text class="num" v-number-format="25567"></text>
 							<text class="unit">单</text>
 						</view>
-						<view class="label" @tap="transportMore">运费完成<text class="has-arrow"></text></view>
+						<view class="label" @tap="transportMore">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
