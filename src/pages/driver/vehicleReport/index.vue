@@ -5,7 +5,7 @@
 		</Header>
 		<Screen v-model="queryParams.timeType" :showHistory="true" />
 		
-		<view class="c-app-container" style="padding-bottom: 15rpx;" @click="show">
+		<view class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-align-center">
 				<text class="text">闽A1245</text>
 				<text class="param flex align-center justify-center">重卡 载重40吨</text>
@@ -62,12 +62,11 @@
 			}
 		},
 		onLoad(options) {
-			this.queryParams.timeType = options.day - 0;
+			if (options) {
+				this.queryParams.timeType = options.day - 0;
+			}
 		},
 		methods: {
-			show(){
-				console.log(this.queryParams);
-			}
 		}
 	}
 </script>

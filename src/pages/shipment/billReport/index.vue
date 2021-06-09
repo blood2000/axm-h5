@@ -3,24 +3,15 @@
 		<Header :showBack="true" :showBg="false">
 			<template slot="title">
 				<view class="tabs flex align-center">
-					<view v-for="(item, index) in tablist" :key="index" :class="activeName === item.tabName ? 'tabs-onbotton': 'tabs-botton'" @click="handleClick(item.tabName)">
+					<view v-for="(item, index) in tablist" :key="index" :class="tab === item.tab ? 'tabs-onbotton': 'tabs-botton'" @click="handleClick(item.tab)">
 						{{ item.tabName }}
 					</view>
 				</view>
 			</template>
 		</Header>
+		<Screen v-model="queryParams.timeType" />
 		<view class="top-fixed">
-			<scroll-view scroll-x class="bg-white nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="item.day==TabCur?'onchoose':''" v-for="(item,index) in timelist" :key="index" @tap="tabSelect(item.day)">
-						<view class="flex flex-direction align-center justify-center">
-							<view class="">{{item.tag}}</view>
-							<view v-if="item.day==TabCur" class="tab-bottom"></view>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
-			<view v-if="activeName === '运输报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="tab === 1" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
@@ -45,7 +36,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="activeName === '费用报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="tab === 2" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
@@ -82,7 +73,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="activeName === '开票报表'" class="c-app-container" style="margin: 0; border-radius: 0;">
+			<view v-if="tab === 3" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
@@ -110,7 +101,7 @@
 		</view>
 		<view style="height: 260upx;"></view>
 		
-		<uni-collapse v-if="activeName === '运输报表'" :accordion="true">
+		<uni-collapse v-if="tab === 1" :accordion="true">
 			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
@@ -141,7 +132,7 @@
 			</uni-collapse-item>
 		</uni-collapse>
 		
-		<uni-collapse v-if="activeName === '开票报表'" :accordion="true">
+		<uni-collapse v-if="tab === 3" :accordion="true">
 			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
 				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
 					<view class="time">{{ cont.time }}</view>
@@ -181,13 +172,10 @@
 				orderList: [{}, {}, {}],
 				peeList: [{}, {}, {}],
 				// Tabs参数
-				tablist: [{ tabName: '运输报表' }, { tabName: '费用报表' }, { tabName: '开票报表' }],
-				timelist: [{ tag: '近七天', day: 7 }, { tag: '近一月', day: 30 }, { tag: '近半年', day: 180 }, { tag: '近一年', day: 365 }],
-				activeName: '运输报表',
-				TabCur: 7,
+				tablist: [{ tabName: '运输报表', tab: 1 }, { tabName: '费用报表', tab: 2 }, { tabName: '开票报表', tab: 3 }],
+				tab: 1,
 				queryParams: {
-					startTime: null,
-					endTime: null
+					timeType: 1
 				},
 				accordion: [{
 						id: 0,
@@ -255,15 +243,15 @@
 				],
 			}
 		},
+		onLoad(options) {
+			if (options) {
+				this.queryParams.timeType = options.day - 0;
+				this.tab = options.tab - 0;
+			}
+		},
 		methods: {
 			handleClick(e){
-				this.activeName = e;
-			},
-			tabSelect(e) {
-				this.queryParams.startTime = this.parseTime(new Date().getTime() - 24 * 60 * 60 * 1000 * e, '{y}-{m}-{d}');
-				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
-				console.log(this.queryParams);
-				this.TabCur = e;
+				this.tab = e;
 			}
 		}
 	}
@@ -313,28 +301,11 @@
 	color: #FFFFFF;
 }
 // 时间筛选
-.nav{
-	border-bottom: 1upx solid #F2F2F3;
-}
 .top-fixed{
 	position: fixed;
 	left: 0;
 	z-index: 10;
 	width: 100%;
-}
-.onchoose{
-	font-size: 32upx;
-	font-family: PingFang SC;
-	font-weight: bold;
-	color: #477AE4;
-}
-.tab-bottom{
-	position: relative;
-	bottom: 4upx;
-	width: 56upx;
-	height: 4upx;
-	background: #477AE4;
-	border-radius: 2upx;
 }
 // 手风琴样式
 ::v-deep .uni-collapse{
