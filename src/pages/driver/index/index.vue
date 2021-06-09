@@ -26,21 +26,21 @@
 							<text class="num" v-number-format="25567"></text>
 							<text class="unit">单</text>
 						</view>
-						<view class="label" @tap="transportMore">运单完成<text class="has-arrow"></text></view>
+						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num" v-number-format="25567"></text>
 							<text class="unit">元</text>
 						</view>
-						<view class="label" @tap="transportMore">实收运费<text class="has-arrow"></text></view>
+						<view class="label" @click="transportMore(2)">实收运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num" v-number-format="25567"></text>
 							<text class="unit">辆</text>
 						</view>
-						<view class="label" @tap="transportMore">运输车辆<text class="has-arrow"></text></view>
+						<view class="label" @tap="carMore">运输车辆<text class="has-arrow"></text></view>
 					</view>
 				</view>
 			</view>
@@ -48,7 +48,7 @@
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
 				<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 					<text class="text">运输统计</text>
-					<text class="button" @tap="transportMore">查看更多</text>
+					<text class="button" @click="transportMore(1)">查看更多</text>
 				</view>
 				<LineChart 
 					:id="'transport'"
@@ -62,7 +62,7 @@
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
 				<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 					<text class="text">运费统计</text>
-					<text class="button" @tap="transportMore">查看更多</text>
+					<text class="button" @click="transportMore(2)">查看更多</text>
 				</view>
 				<LineChart 
 					:id="'pee'"
@@ -76,7 +76,7 @@
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
 				<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 					<text class="text">用车统计</text>
-					<text class="button" @tap="transportMore">查看更多</text>
+					<text class="button" @tap="carMore">查看更多</text>
 				</view>
 				<view class="c-app-container__box">
 					<view class="order-box">
@@ -120,12 +120,12 @@
 			return {
 				// 时间筛选
 				timelist: [
-					{ tag: '近七天', day: 7 }, 
-					{ tag: '近一月', day: 30 }, 
-					{ tag: '近半年', day: 180 }, 
-					{ tag: '近一年', day: 365 },
+					{ tag: '近七天', day: 1 }, 
+					{ tag: '近一月', day: 2 }, 
+					{ tag: '近半年', day: 3 }, 
+					{ tag: '近一年', day: 4 },
 				],
-				TabCur: 7,
+				TabCur: 1,
 				queryParams: {
 					startTime: null,
 					endTime: null
@@ -166,9 +166,14 @@
 				this.queryParams.endTime = this.parseTime(new Date(), '{y}-{m}-{d}');
 				this.TabCur = e;
 			},
-			transportMore() {
+			carMore() {
 				uni.navigateTo({
-					url: '/'
+					url: '/pages/driver/vehicleReport/index?day=' + this.TabCur
+				});
+			},
+			transportMore(tab) {
+				uni.navigateTo({
+					url: '/pages/driver/billReport/index?day=' + this.TabCur + '&tab=' + tab
 				});
 			}
 		}

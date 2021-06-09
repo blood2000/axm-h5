@@ -26,14 +26,14 @@
 							<text class="num" v-number-format="255"></text>
 							<text class="unit">单</text>
 						</view>
-						<view class="label" @tap="transportMore">运单完成<text class="has-arrow"></text></view>
+						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
 							<text class="num" v-number-format="255"></text>
 							<text class="unit">元</text>
 						</view>
-						<view class="label" @tap="transportMore">实收运费<text class="has-arrow"></text></view>
+						<view class="label" @click="transportMore(2)">实收运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
@@ -55,7 +55,7 @@
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
 				<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 					<text class="text">运输统计</text>
-					<text class="button" @tap="transportMore">查看更多</text>
+					<text class="button" @click="transportMore(1)">查看更多</text>
 				</view>
 				<LineChart 
 					:id="'transport'"
@@ -69,7 +69,7 @@
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
 				<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 					<text class="text">运费统计</text>
-					<text class="button" @tap="transportMore">查看更多</text>
+					<text class="button" @click="transportMore(2)">查看更多</text>
 				</view>
 				<LineChart 
 					:id="'pee'"
@@ -162,12 +162,12 @@
 			return {
 				// 时间筛选
 				timelist: [
-					{ tag: '近七天', day: 7 }, 
-					{ tag: '近一月', day: 30 }, 
-					{ tag: '近半年', day: 180 }, 
-					{ tag: '近一年', day: 365 },
+					{ tag: '近七天', day: 1 }, 
+					{ tag: '近一月', day: 2 }, 
+					{ tag: '近半年', day: 3 }, 
+					{ tag: '近一年', day: 4 },
 				],
-				TabCur: 7,
+				TabCur: 1,
 				queryParams: {
 					startTime: null,
 					endTime: null
@@ -221,17 +221,17 @@
 			},
 			carMore() {
 				uni.navigateTo({
-					url: '/'
+					url: '/pages/team/vehicleReport/index?day=' + this.TabCur
 				});
 			},
 			driverMore() {
 				uni.navigateTo({
-					url: '/'
+					url: '/pages/team/driverReport/index?day=' + this.TabCur
 				});
 			},
-			transportMore() {
+			transportMore(tab) {
 				uni.navigateTo({
-					url: '/'
+					url: '/pages/team/billReport/index?day=' + this.TabCur + '&tab=' + tab
 				});
 			}
 		}
