@@ -1,6 +1,6 @@
 <template>
 	<view class="shipment-index">
-		<Header :show-bg="false">
+		<Header :show-bg="false" :showBack="showBack" :isSecondaryPage="isSecondaryPage">
 			<text slot="title">统计服务</text>
 		</Header>
 		
@@ -122,6 +122,8 @@
 		},
 		data() {
 			return {
+				showBack: false,
+				isSecondaryPage: false,
 				TabCur: 1,
 				statisticLoading: false,
 				statisticData: {
@@ -145,6 +147,14 @@
 				peeData: [],
 				peeUnit: '元',
 				peeUnitTime: '天'
+			}
+		},
+		async onLoad(options) {
+			await this.$onLaunched;
+			const { isSecondaryPage } = options;
+			if (isSecondaryPage === '1') {
+				this.showBack = true;
+				this.isSecondaryPage = true;
 			}
 		},
 		async mounted() {

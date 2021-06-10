@@ -20,12 +20,13 @@
 				
 			}
 		},
-		async onLoad() {
+		async onLoad(options) {
 			await this.$onLaunched;
-			this.getData();
+			this.getData(options);
 		},
 		methods: {
-			getData(){
+			getData(options){
+				const { isSecondaryPage } = options;
 				getPageJump(this.headerInfo).then(response => {
 					const role = response.data;
 					// uni.showToast({
@@ -33,22 +34,28 @@
 					// 	icon: 'none',
 					// 	duration: 5000
 					// });
+					
+					// 判断是否有返回按钮
+					const params = '';
+					if (isSecondaryPage === '1') {
+						params = '?isSecondaryPage=1'
+					}
 					// 1跳转司机统计 2跳转调度者统计 3跳转货主大宗统计 4跳转货主渣土统计
 					if (role === 1) {
 						uni.redirectTo({
-						    url: '/pages/driver/index/index'
+						    url: '/pages/driver/index/index' + params
 						});
 					} else if (role === 2) {
 						uni.redirectTo({
-						    url: '/pages/team/index/index'
+						    url: '/pages/team/index/index' + params
 						});
 					} else if (role === 3) {
 						uni.redirectTo({
-						    url: '/pages/shipment/index/index'
+						    url: '/pages/shipment/index/index' + params
 						});
 					} else if (role === 4) {
 						uni.redirectTo({
-						    url: '/pages/finance/index/index'
+						    url: '/pages/finance/index/index' + params
 						});
 					}
 				});

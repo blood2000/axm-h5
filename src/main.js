@@ -15,8 +15,8 @@ Vue.prototype.$onLaunched = new Promise(resolve => {
 Vue.prototype.parseTime = parseTime;
 Vue.prototype.numberFormat = numberFormat;
 Vue.prototype.numberFormatUnit = numberFormatUnit;
-Vue.prototype.$store = store
-Vue.config.productionTip = false
+Vue.prototype.$store = store;
+Vue.config.productionTip = false;
 
 App.mpType = 'app'
 
