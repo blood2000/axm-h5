@@ -26,17 +26,12 @@
 		},
 		methods: {
 			getData(options){
-				const { isSecondaryPage } = options;
+				const isSecondaryPage = options.isSecondaryPage;
 				getPageJump(this.headerInfo).then(response => {
 					const role = response.data;
-					// uni.showToast({
-					// 	title: '后端返回的数据: '+JSON.stringify(response),
-					// 	icon: 'none',
-					// 	duration: 5000
-					// });
 					
 					// 判断是否有返回按钮
-					const params = '';
+					let params = '';
 					if (isSecondaryPage === '1') {
 						params = '?isSecondaryPage=1'
 					}

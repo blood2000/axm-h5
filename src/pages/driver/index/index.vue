@@ -151,7 +151,7 @@
 		},
 		async onLoad(options) {
 			await this.$onLaunched;
-			const { isSecondaryPage } = options;
+			const isSecondaryPage = options.isSecondaryPage;
 			if (isSecondaryPage === '1') {
 				this.showBack = true;
 				this.isSecondaryPage = true;
