@@ -26,18 +26,13 @@
 		},
 		methods: {
 			getData(options){
-				const { isSecondaryPage } = options;
+				const isSecondaryPage = options.isSecondaryPage;
 				getPageJump(this.headerInfo).then(response => {
 					const role = response.data;
-					// uni.showToast({
-					// 	title: '后端返回的数据: '+JSON.stringify(response),
-					// 	icon: 'none',
-					// 	duration: 5000
-					// });
 					
 					// 判断是否有返回按钮
-					const params = '';
-					if (isSecondaryPage === '1' || isSecondaryPage === 1) {
+					let params = '';
+					if (isSecondaryPage === '1') {
 						params = '?isSecondaryPage=1'
 					}
 					// 1跳转调度者统计 2跳转司机统计 3跳转货主大宗统计 4跳转货主渣土统计
