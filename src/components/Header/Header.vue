@@ -20,7 +20,7 @@
 			<!-- <view class="top-bgframe1">
 				<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
 			</view> -->
-			<view :style="{height: statusBarHeight + 'upx' }">
+			<view :style="{height: statusBarHeight*2 + 'upx' }">
 			  <!-- 这里是状态栏 -->
 			</view>
 			<view class="top-title flex align-center justify-between">
@@ -34,6 +34,19 @@
 			<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
 		</view>
 		<view :style="{height: titleHeight + 'upx' }"></view>
+		<!-- <view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-green">确定</view>
+					<view class="action text-blue" @tap="hideModal">取消</view>
+				</view>
+				<view class="padding-xl">
+					状态栏高度：{{ statusBarHeight }}
+					是否安卓：{{ isAndroid }}
+					是否ios：{{ isiOS }}
+				</view>
+			</view>
+		</view> -->
 	</view>
 </template>
 
@@ -67,13 +80,14 @@
 			return {
 				pages: {},
 				titleHeight: 0, //状态栏和导航栏的总高度
-				naviBarHeight:0//导航栏高度
+				naviBarHeight:0,//导航栏高度
+				// modalName: 'bottomModal'
 			}
 		},
 		beforeMount(){
 			this.pages = getCurrentPages();
 			console.log(this.pages);
-			this.titleHeight = this.statusBarHeight + 120;
+			this.titleHeight = this.statusBarHeight*2 + 100;
 			console.log(this.statusBarHeight);
 			console.log(this.titleHeight);
 		},
@@ -84,6 +98,12 @@
 			
 		},
 		methods: {
+			// showModal(e) {
+			// 	this.modalName = e.currentTarget.dataset.target
+			// },
+			// hideModal(e) {
+			// 	this.modalName = null
+			// },
 			back() {
 				//@zxyuns 处理兼容，如果没有上一级界面则返回首页
 				if (this.isSecondaryPage) {
@@ -124,7 +144,7 @@
 	background: url('/static/tab_bg.png') no-repeat;
 	background-size: 100% 350upx;
 	.top-title{
-		line-height: 120upx;
+		height: 100upx;
 		width: 100%;
 		padding: 0 20upx;
 		font-size: 36rpx;
