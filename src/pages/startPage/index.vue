@@ -1,15 +1,24 @@
 <template>
-	<view>
-		<view class="cu-load load-modal">
+	<view class="start-page-index">
+		<Header :show-bg="false" :showBack="true" :isSecondaryPage="true">
+			<text slot="title">统计服务</text>
+		</Header>
+		<view v-if="loading" class="cu-load load-modal">
 			<view class="gray-text">加载中...</view>
 		</view>
+		<!-- 加载失败 -->
+		<image v-if="loadError" class="load-error" src="../../static/has_none.png"></image>
 	</view>
 </template>
 
 <script>
 	import { mapState } from 'vuex';
 	import { getPageJump } from '@/config/service/startPage.js';
+	import Header from '@/components/Header/Header.vue';
 	export default {
+		components: {
+			Header
+		},
 		computed: {
 			...mapState({
 			  headerInfo: state => state.header.headerInfo
@@ -17,7 +26,8 @@
 		},
 		data() {
 			return {
-				
+				loading: false,
+				loadError: false
 			}
 		},
 		async onLoad(options) {
@@ -26,15 +36,16 @@
 		},
 		methods: {
 			getData(options){
+				this.loading = true;
 				const isSecondaryPage = options.isSecondaryPage;
+				// 判断是否有返回按钮
+				let params = '';
+				if (isSecondaryPage === '1') {
+					params = '?isSecondaryPage=1'
+				}
 				getPageJump(this.headerInfo).then(response => {
+					this.loading = false;
 					const role = response.data;
-					
-					// 判断是否有返回按钮
-					let params = '';
-					if (isSecondaryPage === '1') {
-						params = '?isSecondaryPage=1'
-					}
 					// 1跳转调度者统计 2跳转司机统计 3跳转货主大宗统计 4跳转货主渣土统计
 					if (role === 1) {
 						uni.redirectTo({
@@ -52,13 +63,31 @@
 						uni.redirectTo({
 						    url: '/pages/finance/index/index'
 						});
+					} else {
+						// 加载失败
+						this.loadError = true;
 					}
+				}).catch(() => {
+					// 加载失败
+					this.loading = false;
+					this.loadError = true;
 				});
 			}
 		}
 	}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.start-page-index{
+	position: relative;
+	height: 100%;
+	.load-error{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 625rpx;
+		height: 390rpx;
+	}
+}
 </style>
