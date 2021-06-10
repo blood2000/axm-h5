@@ -8,45 +8,48 @@
 		
 		<view class="scroll-box">
 			<view class="c-app-container">
-				<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
-					<view class="c-count-box">
-						<view class="count">
-							<text class="num">{{ numberFormat(statisticData.projectCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(statisticData.projectCount) }}个</text>
+				<Loading v-if="statisticLoading"></Loading>
+				<template v-else>
+					<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num">{{ numberFormat(statisticData.projectCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.projectCount) }}个</text>
+							</view>
+							<view class="label" @tap="itemMore">项目<text class="has-arrow"></text></view>
 						</view>
-						<view class="label" @tap="itemMore">项目<text class="has-arrow"></text></view>
-					</view>
-					<view class="c-count-box">
-						<view class="count">
-							<text class="num">{{ numberFormat(statisticData.goodsCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(statisticData.goodsCount) }}个</text>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num">{{ numberFormat(statisticData.goodsCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.goodsCount) }}个</text>
+							</view>
+							<view class="label" @tap="orderMore">货源<text class="has-arrow"></text></view>
 						</view>
-						<view class="label" @tap="orderMore">货源<text class="has-arrow"></text></view>
 					</view>
-				</view>
-				<view class="ly-flex-pack-around">
-					<view class="c-count-box">
-						<view class="count">
-							<text class="num">{{ numberFormat(statisticData.waybillCompletedCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(statisticData.waybillCompletedCount) }}单</text>
+					<view class="ly-flex-pack-around">
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num">{{ numberFormat(statisticData.waybillCompletedCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.waybillCompletedCount) }}单</text>
+							</view>
+							<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 						</view>
-						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
-					</view>
-					<view class="c-count-box">
-						<view class="count">
-							<text class="num">{{ numberFormat(statisticData.sumShipperRealPay) }}</text>
-							<text class="unit">{{ numberFormatUnit(statisticData.sumShipperRealPay) }}元</text>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num">{{ numberFormat(statisticData.sumShipperRealPay) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.sumShipperRealPay) }}元</text>
+							</view>
+							<view class="label" @click="transportMore(2)">实付运费<text class="has-arrow"></text></view>
 						</view>
-						<view class="label" @click="transportMore(2)">实付运费<text class="has-arrow"></text></view>
-					</view>
-					<view class="c-count-box">
-						<view class="count">
-							<text class="num">{{ numberFormat(statisticData.sumInvoicedAmountApplied) }}</text>
-							<text class="unit">{{ numberFormatUnit(statisticData.sumInvoicedAmountApplied) }}元</text>
+						<view class="c-count-box">
+							<view class="count">
+								<text class="num">{{ numberFormat(statisticData.sumInvoicedAmountApplied) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.sumInvoicedAmountApplied) }}元</text>
+							</view>
+							<view class="label" @click="transportMore(3)">开票<text class="has-arrow"></text></view>
 						</view>
-						<view class="label" @click="transportMore(3)">开票<text class="has-arrow"></text></view>
 					</view>
-				</view>
+				</template>
 			</view>
 			
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
@@ -54,34 +57,37 @@
 					<text class="text">货源统计</text>
 					<text class="button" @tap="orderMore">查看更多</text>
 				</view>
-				<view class="c-app-container__box">
-					<view class="order-title">接单TOP3</view>
-					<view class="order-box">
-						<!-- v-for -->
-						<view v-for="(item, index) in orderList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
-							<view class="c-order-box__label ly-flex-align-center">
-								<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-								<text class="name">{{ item.goodsBigTypeName }}</text>
-								<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
+				<Loading v-if="orderLoading"></Loading>
+				<template v-else>
+					<view class="c-app-container__box">
+						<view class="order-title">接单TOP3</view>
+						<view class="order-box">
+							<!-- v-for -->
+							<view v-for="(item, index) in orderList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
+								<view class="c-order-box__label ly-flex-align-center">
+									<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+									<text class="name">{{ item.goodsBigTypeName }}</text>
+									<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
+								</view>
+								<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 							</view>
-							<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 						</view>
 					</view>
-				</view>
-				<view class="c-app-container__box">
-					<view class="order-title">付款TOP3</view>
-					<view class="order-box">
-						<!-- v-for -->
-						<view v-for="(item, index) in peeList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
-							<view class="c-order-box__label ly-flex-align-center">
-								<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-								<text class="name">{{ item.goodsBigTypeName }}</text>
-								<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
+					<view class="c-app-container__box">
+						<view class="order-title">付款TOP3</view>
+						<view class="order-box">
+							<!-- v-for -->
+							<view v-for="(item, index) in peeList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
+								<view class="c-order-box__label ly-flex-align-center">
+									<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+									<text class="name">{{ item.goodsBigTypeName }}</text>
+									<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
+								</view>
+								<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 							</view>
-							<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 						</view>
 					</view>
-				</view>
+				</template>
 			</view>
 			
 			<view class="c-app-container" style="padding-bottom: 15rpx;">
@@ -96,6 +102,7 @@
 					:countData="transportData"
 					:unit="transportUnit"
 					:unitTime="transportUnitTime"
+					:loading="transportLoading"
 				></LineChart>
 			</view>
 			
@@ -111,6 +118,7 @@
 					:countData="peeData"
 					:unit="peeUnit"
 					:unitTime="peeUnitTime"
+					:loading="peeLoading"
 				></LineChart>
 			</view>
 			
@@ -126,12 +134,9 @@
 					:countData="billData"
 					:unit="billUnit"
 					:unitTime="billUnitTime"
+					:loading="billLoading"
 				></LineChart>
 			</view>
-		</view>
-	
-		<view class="cu-load load-modal" v-if="loadModal">
-			<view class="gray-text">加载中...</view>
 		</view>
 		
 	</view>
@@ -165,6 +170,7 @@
 			return {
 				// 时间筛选
 				TabCur: 1,
+				statisticLoading: false,
 				statisticData: {
 					goodsCount: 0,
 					projectCount: 0,
@@ -173,25 +179,27 @@
 					waybillCompletedCount: 0
 				},
 				// 货源统计
-				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}],
+				orderLoading: false,
+				orderList: [],
+				peeList: [],
 				// 运输统计
+				transportLoading: false,
 				transportTime: [],
 				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
+				peeLoading: false,
 				peeTime: [],
 				peeData: [],
 				peeUnit: '元',
 				peeUnitTime: '天',
 				// 开票统计
+				billLoading: false,
 				billTime: [],
 				billData: [],
 				billUnit: '元',
-				billUnitTime: '天',
-				// 加载中
-				loadModal: false
+				billUnitTime: '天'
 			}
 		},
 		async mounted() {
@@ -219,18 +227,24 @@
 				});
 			},
 			getStatisticFun() {
+				this.statisticLoading = true;
 				getStatisticData(this.TabCur, this.headerInfo).then(response => {
+					this.statisticLoading = false;
 					this.statisticData = response.data;
 				})
 			},
 			getOrderFun() {
+				this.orderLoading = true;
 				getOrderData(this.TabCur, this.headerInfo).then(response => {
+					this.orderLoading = false;
 					this.orderList = response.data.receivingOrdersStatisticsVos;
 					this.peeList = response.data.paymentStatisticsVos;
 				})
 			},
 			getTransportFun() {
+				this.transportLoading = true;
 				getTransportData(this.TabCur, this.headerInfo).then(response => {
+					this.transportLoading = false;
 					const { orderReceivedStatisticsVo, unloadedStatisticsVo } = response.data;
 					const orderArr = [];
 					const unloadArr = [];
@@ -262,7 +276,9 @@
 				})
 			},
 			getPeeFun() {
+				this.peeLoading = true;
 				getPeeData(this.TabCur, this.headerInfo).then(response => {
+					this.peeLoading = false;
 					const arr = [];
 					this.peeTime = [];
 					response.data.forEach(el => {
@@ -280,7 +296,9 @@
 				})
 			},
 			getBillFun() {
+				this.billLoading = true;
 				getBillData(this.TabCur, this.headerInfo).then(response => {
+					this.billLoading = false;
 					const arr = [];
 					this.billTime = [];
 					response.data.forEach(el => {

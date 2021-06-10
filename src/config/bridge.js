@@ -1,4 +1,5 @@
 import store from '../store';
+import Vue from 'vue'
 
 // 判断 androida or ios
 var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1;
@@ -33,6 +34,7 @@ if (isiOS) {
 	setDevice('isiOS');
 	let params = {a: 123};
 	iosPromise().then(() => {
+		Vue.prototype.$WebViewJavascriptBridge = WebViewJavascriptBridge;
 		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
 			saveAppParams(response);
 		});
@@ -65,10 +67,10 @@ function setDevice(val) {
 	store.dispatch('getDeviceAction', val);
 }
 
-// 前端开发测试使用
+// 前端开发测试使用 - 货主
 // setTimeout(() => {
 // 	saveAppParams({
-// 		"Authorization":"e2b040a9-1e0a-42e3-939e-fb8df0d10436",
+// 		"Authorization":"7db9b30f-29f5-4de9-92b9-a82b3be9c167",
 // 		"App-Type":"1",
 // 		"App-Code":"9d3017728cb34eac947ba350c4e997be",
 // 		"Terminal-Type":"app",
@@ -76,5 +78,33 @@ function setDevice(val) {
 // 		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
 // 		"statusBarHeight": 0,
 // 		"role-type":3
+// 	})
+// }, 0)
+
+// 前端开发测试使用 - 司机
+// setTimeout(() => {
+// 	saveAppParams({
+// 		"Authorization":"a35128de-f268-456e-ab51-119112f87011",
+// 		"App-Type":"1",
+// 		"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
+// 		"Terminal-Type":"app",
+// 		"App-Version":"2.0",
+// 		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
+// 		"statusBarHeight": 0,
+// 		"role-type":2
+// 	})
+// }, 0)
+
+// 前端开发测试使用 - 调度者
+// setTimeout(() => {
+// 	saveAppParams({
+// 		"Authorization":"5e318a8c-cf1f-49b3-b677-187f54ca7feb",
+// 		"App-Type":"1",
+// 		"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
+// 		"Terminal-Type":"app",
+// 		"App-Version":"2.0",
+// 		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
+// 		"statusBarHeight": 0,
+// 		"role-type":1
 // 	})
 // }, 0)

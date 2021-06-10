@@ -48,12 +48,19 @@
 			showBg: {
 				type: Boolean,
 				default: true
+			},
+			// 是否二级页面
+			isSecondaryPage: {
+				type: Boolean,
+				default: false
 			}
 		},
 		computed: {
 			...mapState({
 				// headerInfo: state => state.header.headerInfo,
-				statusBarHeight: state => state.header.statusBarHeight
+				statusBarHeight: state => state.header.statusBarHeight,
+				isAndroid: state => state.header.isAndroid,
+				isiOS: state => state.header.isiOS
 			})
 		},
 		data() {
@@ -78,11 +85,16 @@
 		},
 		methods: {
 			back() {
-				/*uni.navigateBack({
-				delta: 1
-				})*/
 				//@zxyuns 处理兼容，如果没有上一级界面则返回首页
-				if (this.pages.length === 2) {
+				if (this.isSecondaryPage) {
+					if (this.isAndroid) {
+						if(window.Android !== null && typeof(window.Android) !== 'undefined') {
+							window.Android.callAndroid('back');
+						}
+					} else if (this.isiOS) {
+						this.$WebViewJavascriptBridge.callHandler('back');
+					}
+				} else if (this.pages.length === 2) {
 					uni.navigateBack({
 						delta: 1
 					});
