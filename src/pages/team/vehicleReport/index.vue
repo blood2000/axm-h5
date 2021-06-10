@@ -5,7 +5,7 @@
 		</Header>
 		<Screen v-model="queryParams.timeType" :showHistory="true" />
 		
-		<view class="c-app-container" style="padding-bottom: 15rpx;">
+		<view v-for="(item, index) in vehicleList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-align-center">
 				<text class="text">闽A1245</text>
 				<text class="param flex align-center justify-center">重卡 载重40吨</text>
@@ -14,66 +14,106 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="245"></text>
-							<text class="unit">趟</text>
+							<text class="num">{{ numberFormat(item.orderRemitAmount) }}</text>
+							<text class="unit">{{ numberFormatUnit(item.orderRemitAmount) }}趟</text>
 						</view>
 						<view class="label">运输次数</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="786"></text>
-							<text class="unit">吨</text>
+							<text class="num">{{ numberFormat(item.orderRemitAmount) }}</text>
+							<text class="unit">{{ numberFormatUnit(item.orderRemitAmount) }}吨</text>
 						</view>
 						<view class="label">载重</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="886"></text>
-							<text class="unit">公里</text>
+							<text class="num">{{ numberFormat(item.orderRemitAmount) }}</text>
+							<text class="unit">{{ numberFormatUnit(item.orderRemitAmount) }}公里</text>
 						</view>
 						<view class="label">车程</text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="1245"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(item.orderRemitAmount) }}</text>
+							<text class="unit">{{ numberFormatUnit(item.orderRemitAmount) }}元</text>
 						</view>
 						<view class="label">运费</text></view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<!-- 弹框加载 -->
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="gray-text">加载中...</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import Screen from '@/components/Screen/Screen.vue';
+	import Header from '@/components/Header/Header.vue';
+	import { getVehicleReport } from '@/config/service/team.js';
 	export default {
 		components: {
-			Screen
+			Screen,
+			Header
 		},
 		data() {
 			return {
-				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}],
+				vehicleList: [],
+				loadModal: false,
+				isEnd: false,
 				queryParams: {
+					pageNum: 1,
+					pageSize: 10,
 					timeType: 1
 				},
 			}
 		},
 		onLoad(options) {
+			this.loadModal = true;
 			if (options) {
 				this.queryParams.timeType = options.day - 0;
 			}
-
+			this.getReport();
+		},
+		onPullDownRefresh() {
+			this.vehicleList = []
+			this.queryParams.pageNum = 1
+			this.getReport()
+			uni.stopPullDownRefresh();  //停止下拉刷新动画
+		},
+		// 触底加载
+		onReachBottom() {
+			// console.log("触底")
+			if(!this.isEnd) {
+				this.queryParams.pageNum++
+				this.getReport()
+			}
 		},
 		methods: {
+			getReport() {
+				this.loadModal = true;
+				getVehicleReport(this.queryParams, this.headerInfo).then(response => {
+					this.loadModal = false;
+					if(response.data.length === 0) {
+						this.isEnd = true;
+						return
+					}
+					this.vehicleList = [...this.vehicleList,...response.data]
+				}).catch(() => {
+					this.loadModal = false;
+				});
+			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
 .shipment-index{
+	padding-bottom: 10upx;
 	font-family: PingFang SC;
 	.order-title{
 		font-size: 28rpx;
