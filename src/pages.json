@@ -230,6 +230,16 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
+		// 充值说明
+		,{
+		    "path" : "pages/protocol/rechargeDescription",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "充值说明",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
