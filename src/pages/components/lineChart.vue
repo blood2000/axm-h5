@@ -1,17 +1,19 @@
 <template>
 	<view class="chart-container">
-		<view v-show="seriesData.length > 0" class="lengend-box ly-flex-v ly-flex-pack-justify">
-			<view class="time ly-flex-pack-start">{{ today }}</view>
-			<view class="legend ly-flex-pack-start">
-				<view class="legend-item ly-flex-align-center" v-for="(item, index) in legendData" :key="index">
-					<text class="round" :style="{background: item.color}"></text>
-					<text class="text">{{ item.name }}</text>
-					<text class="count">{{ item.count + unit }}</text>
+		<Loading v-if="loading"></Loading>
+		<template v-else>
+			<view v-show="seriesData.length > 0" class="lengend-box ly-flex-v ly-flex-pack-justify">
+				<view class="time ly-flex-pack-start">{{ today }}</view>
+				<view class="legend ly-flex-pack-start">
+					<view class="legend-item ly-flex-align-center" v-for="(item, index) in legendData" :key="index">
+						<text class="round" :style="{background: item.color}"></text>
+						<text class="text">{{ item.name }}</text>
+						<text class="count">{{ item.count + unit }}</text>
+					</view>
 				</view>
 			</view>
-		</view>
-		
-		<view class="chart-box" :id="id"></view>
+			<view class="chart-box" :id="id"></view>
+		</template>
 	</view>
 </template>
 
@@ -42,6 +44,10 @@
 			unitTime: {
 				type: String,
 				default: ''
+			},
+			loading: {
+				type: Boolean,
+				default: false
 			}
 		},
 		computed: {
@@ -179,12 +185,12 @@
 				});
 			},
 			showToolTip() {
-				// this.chart.dispatchAction({
-				// 	type: 'showTip',
-				// 	seriesIndex: 0,
-				// 	dataIndex: this.seriesData[0].data.length - 1,
-				// 	position: [-1000, 0]
-				// });
+				this.chart.dispatchAction({
+					type: 'showTip',
+					seriesIndex: 0,
+					dataIndex: this.seriesData[0].data.length - 1,
+					position: [-1000, 0]
+				});
 			}
 		}
 	}
@@ -193,8 +199,9 @@
 <style lang="scss" scoped>
 .chart-container{
 	position: relative;
+	height: 450rpx;
 	.lengend-box{
-		max-width: 334rpx;
+		max-width: 400rpx;
 		min-width: 200rpx;
 		height: 84rpx;
 		border: 1px solid rgba(51, 51, 51, 0.22);
