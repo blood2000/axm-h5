@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import cancelRequest from './modules/cancelRequest'
 Vue.use(Vuex);
 const context = require.context('./modules', false, /\.js$/);
 const moduleStores = {};
@@ -17,5 +18,7 @@ context.keys().forEach(key => {
 export default new Vuex.Store({
     modules: {
         ...moduleStores,
+		// 取消请求
+		cancelRequest
     },
 });
