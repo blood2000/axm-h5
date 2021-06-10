@@ -47,15 +47,15 @@
 						});
 					} else if (role === 2) {
 						uni.redirectTo({
-						    url: '/pages/team/index/index' + params
+						    url: '/pages/team/index/index'
 						});
 					} else if (role === 3) {
 						uni.redirectTo({
-						    url: '/pages/shipment/index/index' + params
+						    url: '/pages/shipment/index/index'
 						});
 					} else if (role === 4) {
 						uni.redirectTo({
-						    url: '/pages/finance/index/index' + params
+						    url: '/pages/finance/index/index'
 						});
 					}
 				});

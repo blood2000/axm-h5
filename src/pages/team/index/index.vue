@@ -313,6 +313,7 @@
 	.scroll-box{
 		position: relative;
 		z-index: 1;
+		padding-bottom: 1rpx;
 	}
 	.order-title{
 		font-size: 28rpx;
