@@ -9,6 +9,10 @@ uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlen
 //const headerInfo = store.state.header.headerInfo;
 uniRequest.interceptors.request.use(
 	config => {
+		// 取消请求
+		config.cancelToken = new uniRequest.CancelToken(function (cancel) {
+			store.commit('pushToken', {cancelToken: cancel})
+		}); 
 		// header添加其他信息
 		//config.headers['Produce-Code'] = headerInfo['Produce-Code'];
 		//config.headers['App-Code'] = headerInfo['App-Code'];
