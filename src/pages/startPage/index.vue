@@ -40,14 +40,14 @@
 					if (isSecondaryPage === '1') {
 						params = '?isSecondaryPage=1'
 					}
-					// 1跳转司机统计 2跳转调度者统计 3跳转货主大宗统计 4跳转货主渣土统计
+					// 1跳转调度者统计 2跳转司机统计 3跳转货主大宗统计 4跳转货主渣土统计
 					if (role === 1) {
 						uni.redirectTo({
-						    url: '/pages/driver/index/index' + params
+						    url: '/pages/team/index/index'
 						});
 					} else if (role === 2) {
 						uni.redirectTo({
-						    url: '/pages/team/index/index'
+						    url: '/pages/driver/index/index' + params
 						});
 					} else if (role === 3) {
 						uni.redirectTo({
