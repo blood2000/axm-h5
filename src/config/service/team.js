@@ -59,3 +59,25 @@ export function getDriverData(timeType, config) {
 	headers: config
   });
 }
+
+// 司机报表
+export function getDriverReport(queryDate, config) {
+  return uniRequest({
+    url: '/transportation/team-app/statistics/getTeamDriverDetails',
+    method: 'get',
+	data: queryDate,
+	headers: config
+  });
+}
+
+// 车辆报表
+export function getVehicleReport(timeType, config) {
+  return uniRequest({
+    url: '/transportation/team-app/statistics/getTeamDriverDetails',
+    method: 'get',
+	data: {
+		timeType: timeType
+	},
+	headers: config
+  });
+}
