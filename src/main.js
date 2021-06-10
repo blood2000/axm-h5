@@ -8,6 +8,9 @@ import './config/bridge.js'
 //自定义指令
 import './directive'
 import { parseTime, numberFormat, numberFormatUnit } from './utils/ddc.js';
+//复制到剪贴板
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 Vue.prototype.$onLaunched = new Promise(resolve => {
 	Vue.prototype.$isResolve = resolve;

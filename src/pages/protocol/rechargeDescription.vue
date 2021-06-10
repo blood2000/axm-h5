@@ -7,7 +7,7 @@
 			<view>您好！这是贵司充值运费的账号，必须使用与超好运注册账户一致的企业对公户进行充值，充值成功后在超好运货主端APP的个人中心即可显示充值的金额。</view>
 		</view>
 		
-		<!-- <button class="service-page__button" type="default" size="mini" @click="copy">复制账号信息</button> -->
+		<button class="service-page__button" type="default" size="mini" @click="copyText">复制账号信息</button>
 
 		<uni-table border emptyText="暂无数据">
 		    <tbody>
@@ -38,15 +38,6 @@
 		    </tbody>
 		</uni-table>
 		
-		<!-- <view style="position: relative;">
-			<input
-			    id="table-inner-id"
-			    :value="inputValue"
-			    style="width: 100px;"
-			>
-			<div style="width: 100%; height: 100%; background: #fff; position: absolute; left: 0; top: 0" />
-		</view> -->
-		
 		<view style="margin-bottom: 100rpx"></view>
 	</view>
 </template>
@@ -73,14 +64,26 @@
 				this.companyName = options.companyName ? options.companyName : null;
 				this.account = options.account ? options.account : null;
 			},
-			copy() {
-				document.getElementById('table-inner-id').select();
-				if (document.execCommand('copy')) {
-					document.execCommand('copy');
-					this.msgSuccess('复制成功!');
-				} else {
-					this.msgError('复制失败');
-				}
+			copyText() {
+				// #ifdef H5
+				this.$copyText(this.inputValue).then(
+					res => {
+						uni.showToast({
+							title: '复制成功'
+						})
+					}
+				)
+				// #endif
+				// #ifndef H5
+				uni.setClipboardData({
+					data: this.inputValue,
+					success: () => {
+						uni.showToast({
+							title: '复制成功'
+						})
+					}
+				})
+				// #endif
 			}
 		}
 	}
