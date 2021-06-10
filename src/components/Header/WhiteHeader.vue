@@ -2,7 +2,7 @@
 	<view class="">
 		<view :style="{height: titleHeight + 'upx'}"></view>
 		<view class="top-frame" :style="{height: titleHeight + 'upx'}">
-			<view class="status_bar" :style="{height: statusBarHeight + 'upx'}">
+			<view class="status_bar" :style="{height: statusBarHeight*2 + 'upx'}">
 			  <!-- 这里是状态栏 -->
 			</view>
 			<view class="top-title flex align-center justify-between">
@@ -39,7 +39,7 @@
 		},
 		beforeMount(){
 			this.pages = getCurrentPages();
-			this.titleHeight = this.statusBarHeight + 95;
+			this.titleHeight = this.statusBarHeight*2 + 95;
 		},
 		onShow() {
 		},
@@ -73,12 +73,12 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	height: 130upx;
+	// height: 130upx;
 	width: 100%;
 	overflow: hidden;
 	background-color: #FFFFFF;
 	.top-title{
-		line-height: 95upx;
+		height: 95upx;
 		width: 100%;
 		padding: 0 20upx;
 		font-size: 36rpx;
