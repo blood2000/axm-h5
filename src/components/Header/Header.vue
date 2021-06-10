@@ -89,7 +89,7 @@
 				if (this.isSecondaryPage) {
 					if (this.isAndroid) {
 						if(window.Android !== null && typeof(window.Android) !== 'undefined') {
-							window.Android.callAndroid('back');
+							window.Android.back();
 						}
 					} else if (this.isiOS) {
 						this.$WebViewJavascriptBridge.callHandler('back');
