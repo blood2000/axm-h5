@@ -86,24 +86,22 @@
 		methods: {
 			back() {
 				//@zxyuns 处理兼容，如果没有上一级界面则返回首页
-				if (this.pages.length === 2) {
+				if (this.isSecondaryPage) {
+					if (this.isAndroid) {
+						if(window.Android !== null && typeof(window.Android) !== 'undefined') {
+							window.Android.callAndroid('back');
+						}
+					} else if (this.isiOS) {
+						this.$WebViewJavascriptBridge.callHandler('back');
+					}
+				} else if (this.pages.length === 2) {
 					uni.navigateBack({
 						delta: 1
 					});
 				} else if (this.pages.length === 1) {
-					if (this.isSecondaryPage) {
-						if (this.isAndroid) {
-							if(window.Android !== null && typeof(window.Android) !== 'undefined') {
-								window.Android.callAndroid('back');
-							}
-						} else if (this.isiOS) {
-							this.$WebViewJavascriptBridge.callHandler('back');
-						}
-					}else{
-						uni.switchTab({
-							url: '/pages/home/home',
-						})
-					}
+					uni.switchTab({
+						url: '/pages/home/home',
+					})
 				} else {
 					uni.navigateBack({
 						delta: 1
