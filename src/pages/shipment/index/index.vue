@@ -173,8 +173,8 @@
 					waybillCompletedCount: 0
 				},
 				// 货源统计
-				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}],
+				orderList: [],
+				peeList: [],
 				// 运输统计
 				transportTime: [],
 				transportData: [],

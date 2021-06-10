@@ -11,31 +11,31 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(10000) }}</text>
-							<text class="unit">{{ numberFormatUnit(10000) }}单</text>
+							<text class="num">{{ numberFormat(orderNum) }}</text>
+							<text class="unit">{{ numberFormatUnit(orderNum) }}单</text>
 						</view>
 						<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(255) }}</text>
-							<text class="unit">{{ numberFormatUnit(255) }}元</text>
+							<text class="num">{{ numberFormat(PeeNum) }}</text>
+							<text class="unit">{{ numberFormatUnit(PeeNum) }}元</text>
 						</view>
 						<view class="label" @click="transportMore(2)">实收运费<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(255) }}</text>
-							<text class="unit">{{ numberFormatUnit(255) }}人</text>
+							<text class="num">{{ numberFormat(statisticData.activeDriverNum) }}</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.activeDriverNum) }}人</text>
 						</view>
 						<view class="label" @tap="driverMore">活跃司机<text class="has-arrow"></text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(255) }}</text>
-							<text class="unit">{{ numberFormatUnit(255) }}辆</text>
+							<text class="num">{{ numberFormat(statisticData.activeVechicleNum) }}</text>
+							<text class="unit">{{ numberFormatUnit(statisticData.activeVechicleNum) }}辆</text>
 						</view>
-						<view class="label" @tap="carMore">用车<text class="has-arrow"></text></view>
+						<view class="label" @tap="carMore">活跃车辆<text class="has-arrow"></text></view>
 					</view>
 				</view>
 			</view>
@@ -78,13 +78,13 @@
 				<view class="c-app-container__box ly-flex-pack-justify">
 					<view class="order-box">
 						总车辆
-						<text class="unit">({{ numberFormatUnit(15202) }}辆)</text>
-						<text class="count">{{ numberFormat(15202) }}</text>
+						<text class="unit">({{ numberFormatUnit(statisticData.vechicleNum) }}辆)</text>
+						<text class="count">{{ numberFormat(statisticData.vechicleNum) }}</text>
 					</view>
 					<view class="order-box">
 						活跃车辆
-						<text class="unit">({{ numberFormatUnit(15202) }}辆)</text>
-						<text class="count">{{ numberFormat(15202) }}</text>
+						<text class="unit">({{ numberFormatUnit(statisticData.activeVechicleNum) }}辆)</text>
+						<text class="count">{{ numberFormat(statisticData.activeVechicleNum) }}</text>
 					</view>
 				</view>
 				<view class="c-app-container__box">
@@ -93,9 +93,9 @@
 					<view v-for="(item, index) in carList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 						<view class="c-order-box__label ly-flex-align-center">
 							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-							<text class="name">闽A12345</text>
+							<text class="name">{{ item.vehicleName }}</text>
 						</view>
-						<text class="c-order-box__count">486单</text>
+						<text class="c-order-box__count">{{ item.orderReceiving }}单</text>
 					</view>
 				</view>
 			</view>
@@ -108,13 +108,13 @@
 				<view class="c-app-container__box ly-flex-pack-justify">
 					<view class="order-box">
 						总司机
-						<text class="unit">({{ numberFormatUnit(255) }}人)</text>
-						<text class="count">{{ numberFormat(255) }}</text>
+						<text class="unit">({{ numberFormatUnit(statisticData.driverNum) }}人)</text>
+						<text class="count">{{ numberFormat(statisticData.driverNum) }}</text>
 					</view>
 					<view class="order-box">
 						活跃司机
-						<text class="unit">({{ numberFormatUnit(255) }}人)</text>
-						<text class="count">{{ numberFormat(255) }}</text>
+						<text class="unit">({{ numberFormatUnit(statisticData.activeDriverNum) }}人)</text>
+						<text class="count">{{ numberFormat(statisticData.activeDriverNum) }}</text>
 					</view>
 				</view>
 				<view class="c-app-container__box">
@@ -123,9 +123,9 @@
 					<view v-for="(item, index) in driverList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 						<view class="c-order-box__label ly-flex-align-center">
 							<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-							<text class="name">张三</text>
+							<text class="name">{{ item.driverName }}</text>
 						</view>
-						<text class="c-order-box__count">486单</text>
+						<text class="c-order-box__count">{{ item.orderReceiving }}单</text>
 					</view>
 				</view>
 			</view>
@@ -142,7 +142,7 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
-	import { getTransportData } from '@/config/service/team.js';
+	import { getStatisticData, getTransportData, getPeeData, getCarData, getDriverData } from '@/config/service/team.js';
 	export default {
 		components: {
 			Header,
@@ -155,29 +155,37 @@
 		},
 		watch: {
 			TabCur(){
+				this.getStatisticFun();
 				this.getTransportFun();
+				this.getPeeFun();
+				this.getCarFun();
+				this.getDriverFun();
 			}
 		},
 		data() {
 			return {
 				// 时间筛选
 				TabCur: 1,
+				statisticData: {
+					vechicleNum: 0,
+					activeVechicleNum: 0,
+					driverNum: 0,
+					activeDriverNum: 0
+				},
+				orderNum: 0,
+				PeeNum: 0,
 				// 用车统计
-				carList: [{}, {}, {}],
+				carList: [],
 				// 司机统计
-				driverList: [{}, {}, {}],
+				driverList: [],
 				// 运输统计
 				transportTime: [],
 				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
-				peeTime: [1, 2, 3, 4],
-				peeData: [{
-					name: '实收金额',
-					data: [1, 2, 3, 4],
-					color: '#55C876'
-				}],
+				peeTime: [],
+				peeData: [],
 				peeUnit: '元',
 				peeUnitTime: '天',
 				// 加载中
@@ -186,7 +194,11 @@
 		},
 		async mounted() {
 			await this.$onLaunched;
+			this.getStatisticFun();
 			this.getTransportFun();
+			this.getPeeFun();
+			this.getCarFun();
+			this.getDriverFun();
 		},
 		methods: {
 			carMore() {
@@ -204,8 +216,14 @@
 					url: '/pages/team/billReport/index?day=' + this.TabCur + '&tab=' + tab
 				});
 			},
+			getStatisticFun() {
+				getStatisticData(this.TabCur, this.headerInfo).then(response => {
+					this.statisticData = response.data;
+				})
+			},
 			getTransportFun() {
 				getTransportData(this.TabCur, this.headerInfo).then(response => {
+					this.orderNum = response.data.orderUnloaCount;
 					const { orderReceivingList, orderUnloadList } = response.data;
 					const orderArr = [];
 					const unloadArr = [];
@@ -234,6 +252,38 @@
 						this.$refs['TransportRef'].initChart();
 					})
 				});
+			},
+			getPeeFun() {
+				getPeeData(this.TabCur, this.headerInfo).then(response => {
+					this.PeeNum = response.data.waybillAmount;
+					const { freightVoList } = response.data;
+					const peeArr = [];
+					this.peeTime = [];
+					if(freightVoList){
+						freightVoList.forEach(el => {
+							this.peeTime.push(el.timeTag);
+							peeArr.push(el.money);
+						});
+					}
+					this.peeData = [{
+						name: '实收金额',
+						data: peeArr,
+						color: '#55C876'
+					}];
+					this.$nextTick(() => {
+						this.$refs['PeeRef'].initChart();
+					})
+				})
+			},
+			getCarFun() {
+				getCarData(this.TabCur, this.headerInfo).then(response => {
+					this.carList = response.data;
+				})
+			},
+			getDriverFun() {
+				getDriverData(this.TabCur, this.headerInfo).then(response => {
+					this.driverList = response.data;
+				})
 			}
 		}
 	}
