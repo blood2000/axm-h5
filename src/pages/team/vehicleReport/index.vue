@@ -48,7 +48,7 @@
 			<view class="gray-text">加载中...</view>
 		</view>
 		<!-- 空数据 -->
-		<NonePage v-if="vehicleList.length === 0" />
+		<NonePage v-if="vehicleList.length === 0 && !loadModal" />
 	</view>
 </template>
 
