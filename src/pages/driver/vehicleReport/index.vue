@@ -47,6 +47,8 @@
 		<view class="cu-load load-modal" v-if="loadModal">
 			<view class="gray-text">加载中...</view>
 		</view>
+		<!-- 空数据 -->
+		<NonePage v-if="vehicleList.length === 0" />
 	</view>
 </template>
 
@@ -54,11 +56,13 @@
 	import { mapState } from 'vuex'
 	import Screen from '@/components/Screen/Screen.vue';
 	import Header from '@/components/Header/Header.vue';
+	import NonePage from '@/components/NonePage/NonePage.vue';
 	import { getVehicleReport } from '@/config/service/driver.js';
 	export default {
 		components: {
 			Screen,
-			Header
+			Header,
+			NonePage
 		},
 		computed: {
 			...mapState({

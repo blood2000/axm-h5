@@ -44,16 +44,20 @@
 		<view class="cu-load load-modal" v-if="loadModal">
 			<view class="gray-text">加载中...</view>
 		</view>
+		<!-- 空数据 -->
+		<NonePage v-if="projectList.length === 0" />
 	</view>
 </template>
 
 <script>
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
+	import NonePage from '@/components/NonePage/NonePage.vue';
 	import { getProjectReport } from '@/config/service/shipment.js';
 	export default {
 		components: {
-			Header
+			Header,
+			NonePage
 		},
 		computed: {
 			...mapState({

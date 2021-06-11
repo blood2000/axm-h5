@@ -212,6 +212,8 @@
 				</view>
 			</uni-collapse-item>
 		</uni-collapse>
+		<!-- 空数据 -->
+		<NonePage v-if="monthList.length === 0" />
 	</view>
 </template>
 
@@ -219,11 +221,13 @@
 	import { mapState } from 'vuex'
 	import Screen from '@/components/Screen/Screen.vue';
 	import Header from '@/components/Header/Header.vue';
+	import NonePage from '@/components/NonePage/NonePage.vue';
 	import { getTransMonth, getTransHead, getTransData, getCostMonth, getCostHead, getCostData, getBillingMonth, getBillingHead, getBillingData } from '@/config/service/shipment.js';
 	export default {
 		components: {
 			Screen,
-			Header
+			Header,
+			NonePage
 		},
 		computed: {
 			...mapState({
