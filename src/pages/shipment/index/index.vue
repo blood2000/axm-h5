@@ -146,7 +146,6 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
-	import { getStatisticData, getOrderData, getTransportData, getPeeData, getBillData } from '@/config/service/shipment.js';
 	export default {
 		components: {
 			Header,
@@ -239,7 +238,7 @@
 			getStatisticFun() {
 				this.statisticLoading = true;
 				this.statisticTask = uni.request({
-				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
+				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -255,7 +254,7 @@
 			getOrderFun() {
 				this.orderLoading = true;
 				this.orderTask = uni.request({
-				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -272,7 +271,7 @@
 			getTransportFun() {
 				this.transportLoading = true;
 				this.transportTask = uni.request({
-				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -314,7 +313,7 @@
 			getPeeFun() {
 				this.peeLoading = true;
 				this.peeTask = uni.request({
-				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -343,7 +342,7 @@
 			getBillFun() {
 				this.billLoading = true;
 				this.billTask = uni.request({
-				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
