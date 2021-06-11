@@ -44,8 +44,8 @@
 							<text class="unit">{{ numberFormatUnit(costHead.unpaidCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.unpaidSum) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.unpaidSum) }}元</text>
+							<text class="num">{{ numberFormat(costHead.unpaidSum) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.unpaidSum) }}元</text>
 						</view>
 						<view class="label">待付款</view>
 					</view>
@@ -55,8 +55,8 @@
 							<text class="unit">{{ numberFormatUnit(costHead.paidCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.paidSum) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.paidSum) }}元</text>
+							<text class="num">{{ numberFormat(costHead.paidSum) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.paidSum) }}元</text>
 						</view>
 						<view class="label">已付款</view>
 					</view>
@@ -196,7 +196,8 @@
 			},
 			handleClick(e){
 				this.tab = e;
-				if (e === 1){
+				this.monthList = [];
+				if (e == 1){
 					this.getTransMonth();
 					this.getTransHead();
 				}else{

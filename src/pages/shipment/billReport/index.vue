@@ -43,34 +43,34 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(costHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已核算</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(costHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(costHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已打款</text></view>
 					</view>
@@ -81,22 +81,22 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(billingHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(billingHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">待申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(billingHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(billingHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(billingHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(billingHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已开票</text></view>
 					</view>
@@ -293,6 +293,7 @@
 			},
 			handleClick(e){
 				this.tab = e;
+				this.monthList = [];
 				if (e == 1){
 					this.getTransMonth();
 					this.getTransHead();
