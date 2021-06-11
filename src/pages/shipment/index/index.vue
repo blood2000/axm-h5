@@ -63,28 +63,32 @@
 						<view class="order-title">接单TOP3</view>
 						<view class="order-box">
 							<!-- v-for -->
-							<view v-for="(item, index) in orderList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
-								<view class="c-order-box__label ly-flex-align-center">
-									<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-									<text class="name">{{ item.goodsBigTypeName }}</text>
-									<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
+							<template v-for="(item, index) in orderList">
+								<view class="c-order-box ly-flex-pack-justify ly-flex-align-center">
+									<view class="c-order-box__label ly-flex-align-center">
+										<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+										<text class="name">{{ item.goodsBigTypeName }}</text>
+									</view>
+									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 								</view>
-								<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
-							</view>
+								<view class="c-order-address">{{ (item.load_district ? item.load_district: '') + ((item.load_district || item.unload_district) ? '—' : '') + (item.unload_district ? item.unload_district : '') }}</view>
+							</template>
 						</view>
 					</view>
 					<view class="c-app-container__box">
 						<view class="order-title">付款TOP3</view>
 						<view class="order-box">
 							<!-- v-for -->
-							<view v-for="(item, index) in peeList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
-								<view class="c-order-box__label ly-flex-align-center">
-									<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
-									<text class="name">{{ item.goodsBigTypeName }}</text>
-									<text class="address">{{ (item.load_district ? item.load_district: '') + '—' + (item.unload_district ? item.unload_district : '') }}</text>
+							<template v-for="(item, index) in peeList">
+								<view class="c-order-box ly-flex-pack-justify ly-flex-align-center">
+									<view class="c-order-box__label ly-flex-align-center">
+										<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+										<text class="name">{{ item.goodsBigTypeName }}</text>
+									</view>
+									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 								</view>
-								<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
-							</view>
+								<view class="c-order-address">{{ (item.load_district ? item.load_district: '') + ((item.load_district || item.unload_district) ? '—' : '') + (item.unload_district ? item.unload_district : '') }}</view>
+							</template>
 						</view>
 					</view>
 				</template>

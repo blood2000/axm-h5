@@ -112,10 +112,10 @@
 		<view class="c-order-box__label ly-flex-align-center">
 			<image class="order" src="../../../static/order_1.png"></image>
 			<text class="name">煤炭</text>
-			<text class="address">宝安机场—华林广场</text>
 		</view>
 		<text class="c-order-box__count">486单</text>
 	</view>
+	<view class="c-order-address">宝安机场—华林广场</view>
  */
 .c-order-box{
 	font-family: PingFang SC;
@@ -132,16 +132,23 @@
 			color: #333333;
 			margin-left: 20rpx;
 		}
-		>.address{
-			font-size: 24rpx;
-			font-weight: 500;
-			color: #333333;
-			margin-left: 20rpx;
-		}
+		// >.address{
+		// 	font-size: 24rpx;
+		// 	font-weight: 500;
+		// 	color: #333333;
+		// 	margin-left: 20rpx;
+		// }
 	}
 	&__count{
 		font-size: 28rpx;
 		font-weight: 500;
 		color: #999999;
 	}
+}
+.c-order-address{
+	font-size: 24rpx;
+	font-weight: 500;
+	color: #333333;
+	margin-left: 65rpx;
+	margin-top: 10rpx;
 }
