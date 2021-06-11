@@ -7,7 +7,7 @@
 			<view class="gray-text">加载中...</view>
 		</view>
 		<!-- 加载失败 -->
-		<image v-if="loadError" class="load-error" src="../../static/has_none.png"></image>
+		<NonePage v-if="loadError"></NonePage>
 	</view>
 </template>
 
@@ -15,9 +15,11 @@
 	import { mapState } from 'vuex';
 	import { getPageJump } from '@/config/service/startPage.js';
 	import Header from '@/components/Header/Header.vue';
+	import NonePage from '@/components/NonePage/NonePage.vue';
 	export default {
 		components: {
-			Header
+			Header,
+			NonePage
 		},
 		computed: {
 			...mapState({
@@ -81,13 +83,5 @@
 .start-page-index{
 	position: relative;
 	height: 100%;
-	.load-error{
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 625rpx;
-		height: 390rpx;
-	}
 }
 </style>
