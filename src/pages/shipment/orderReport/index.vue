@@ -3,9 +3,9 @@
 		<Header :showBack="true" :showBg="false">
 			<text slot="title">货源报表</text>
 		</Header>
-		<Screen v-model="queryParams.timeType" :showHistory="true" />
+		<Screen v-model="tabCur" :showHistory="true" />
 		
-		<view class="c-app-container" style="padding-bottom: 15rpx;">
+		<view v-for="(item, index) in orderList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">煤炭</text>
 			</view>
@@ -23,57 +23,88 @@
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="245"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
 							</view>
 							<view class="label">已接单</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="786"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
 							</view>
 							<view class="label">已卸货</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="886"></text>
-								<text class="unit">元</text>
+								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
 							</view>
 							<view class="label">已结算</text></view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="1245"></text>
-								<text class="unit">元</text>
+								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
 							</view>
 							<view class="label">实付金额</text></view>
 						</view>
 					</view>
 				</view>
 			</view>
-			
+		</view>
+		<!-- 弹框加载 -->
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="gray-text">加载中...</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+	import Screen from '@/components/Screen/Screen.vue';
+	import Header from '@/components/Header/Header.vue';
+	import { getOrderReport } from '@/config/service/shipment.js';
 	export default {
+		components: {
+			Screen,
+			Header
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
+		},
+		watch: {
+			tabCur(e){
+				this.orderList = [];
+				this.getReport();
+			}
+		},
 		data() {
 			return {
-				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}],
-				queryParams: {
-					timeType: 1
-				},
+				orderList: [],
+				loadModal: false,
+				tabCur: 1
 			}
 		},
 		onLoad(options) {
+			this.loadModal = true;
 			if (options) {
-				this.queryParams.timeType = options.day - 0;
+				this.tabCur = options.day - 0;
 			}
+			this.getReport();
 		},
 		methods: {
+			getReport() {
+				this.loadModal = true;
+				getOrderReport(this.tabCur, this.headerInfo).then(response => {
+					this.loadModal = false;
+					this.orderList = response.data
+				}).catch(() => {
+					this.loadModal = false;
+				});
+			},
 		}
 	}
 </script>

@@ -9,90 +9,94 @@
 				</view>
 			</template>
 		</Header>
-		<Screen v-model="queryParams.timeType" />
+		<Screen v-model="timeType" />
+		<!-- 头部数据 -->
 		<view class="top-fixed">
+			<!-- 运输报表头部 -->
 			<view v-if="tab === 1" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
 						</view>
 						<view class="label">已接单</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
 						</view>
 						<view class="label">已装货</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
 						</view>
 						<view class="label">已卸货</text></view>
 					</view>
 				</view>
 			</view>
+			<!-- 费用报表头部 -->
 			<view v-if="tab === 2" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;" v-number-format="234"></text>
-							<text class="unit">单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num" v-number-format="1252631"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已核算</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;" v-number-format="234"></text>
-							<text class="unit">单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num" v-number-format="1252631"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;" v-number-format="234"></text>
-							<text class="unit">单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num" v-number-format="1252631"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已打款</text></view>
 					</view>
 				</view>
 			</view>
+			<!-- 开票报表头部 -->
 			<view v-if="tab === 3" class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">待申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="25567"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 						</view>
 						<view class="label">已开票</text></view>
 					</view>
@@ -101,29 +105,30 @@
 		</view>
 		<view :style="tab === 2? 'height: 242upx;':'height: 170upx;'"></view>
 		
-		<uni-collapse v-if="tab === 1" :accordion="true" @change="change">
-			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation" >
-				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
-					<view class="time">{{ cont.time }}</view>
+		<!-- 运输报表内容 -->
+		<uni-collapse v-if="tab === 1" :accordion="true" @change="transChange">
+			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
+				<view v-for="(cont, index) in transData" :key="index" class="c-app-container min">
+					<view class="time">{{ parseTime(cont.dayTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.receiveCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.receiveCount) }}单</text>
 							</view>
 							<view class="label">已接单</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.loadedCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.loadedCount) }}单</text>
 							</view>
 							<view class="label">已装货</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.unloadedCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unloadedCount) }}单</text>
 							</view>
 							<view class="label">已卸货</text></view>
 						</view>
@@ -132,60 +137,74 @@
 			</uni-collapse-item>
 		</uni-collapse>
 		
-		<uni-collapse v-if="tab === 2" :accordion="true">
-			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
-				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
-					<view class="time">{{ cont.time }}</view>
+		<!-- 费用报表内容 -->
+		<uni-collapse v-if="tab === 2" :accordion="true" @change="costChange">
+			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
+				<view v-for="(cont, index) in costData" :key="index" class="c-app-container min">
+					<view class="time">{{ parseTime(cont.dayTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
+							<view class="count" style="margin-bottom: 30upx;">
+								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.unpaidCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unpaidCount) }}单</text>
+							</view>
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
 							</view>
 							<view class="label">已核算</view>
 						</view>
 						<view class="c-count-box">
+							<view class="count" style="margin-bottom: 30upx;">
+								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.paidCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.paidCount) }}单</text>
+							</view>
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">单</text>
+								<text class="num">{{ numberFormat(cont.paidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.paidSum) }}元</text>
 							</view>
 							<view class="label">已申请</view>
 						</view>
 						<view class="c-count-box">
-							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">单</text>
+							<view class="count" style="margin-bottom: 30upx;">
+								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.paidCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.paidCount) }}单</text>
 							</view>
-							<view class="label">已打款</text></view>
+							<view class="count">
+								<text class="num">{{ numberFormat(cont.paidSum) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.paidSum) }}元</text>
+							</view>
+							<view class="label">已打款</view>
 						</view>
 					</view>
 				</view>
 			</uni-collapse-item>
 		</uni-collapse>
 		
-		<uni-collapse v-if="tab === 3" :accordion="true">
-			<uni-collapse-item v-for="item in accordion" :key="item.id" :title="item.title" :show-animation="item.animation">
-				<view v-for="(cont, index) in item.content" :key="index" class="c-app-container min">
-					<view class="time">{{ cont.time }}</view>
+		<!-- 开票报表内容 -->
+		<uni-collapse v-if="tab === 3" :accordion="true" @change="billingChange">
+			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
+				<view v-for="(cont, index) in billingData" :key="index" class="c-app-container min">
+					<view class="time">{{ parseTime(cont.dayTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">元</text>
+								<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 							</view>
 							<view class="label">待申请</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">元</text>
+								<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 							</view>
 							<view class="label">已申请</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num" v-number-format="25567"></text>
-								<text class="unit">元</text>
+								<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
 							</view>
 							<view class="label">已开票</text></view>
 						</view>
@@ -197,95 +216,144 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+	import Screen from '@/components/Screen/Screen.vue';
+	import Header from '@/components/Header/Header.vue';
+	import { getTransMonth, getTransHead, getTransData, getCostMonth, getCostHead, getCostData, getBillingMonth, getBillingHead, getBillingData } from '@/config/service/shipment.js';
 	export default {
+		components: {
+			Screen,
+			Header
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
+		},
+		watch: {
+			timeType(){
+				this.getTransHead();
+				this.getCostHead();
+				this.getBillingHead();
+			}
+		},
 		data() {
 			return {
-				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}],
 				// Tabs参数
 				tablist: [{ tabName: '运输报表', tab: 1 }, { tabName: '费用报表', tab: 2 }, { tabName: '开票报表', tab: 3 }],
 				tab: 1,
-				queryParams: {
-					timeType: 1
-				},
-				accordion: [{
-						id: 0,
-						title: '3月',
-						content: [{
-							time: '3月5日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '3月4日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '3月3日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						}],
-						animation: true
-					},
-					{
-						id: 1,
-						title: '2月',
-						content: [{
-							time: '2月5日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '2月4日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '2月3日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						}],
-						animation: true
-					},
-					{
-						id: 2,
-						title: '1月',
-						content: [{
-							time: '1月5日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '1月4日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						},{
-							time: '1月3日',
-							jiedan: '126',
-							zhuanghuo: '135',
-							xiehuo: '256'
-						}],
-						animation: true
-					}
-				],
+				timeType: 1,
+				monthList: [],
+				transHead: {},
+				transData: [],
+				costHead: {},
+				costData: [],
+				billingHead: {},
+				billingData: []
 			}
 		},
 		onLoad(options) {
 			if (options) {
-				this.queryParams.timeType = options.day - 0;
+				this.timeType = options.day - 0;
 				this.tab = options.tab - 0;
+				if(options.tab == 1){
+					this.getTransMonth();
+					this.getTransHead();
+				}else if(options.tab == 2){
+					this.getCostMonth();
+					this.getCostHead();
+				}else{
+					this.getBillingMonth();
+					this.getBillingHead();
+				}
 			}
 		},
 		methods: {
+			transChange(e){
+				this.transData = [];
+				if(e.length !== 0){
+					this.getTransData(e);
+				}
+			},
+			costChange(e){
+				this.costData = [];
+				if (e.length !== 0){
+					this.getCostData(e);
+				}
+			},
+			billingChange(e){
+				this.billingData = [];
+				if (e.length !== 0){
+					this.getBillingData(e);
+				}
+			},
 			handleClick(e){
 				this.tab = e;
+				if (e == 1){
+					this.getTransMonth();
+					this.getTransHead();
+				}else if(e == 2){
+					this.getCostMonth();
+					this.getCostHead();
+				}else{
+					this.getBillingMonth();
+					this.getBillingHead();
+				}
 			},
-			change(e){
-				console.log(e);
+			// 获取运输报表月份
+			getTransMonth() {
+				getTransMonth(this.headerInfo).then(response => {
+					this.monthList = response.data;
+				})
+			},
+			// 获取运输报表头部
+			getTransHead() {
+				getTransHead(this.timeType, this.headerInfo).then(response => {
+					this.transHead = response.data;
+				})
+			},
+			// 获取运输报表月份数据
+			getTransData(e) {
+				// console.log(e);
+				getTransData(e[0], this.headerInfo).then(response => {
+					this.transData = response.data;
+				})
+			},
+			// 获取费用报表月份
+			getCostMonth() {
+				getCostMonth(this.headerInfo).then(response => {
+					this.monthList = response.data;
+				})
+			},
+			// 获取费用报表头部
+			getCostHead() {
+				getCostHead(this.timeType, this.headerInfo).then(response => {
+					this.costHead = response.data;
+				})
+			},
+			// 获取费用报表月份数据
+			getCostData(e) {
+				getCostData(e[0], this.headerInfo).then(response => {
+					this.costData = response.data;
+				})
+			},
+			// 获取开票报表月份
+			getBillingMonth() {
+				getBillingMonth(this.headerInfo).then(response => {
+					this.monthList = response.data;
+				})
+			},
+			// 获取开票报表头部
+			getBillingHead() {
+				getBillingHead(this.timeType, this.headerInfo).then(response => {
+					this.billingHead = response.data;
+				})
+			},
+			// 获取开票报表月份数据
+			getBillingData(e) {
+				getBillingData(e[0], this.headerInfo).then(response => {
+					this.billingData = response.data;
+				})
 			}
 		}
 	}

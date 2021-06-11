@@ -67,6 +67,7 @@
 		},
 		watch: {
 			timeType(){
+				this.isEnd = false;
 				this.getReport();
 			}
 		},

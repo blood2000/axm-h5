@@ -3,7 +3,7 @@
 		<Header :showBack="true" :showBg="false">
 			<text slot="title">司机报表</text>
 		</Header>
-		<Screen v-model="queryParams.timeType" :showHistory="true" />
+		<Screen v-model="tabCur" :showHistory="true" />
 		<view v-for="(item, index) in driverList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-align-center">
 				<text class="text">{{ item.driverName }}</text>
@@ -57,11 +57,20 @@
 			  headerInfo: state => state.header.headerInfo
 			})
 		},
+		watch: {
+			tabCur(e){
+				this.isEnd = false;
+				this.queryParams.timeType = e - 0;
+				this.driverList = [];
+				this.getReport();
+			}
+		},
 		data() {
 			return {
 				driverList: [],
 				loadModal: false,
 				isEnd: false,
+				tabCur: 1,
 				queryParams: {
 					pageNum: 1,
 					pageSize: 10,
@@ -72,6 +81,7 @@
 		onLoad(options) {
 			this.loadModal = true;
 			if (options) {
+				this.tabCur = options.day - 0;
 				this.queryParams.timeType = options.day - 0;
 			}
 			this.getReport();
