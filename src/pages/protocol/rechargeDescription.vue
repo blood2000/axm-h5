@@ -12,7 +12,7 @@
 		<uni-table border emptyText="暂无数据">
 		    <tbody>
 				<uni-tr>
-				   <uni-td>网商汇款账号</uni-td>
+				   <uni-td>银行卡号</uni-td>
 				   <uni-td>{{ account ? account : '' }}</uni-td>
 				</uni-tr>
 				<uni-tr>
@@ -55,8 +55,7 @@
 				return `银行账号：${this.account ? this.account : ''}; 开户名称：福建大道成物流科技有限公司; 开户行：浙江网商银行; 省份：浙江省; 城市：杭州市; 联行号：323331000001`;
 		    }
 		},
-		async onLoad(options){
-			await this.$onLaunched;
+		onLoad(options){
 			this.getData(options);
 		},
 		methods: {
