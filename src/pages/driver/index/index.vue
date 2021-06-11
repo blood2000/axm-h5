@@ -101,7 +101,6 @@
 	import { mapState } from 'vuex'
 	import Header from '@/components/Header/Header.vue';
 	import LineChart from '@/pages/components/lineChart.vue';
-	import { getStatisticData, getTransportData, getPeeData, getCarData } from '@/config/service/driver.js';
 	export default {
 		components: {
 			Header,
@@ -114,6 +113,10 @@
 		},
 		watch: {
 			TabCur(){
+				this.statisticTask.abort();
+				this.transportTask.abort();
+				this.peeTask.abort();
+				this.carTask.abort();
 				this.getStatisticFun();
 				this.getTransportFun();
 				this.getPeeFun();
@@ -125,6 +128,7 @@
 				showBack: false,
 				isSecondaryPage: false,
 				TabCur: 1,
+				statisticTask: null,
 				statisticLoading: false,
 				statisticData: {
 					waybillFinishNum: 0,
@@ -132,16 +136,19 @@
 					transportCar: 0
 				},
 				// 用车统计
+				carTask: null,
 				carLoading: false,
 				carNum: 0,
 				carList: [],
 				// 运输统计
+				transportTask: null,
 				transportLoading: false,
 				transportTime: [],
 				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
+				peeTask: null,
 				peeLoading: false,
 				peeTime: [],
 				peeData: [],
@@ -177,52 +184,88 @@
 			},
 			getStatisticFun() {
 				this.statisticLoading = true;
-				getStatisticData(this.TabCur, this.headerInfo).then(response => {
-					this.statisticLoading = false;
-					this.statisticData = response.data;
-				})
+				this.statisticTask = uni.request({
+				    url: 'apis/transportation/driverStatistics/headStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						this.statisticData = res.data.data;
+					},
+					complete: () => {
+						this.statisticLoading = false;
+					}
+				});
 			},
 			getTransportFun() {
 				this.transportLoading = true;
-				getTransportData(this.TabCur, this.headerInfo).then(response => {
-					this.transportLoading = false;
-					this.transportTime = response.data.xtime;
-					this.transportData = [{
-						name: '已接单',
-						data: response.data.orderReceivedList,
-						color: '#FFCF5B'
-					},{
-						name: '已卸货',
-						data: response.data.unloadedList,
-						color: '#477AE4'
-					}];
-					this.$nextTick(() => {
-						this.$refs['TransportRef'].initChart();
-					})
-				})
+				this.transportTask = uni.request({
+				    url: 'apis/transportation/driverStatistics/transportStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						this.transportTime = res.data.data.xtime;
+						this.transportData = [{
+							name: '已接单',
+							data: res.data.data.orderReceivedList,
+							color: '#FFCF5B'
+						},{
+							name: '已卸货',
+							data: res.data.data.unloadedList,
+							color: '#477AE4'
+						}];
+						this.$nextTick(() => {
+							this.$refs['TransportRef'].initChart();
+							})
+					},
+					complete: () => {
+						this.transportLoading = false;
+					}
+				});
 			},
 			getPeeFun() {
 				this.peeLoading = true;
-				getPeeData(this.TabCur, this.headerInfo).then(response => {
-					this.peeLoading = false;
-					this.peeTime = response.data.xtime;
-					this.peeData = [{
-						name: '实收金额',
-						data: response.data.actualAmountList,
-						color: '#55C876'
-					}];
-					this.$nextTick(() => {
-						this.$refs['PeeRef'].initChart();
-					})
-				})
+				this.peeTask = uni.request({
+				    url: 'apis/transportation/driverStatistics/shippingStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						this.peeTime = res.data.data.xtime;
+						this.peeData = [{
+							name: '实收金额',
+							data: res.data.data.actualAmountList,
+							color: '#55C876'
+						}];
+						this.$nextTick(() => {
+							this.$refs['PeeRef'].initChart();
+						})
+					},
+					complete: () => {
+						this.peeLoading = false;
+					}
+				});
 			},
 			getCarFun() {
 				this.carLoading = true;
-				getCarData(this.TabCur, this.headerInfo).then(response => {
-					this.carLoading = false;
-					this.carNum = response.data.carNum;
-					this.carList = response.data.carStatisticsList;
-				})
+				this.carTask = uni.request({
+				    url: 'apis/transportation/driverStatistics/carStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						this.carNum = res.data.data.carNum;
+						this.carList = res.data.data.carStatisticsList;
+					},
+					complete: () => {
+						this.carLoading = false;
+					}
+				});
 			}
 		}
 	}

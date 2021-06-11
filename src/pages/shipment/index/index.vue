@@ -159,6 +159,11 @@
 		},
 		watch: {
 			TabCur(){
+				this.statisticTask.abort();
+				this.orderTask.abort();
+				this.transportTask.abort();
+				this.peeTask.abort();
+				this.billTask.abort();
 				this.getStatisticFun();
 				this.getOrderFun();
 				this.getTransportFun();
@@ -170,6 +175,7 @@
 			return {
 				// 时间筛选
 				TabCur: 1,
+				statisticTask: null,
 				statisticLoading: false,
 				statisticData: {
 					goodsCount: 0,
@@ -179,22 +185,26 @@
 					waybillCompletedCount: 0
 				},
 				// 货源统计
+				orderTask: null,
 				orderLoading: false,
 				orderList: [],
 				peeList: [],
 				// 运输统计
+				transportTask: null,
 				transportLoading: false,
 				transportTime: [],
 				transportData: [],
 				transportUnit: '单',
 				transportUnitTime: '天',
 				// 运费统计
+				peeTask: null,
 				peeLoading: false,
 				peeTime: [],
 				peeData: [],
 				peeUnit: '元',
 				peeUnitTime: '天',
 				// 开票统计
+				billTask: false,
 				billLoading: false,
 				billTime: [],
 				billData: [],
@@ -228,92 +238,136 @@
 			},
 			getStatisticFun() {
 				this.statisticLoading = true;
-				getStatisticData(this.TabCur, this.headerInfo).then(response => {
-					this.statisticLoading = false;
-					this.statisticData = response.data;
-				})
+				this.statisticTask = uni.request({
+				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						this.statisticData = res.data.data;
+					},
+					complete: () => {
+						this.statisticLoading = false;
+					}
+				});
 			},
 			getOrderFun() {
 				this.orderLoading = true;
-				getOrderData(this.TabCur, this.headerInfo).then(response => {
-					this.orderLoading = false;
-					this.orderList = response.data.receivingOrdersStatisticsVos;
-					this.peeList = response.data.paymentStatisticsVos;
-				})
+				this.orderTask = uni.request({
+				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						this.orderList = res.data.data.receivingOrdersStatisticsVos;
+						this.peeList = res.data.data.paymentStatisticsVos;
+					},
+					complete: () => {
+						this.orderLoading = false;
+					}
+				});
 			},
 			getTransportFun() {
 				this.transportLoading = true;
-				getTransportData(this.TabCur, this.headerInfo).then(response => {
-					this.transportLoading = false;
-					const { orderReceivedStatisticsVo, unloadedStatisticsVo } = response.data;
-					const orderArr = [];
-					const unloadArr = [];
-					this.transportTime = [];
-					if(orderReceivedStatisticsVo){
-						orderReceivedStatisticsVo.forEach(el => {
-							this.transportTime.push(el.createTime);
-							orderArr.push(el.numberStatistics);
-						});
+				this.transportTask = uni.request({
+				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						const { orderReceivedStatisticsVo, unloadedStatisticsVo } = res.data.data;
+						const orderArr = [];
+						const unloadArr = [];
+						this.transportTime = [];
+						if(orderReceivedStatisticsVo){
+							orderReceivedStatisticsVo.forEach(el => {
+								this.transportTime.push(el.createTime);
+								orderArr.push(el.numberStatistics);
+							});
+						}
+						if(unloadedStatisticsVo){
+							unloadedStatisticsVo.forEach(el => {
+								unloadArr.push(el.numberStatistics)
+							});
+						}
+						this.transportData = [{
+							name: '已接单',
+							data: orderArr,
+							color: '#FFCF5B'
+						},{
+							name: '已卸货',
+							data: unloadArr,
+							color: '#477AE4'
+						}]
+						this.$nextTick(() => {
+							this.$refs['TransportRef'].initChart();
+						})
+					},
+					complete: () => {
+						this.transportLoading = false;
 					}
-					if(unloadedStatisticsVo){
-						unloadedStatisticsVo.forEach(el => {
-							unloadArr.push(el.numberStatistics)
-						});
-					}
-					this.transportData = [{
-						name: '已接单',
-						data: orderArr,
-						color: '#FFCF5B'
-					},{
-						name: '已卸货',
-						data: unloadArr,
-						color: '#477AE4'
-					}]
-					this.$nextTick(() => {
-						this.$refs['TransportRef'].initChart();
-					})
-					
-				})
+				});
 			},
 			getPeeFun() {
 				this.peeLoading = true;
-				getPeeData(this.TabCur, this.headerInfo).then(response => {
-					this.peeLoading = false;
-					const arr = [];
-					this.peeTime = [];
-					response.data.forEach(el => {
-						this.peeTime.push(el.createTime);
-						arr.push(el.numberStatistics);
-					});
-					this.peeData = [{
-						name: '实付金额',
-						data: arr,
-						color: '#55C876'
-					}];
-					this.$nextTick(() => {
-						this.$refs['PeeRef'].initChart();
-					})
-				})
+				this.peeTask = uni.request({
+				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						const arr = [];
+						this.peeTime = [];
+						res.data.data.forEach(el => {
+							this.peeTime.push(el.createTime);
+							arr.push(el.numberStatistics);
+						});
+						this.peeData = [{
+							name: '实付金额',
+							data: arr,
+							color: '#55C876'
+						}];
+						this.$nextTick(() => {
+							this.$refs['PeeRef'].initChart();
+						})
+					},
+					complete: () => {
+						this.peeLoading = false;
+					}
+				});
 			},
 			getBillFun() {
 				this.billLoading = true;
-				getBillData(this.TabCur, this.headerInfo).then(response => {
-					this.billLoading = false;
-					const arr = [];
-					this.billTime = [];
-					response.data.forEach(el => {
-						this.billTime.push(el.createTime);
-						arr.push(el.numberStatistics);
-					});
-					this.billData = [{
-						name: '已开票金额',
-						data: arr,
-						color: '#7E5DEB'
-					}];
-					this.$nextTick(() => {
-						this.$refs['BillRef'].initChart();
-					})
-				})
+				this.billTask = uni.request({
+				    url: 'apis/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
+				    data: {
+						timeType: this.TabCur
+					},
+					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
+					success: (res) => {
+						const arr = [];
+						this.billTime = [];
+						res.data.data.forEach(el => {
+							this.billTime.push(el.createTime);
+							arr.push(el.numberStatistics);
+						});
+						this.billData = [{
+							name: '已开票金额',
+							data: arr,
+							color: '#7E5DEB'
+						}];
+						this.$nextTick(() => {
+							this.$refs['BillRef'].initChart();
+						})
+					},
+					complete: () => {
+						this.billLoading = false;
+					}
+				});
 			}
 		}
 	}
