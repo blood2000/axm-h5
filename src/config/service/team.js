@@ -119,7 +119,7 @@ export function getTransData(yearMonth, config) {
 // 费用报表月份
 export function getCostMonth(config) {
   return uniRequest({
-    url: '/transportation/driverStatistics/costReportHaveDataMonth',
+    url: '/transportation/team-app/statistics/getTeamCostReportHaveDataMonth',
     method: 'get',
 	data: {
 		year: ''
@@ -131,7 +131,7 @@ export function getCostMonth(config) {
 // 费用报表头部
 export function getCostHead(timeType, config) {
   return uniRequest({
-    url: '/transportation/driverStatistics/costReportHeadStatistics',
+    url: '/transportation/team-app/statistics/getTeamCostReportHeadStatistics',
     method: 'get',
 	data: {
 		timeType: timeType
@@ -143,7 +143,7 @@ export function getCostHead(timeType, config) {
 // 费用报表月数据
 export function getCostData(yearMonth, config) {
   return uniRequest({
-    url: '/transportation/driverStatistics/costReportMonthData',
+    url: '/transportation/team-app/statistics/getTeamCostReportMonthData',
     method: 'get',
 	data: {
 		yearMonth: yearMonth
