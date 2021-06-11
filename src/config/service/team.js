@@ -71,12 +71,82 @@ export function getDriverReport(queryDate, config) {
 }
 
 // 车辆报表
-export function getVehicleReport(timeType, config) {
+export function getVehicleReport(queryDate, config) {
   return uniRequest({
-    url: '/transportation/team-app/statistics/getTeamDriverDetails',
+    url: '/transportation/team-app/statistics/getTeamVehicleDetails',
+    method: 'get',
+	data: queryDate,
+	headers: config
+  });
+}
+
+// 运输报表月份
+export function getTransMonth(config) {
+  return uniRequest({
+    url: '/transportation/team-app/statistics/getTeamTransportHaveDataMonth',
+    method: 'get',
+	data: {
+		year: ''
+	},
+	headers: config
+  });
+}
+
+// 运输报表头部
+export function getTransHead(timeType, config) {
+  return uniRequest({
+    url: '/transportation/team-app/statistics/getTeamTransportReportHead',
     method: 'get',
 	data: {
 		timeType: timeType
+	},
+	headers: config
+  });
+}
+
+// 运输报表月数据
+export function getTransData(yearMonth, config) {
+  return uniRequest({
+    url: '/transportation/driverStatistics/transportReportMonthData',
+    method: 'get',
+	data: {
+		yearMonth: yearMonth
+	},
+	headers: config
+  });
+}
+
+// 费用报表月份
+export function getCostMonth(config) {
+  return uniRequest({
+    url: '/transportation/driverStatistics/costReportHaveDataMonth',
+    method: 'get',
+	data: {
+		year: ''
+	},
+	headers: config
+  });
+}
+
+// 费用报表头部
+export function getCostHead(timeType, config) {
+  return uniRequest({
+    url: '/transportation/driverStatistics/costReportHeadStatistics',
+    method: 'get',
+	data: {
+		timeType: timeType
+	},
+	headers: config
+  });
+}
+
+// 费用报表月数据
+export function getCostData(yearMonth, config) {
+  return uniRequest({
+    url: '/transportation/driverStatistics/costReportMonthData',
+    method: 'get',
+	data: {
+		yearMonth: yearMonth
 	},
 	headers: config
   });
