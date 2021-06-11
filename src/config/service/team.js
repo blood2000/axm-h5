@@ -107,7 +107,7 @@ export function getTransHead(timeType, config) {
 // 运输报表月数据
 export function getTransData(yearMonth, config) {
   return uniRequest({
-    url: '/transportation/driverStatistics/transportReportMonthData',
+    url: '/transportation/team-app/statistics/getTeamTransportMonthData',
     method: 'get',
 	data: {
 		yearMonth: yearMonth
