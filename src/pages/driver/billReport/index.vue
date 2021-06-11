@@ -107,7 +107,7 @@
 								<text class="unit">{{ numberFormatUnit(cont.unpaidCount) }}单</text>
 							</view>
 							<view class="count">
-								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.unpaidSum) }}</text>
+								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
 								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
 							</view>
 							<view class="label">待付款</view>
@@ -118,7 +118,7 @@
 								<text class="unit">{{ numberFormatUnit(cont.paidCount) }}单</text>
 							</view>
 							<view class="count">
-								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.paidSum) }}</text>
+								<text class="num">{{ numberFormat(cont.paidSum) }}</text>
 								<text class="unit">{{ numberFormatUnit(cont.paidSum) }}元</text>
 							</view>
 							<view class="label">已付款</view>
@@ -127,6 +127,8 @@
 				</view>
 			</uni-collapse-item>
 		</uni-collapse>
+		<!-- 空数据 -->
+		<NonePage v-if="monthList.length === 0" />
 	</view>
 </template>
 
@@ -134,11 +136,13 @@
 	import { mapState } from 'vuex'
 	import Screen from '@/components/Screen/Screen.vue';
 	import Header from '@/components/Header/Header.vue';
+	import NonePage from '@/components/NonePage/NonePage.vue';
 	import { getTransMonth, getTransHead, getTransData, getCostMonth, getCostHead, getCostData } from '@/config/service/driver.js';
 	export default {
 		components: {
 			Screen,
-			Header
+			Header,
+			NonePage
 		},
 		computed: {
 			...mapState({

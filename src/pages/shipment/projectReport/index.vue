@@ -3,7 +3,7 @@
 		<Header :showBack="true" :showBg="false">
 			<text slot="title">项目报表</text>
 		</Header>
-		<view class="c-app-container" style="padding-bottom: 15rpx;">
+		<view v-for="(item, index) in projectList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">宝安COON</text>
 			</view>
@@ -11,48 +11,85 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="245"></text>
-							<text class="unit">个</text>
+							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}个</text>
 						</view>
 						<view class="label">货源</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="786"></text>
-							<text class="unit">单</text>
+							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
 						</view>
 						<view class="label">运单</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="886"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
 						</view>
 						<view class="label">运单</text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num" v-number-format="1245"></text>
-							<text class="unit">元</text>
+							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
 						</view>
 						<view class="label">开票</text></view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<!-- 弹框加载 -->
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="gray-text">加载中...</view>
+		</view>
+		<!-- 空数据 -->
+		<NonePage v-if="projectList.length === 0" />
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+	import Header from '@/components/Header/Header.vue';
+	import NonePage from '@/components/NonePage/NonePage.vue';
+	import { getProjectReport } from '@/config/service/shipment.js';
 	export default {
+		components: {
+			Header,
+			NonePage
+		},
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			})
+		},
 		data() {
 			return {
-				orderList: [{}, {}, {}],
-				peeList: [{}, {}, {}],
+				projectList: [],
+				loadModal: false,
+				// queryParams: {
+				// 	pageNum: 1,
+				// 	pageSize: 10
+				// },
 			}
 		},
+		onLoad(options) {
+			this.loadModal = true;
+			this.getReport();
+		},
 		methods: {
-			
+			getReport() {
+				console.log('测试')
+				this.loadModal = true;
+				getProjectReport(this.headerInfo).then(response => {
+					console.log('测试')
+					this.loadModal = false;
+					this.projectList = response.data;
+				}).catch(() => {
+					this.loadModal = false;
+				});
+			},
 		}
 	}
 </script>
