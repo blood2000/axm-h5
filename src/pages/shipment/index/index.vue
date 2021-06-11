@@ -256,7 +256,8 @@
 				this.orderTask = uni.request({
 				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
 				    data: {
-						timeType: this.TabCur
+						timeType: this.TabCur,
+						topNumber: 3
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
