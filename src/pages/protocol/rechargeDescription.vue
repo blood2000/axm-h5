@@ -12,7 +12,7 @@
 		<uni-table border emptyText="暂无数据">
 		    <tbody>
 				<uni-tr>
-				   <uni-td>银行账号</uni-td>
+				   <uni-td>网商汇款账号</uni-td>
 				   <uni-td>{{ account ? account : '' }}</uni-td>
 				</uni-tr>
 				<uni-tr>
