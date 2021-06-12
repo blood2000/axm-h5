@@ -1,6 +1,6 @@
 <template>
 	<view class="none-page-index">
-		<image class="none-image" src="../../static/has_none.png"></image>
+		<view class="none-image"></view>
 		<view class="none-text">{{ msg }}</view>
 	</view>
 </template>
@@ -25,6 +25,8 @@
 		.none-image{
 			width: 625rpx;
 			height: 390rpx;
+			background: url('/static/has_none.png') no-repeat;
+			background-size: 100% 100%;
 		}
 		.none-text{
 			text-align: center;
