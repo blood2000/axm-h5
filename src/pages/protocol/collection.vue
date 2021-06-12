@@ -12,7 +12,7 @@
 		<view class="collection-page__after">收  款  账  号：</view>
 		<view class="collection-page__after">开    户    行：</view>
 		<view class="collection-page__after last">特此委托！</view>
-		<view class="collection-page__sign">委托人（签字）：<text class="underline">{{ form.driverName }}</text></view>
+		<view class="collection-page__sign">委托人（签字）：<text class="underline">{{ form.driver }}</text></view>
 		<view class="collection-page__sign">日期：{{ form.createTimeFormat }}</view>
 	</view>
 </template>
@@ -41,7 +41,8 @@
 					teamPhone: '',
 					validTimeStartFormat: '',
 					validTimeEndFormat: '',
-					createTimeFormat: ''
+					createTimeFormat: '',
+					driver: ''
 				}
 			}
 		},
