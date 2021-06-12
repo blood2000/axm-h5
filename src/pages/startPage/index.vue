@@ -1,6 +1,6 @@
 <template>
 	<view class="start-page-index">
-		<Header :show-bg="false" :showBack="true" :isSecondaryPage="true">
+		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
 			<text slot="title">统计服务</text>
 		</Header>
 		<view v-if="loading" class="cu-load load-modal">
@@ -29,7 +29,8 @@
 		data() {
 			return {
 				loading: false,
-				loadError: false
+				loadError: false,
+				isSecondaryPage: false
 			}
 		},
 		async onLoad(options) {
@@ -43,7 +44,8 @@
 				// 判断是否有返回按钮
 				let params = '';
 				if (isSecondaryPage === '1') {
-					params = '?isSecondaryPage=1'
+					params = '?isSecondaryPage=1';
+					this.isSecondaryPage = true;
 				}
 				getPageJump(this.headerInfo).then(response => {
 					this.loading = false;

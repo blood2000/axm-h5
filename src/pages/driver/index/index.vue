@@ -1,6 +1,6 @@
 <template>
 	<view class="shipment-index">
-		<Header :show-bg="false" :showBack="showBack" :isSecondaryPage="isSecondaryPage">
+		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
 			<text slot="title">统计服务</text>
 		</Header>
 		
@@ -125,7 +125,6 @@
 		},
 		data() {
 			return {
-				showBack: false,
 				isSecondaryPage: false,
 				TabCur: 1,
 				statisticTask: null,
@@ -160,7 +159,6 @@
 			await this.$onLaunched;
 			const isSecondaryPage = options.isSecondaryPage;
 			if (isSecondaryPage === '1') {
-				this.showBack = true;
 				this.isSecondaryPage = true;
 			}
 		},
