@@ -64,7 +64,7 @@ export function getBillData(timeType, config) {
 // 项目报表
 export function getProjectReport(config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsDataGroup',
+    url: '/transportation/bulkCargoStatistics/queryProjectReport',
     method: 'get',
 	data: {},
 	headers: config
@@ -74,7 +74,7 @@ export function getProjectReport(config) {
 // 货源报表
 export function getOrderReport(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndReceiveTimeQuerySourceOfGoodsStatistics',
+    url: '/transportation/bulkCargoStatistics/querySourceReport',
     method: 'get',
 	data: {
 		timeType: timeType
@@ -86,7 +86,7 @@ export function getOrderReport(timeType, config) {
 // 运输报表月份
 export function getTransMonth(config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeQueryTransportationReportMonth',
+    url: '/transportation/bulkCargoStatistics/queryTransportationReportMonth',
     method: 'get',
 	data: {},
 	headers: config
@@ -96,7 +96,7 @@ export function getTransMonth(config) {
 // 运输报表头部
 export function getTransHead(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndReceiveTimeQueryTransportationReport',
+    url: '/transportation/bulkCargoStatistics/queryTransportationReport',
     method: 'get',
 	data: {
 		timeType: timeType
@@ -108,7 +108,7 @@ export function getTransHead(timeType, config) {
 // 运输报表月数据
 export function getTransData(month, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeQueryTransportationReportMonthData',
+    url: '/transportation/bulkCargoStatistics/queryTransportationReportMonthData',
     method: 'get',
 	data: {
 		month: month
@@ -120,7 +120,7 @@ export function getTransData(month, config) {
 // 费用报表月份
 export function getCostMonth(config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeQueryExpenseReportMonth',
+    url: '/transportation/bulkCargoStatistics/queryExpenseReportMonth',
     method: 'get',
 	data: {},
 	headers: config
@@ -130,7 +130,7 @@ export function getCostMonth(config) {
 // 费用报表头部
 export function getCostHead(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndReceiveTimeQueryExpenseReport',
+    url: '/transportation/bulkCargoStatistics/queryExpenseReport',
     method: 'get',
 	data: {
 		timeType: timeType
@@ -142,7 +142,7 @@ export function getCostHead(timeType, config) {
 // 费用报表月数据
 export function getCostData(month, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeQueryExpenseReportMonthData',
+    url: '/transportation/bulkCargoStatistics/queryExpenseReportMonthData',
     method: 'get',
 	data: {
 		month: month
@@ -154,7 +154,7 @@ export function getCostData(month, config) {
 // 开票报表月份
 export function getBillingMonth(config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeQueryExpenseReportMonth',
+    url: '/transportation/bulkCargoStatistics/queryBillingReportMonth',
     method: 'get',
 	data: {},
 	headers: config
@@ -164,7 +164,7 @@ export function getBillingMonth(config) {
 // 开票报表头部
 export function getBillingHead(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndReceiveTimeQueryExpenseReport',
+    url: '/transportation/bulkCargoStatistics/queryBillingReport',
     method: 'get',
 	data: {
 		timeType: timeType
@@ -176,7 +176,7 @@ export function getBillingHead(timeType, config) {
 // 开票报表月数据
 export function getBillingData(month, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeQueryExpenseReportMonthData',
+    url: '/transportation/bulkCargoStatistics/queryBillingReportMonthData',
     method: 'get',
 	data: {
 		month: month
