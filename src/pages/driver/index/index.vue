@@ -84,7 +84,7 @@
 						<!-- v-for -->
 						<view v-for="(item, index) in carList" :key="index" class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 							<view class="c-order-box__label ly-flex-align-center">
-								<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+								<image class="order" :src="'/static/order_' + (index + 1) + '.png'"></image>
 								<text class="name">{{ item.licenseNumber }}</text>
 							</view>
 							<text class="c-order-box__count">{{ item.count }}单</text>

@@ -82,7 +82,7 @@
 							<template v-for="(item, index) in peeList">
 								<view class="c-order-box ly-flex-pack-justify ly-flex-align-center">
 									<view class="c-order-box__label ly-flex-align-center">
-										<image class="order" :src="'../../../static/order_' + (index + 1) + '.png'"></image>
+										<image class="order" :src="'/static/order_' + (index + 1) + '.png'"></image>
 										<text class="name">{{ item.goodsBigTypeName }}</text>
 									</view>
 									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
