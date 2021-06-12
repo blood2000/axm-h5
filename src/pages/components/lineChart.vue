@@ -86,9 +86,11 @@
 					this.legendData = [];
 					this.isChange = false;
 					this.countData.forEach(el => {
-						if (el.data[el.data.length - 1] > 9999) {
-							this.isChange = true;
-						}
+						el.data.forEach(val => {
+							if (val > 9999) {
+								this.isChange = true;
+							}
+						})
 					});
 					setTimeout(() => {
 						this.countData.forEach(el => {

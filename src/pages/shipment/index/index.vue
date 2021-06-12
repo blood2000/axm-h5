@@ -13,15 +13,15 @@
 					<view class="ly-flex-pack-around" style="margin-bottom: 40rpx;">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(statisticData.projectCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(statisticData.projectCount) }}个</text>
+								<text class="num">{{ numberFormat(statisticData.project) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.project) }}个</text>
 							</view>
 							<view class="label" @tap="itemMore">项目<text class="has-arrow"></text></view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(statisticData.goodsCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(statisticData.goodsCount) }}个</text>
+								<text class="num">{{ numberFormat(statisticData.sourceOfGoods) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.sourceOfGoods) }}个</text>
 							</view>
 							<view class="label" @tap="orderMore">货源<text class="has-arrow"></text></view>
 						</view>
@@ -29,8 +29,8 @@
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(statisticData.waybillCompletedCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(statisticData.waybillCompletedCount) }}单</text>
+								<text class="num">{{ numberFormat(statisticData.waybillCompleted) }}</text>
+								<text class="unit">{{ numberFormatUnit(statisticData.waybillCompleted) }}单</text>
 							</view>
 							<view class="label" @click="transportMore(1)">运单完成<text class="has-arrow"></text></view>
 						</view>
@@ -71,7 +71,7 @@
 									</view>
 									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 								</view>
-								<view class="c-order-address">{{ (item.load_district ? item.load_district: '') + ((item.load_district || item.unload_district) ? '—' : '') + (item.unload_district ? item.unload_district : '') }}</view>
+								<view class="c-order-address">{{ (item.loadCity ? item.loadCity: '') + ((item.loadCity || item.unloadCity) ? '—' : '') + (item.unloadCity ? item.unloadCity : '') }}</view>
 							</template>
 						</view>
 					</view>
@@ -87,7 +87,7 @@
 									</view>
 									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
 								</view>
-								<view class="c-order-address">{{ (item.load_district ? item.load_district: '') + ((item.load_district || item.unload_district) ? '—' : '') + (item.unload_district ? item.unload_district : '') }}</view>
+								<view class="c-order-address">{{ (item.loadCity ? item.loadCity: '') + ((item.loadCity || item.unloadCity) ? '—' : '') + (item.unloadCity ? item.unloadCity : '') }}</view>
 							</template>
 						</view>
 					</view>
@@ -181,11 +181,11 @@
 				statisticTask: null,
 				statisticLoading: false,
 				statisticData: {
-					goodsCount: 0,
-					projectCount: 0,
+					sourceOfGoods: 0,
+					project: 0,
 					sumInvoicedAmountApplied: 0,
 					sumShipperRealPay: 0,
-					waybillCompletedCount: 0
+					waybillCompleted: 0
 				},
 				// 货源统计
 				orderTask: null,
@@ -242,7 +242,7 @@
 			getStatisticFun() {
 				this.statisticLoading = true;
 				this.statisticTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
+				    url: 'apis/transportation/bulkCargoStatistics/queryStatisticsData',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -258,7 +258,7 @@
 			getOrderFun() {
 				this.orderLoading = true;
 				this.orderTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/querySourceStatistics',
 				    data: {
 						timeType: this.TabCur,
 						topNumber: 3
@@ -276,7 +276,7 @@
 			getTransportFun() {
 				this.transportLoading = true;
 				this.transportTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/queryTransportationStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -318,7 +318,7 @@
 			getPeeFun() {
 				this.peeLoading = true;
 				this.peeTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/queryFreightStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -347,7 +347,7 @@
 			getBillFun() {
 				this.billLoading = true;
 				this.billTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
+				    url: 'apis/transportation/bulkCargoStatistics/queryBillingStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
