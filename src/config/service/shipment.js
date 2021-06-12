@@ -3,7 +3,7 @@ import uniRequest from "../request.js";
 // 首页数据统计
 export function getStatisticData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryStatisticsData',
+    url: '/transportation/bulkCargoStatistics/queryStatisticsData',
     method: 'get',
     data: {
 		timeType: timeType
@@ -15,7 +15,7 @@ export function getStatisticData(timeType, config) {
 // 首页货源统计
 export function getOrderData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQuerySourceStatistics',
+    url: '/transportation/bulkCargoStatistics/querySourceStatistics',
     method: 'get',
     data: {
     	timeType: timeType,
@@ -28,7 +28,7 @@ export function getOrderData(timeType, config) {
 // 首页运输统计
 export function getTransportData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryTransportationStatistics',
+    url: '/transportation/bulkCargoStatistics/queryTransportationStatistics',
     method: 'get',
     data: {
     	timeType: timeType
@@ -40,7 +40,7 @@ export function getTransportData(timeType, config) {
 // 首页运费统计
 export function getPeeData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryFreightStatistics',
+    url: '/transportation/bulkCargoStatistics/queryFreightStatistics',
     method: 'get',
     data: {
     	timeType: timeType
@@ -52,7 +52,7 @@ export function getPeeData(timeType, config) {
 // 首页开票统计
 export function getBillData(timeType, config) {
   return uniRequest({
-    url: '/transportation/bulkCargoStatistics/shipperCodeAndTimeQueryBillingStatistics',
+    url: '/transportation/bulkCargoStatistics/queryBillingStatistics',
     method: 'get',
     data: {
     	timeType: timeType
