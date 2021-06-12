@@ -3,37 +3,37 @@
 		<Header :showBack="true" :showBg="false">
 			<text slot="title">项目报表</text>
 		</Header>
-		<view v-for="(item, index) in projectList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
+		<view v-for="(cont, index) in projectList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
-				<text class="text">宝安COON</text>
+				<text class="text">{{ cont.projectName }}</text>
 			</view>
 			<view class="c-app-container" style="margin: 0; border-radius: 0;">
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}个</text>
+							<text class="num">{{ numberFormat(cont.sourceOfGoods) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.sourceOfGoods) }}个</text>
 						</view>
 						<view class="label">货源</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
+							<text class="num">{{ numberFormat(cont.waybill) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.waybill) }}单</text>
 						</view>
 						<view class="label">运单</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
+							<text class="num">{{ numberFormat(cont.freight) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.freight) }}元</text>
 						</view>
-						<view class="label">运单</text></view>
+						<view class="label">运费</text></view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-							<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
+							<text class="num">{{ numberFormat(cont.billing) }}</text>
+							<text class="unit">{{ numberFormatUnit(cont.billing) }}元</text>
 						</view>
 						<view class="label">开票</text></view>
 					</view>
@@ -80,10 +80,8 @@
 		},
 		methods: {
 			getReport() {
-				console.log('测试')
 				this.loadModal = true;
 				getProjectReport(this.headerInfo).then(response => {
-					console.log('测试')
 					this.loadModal = false;
 					this.projectList = response.data;
 				}).catch(() => {

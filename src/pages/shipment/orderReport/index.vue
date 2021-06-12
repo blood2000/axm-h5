@@ -5,47 +5,47 @@
 		</Header>
 		<Screen v-model="tabCur" :showHistory="true" />
 		
-		<view v-for="(item, index) in orderList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
+		<view v-for="(cont, index) in orderList" :key="index" class="c-app-container" style="padding-bottom: 15rpx;">
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
-				<text class="text">煤炭</text>
+				<text class="text">{{ cont.goodsBigTypeName }}</text>
 			</view>
 			<view style="margin-top: 30upx;">
 				<view class="order-load flex align-center">
 					<image class="order-loadimg" style="margin-right: 7upx;" src="../../../static/report/icon_load.png" mode=""></image>
-					<view class="order-loadname">福建省福州市闽侯县</view>
+					<view class="order-loadname">{{ cont.loadCity }}</view>
 				</view>
 				<image class="order-icon" src="../../../static/report/icon_shu.png" mode=""></image>
 				<view class="order-load flex align-center">
 					<image class="order-loadimg" src="../../../static/report/icon_unload.png" mode=""></image>
-					<view class="order-loadname">福建省福州市闽侯县</view>
+					<view class="order-loadname">{{  cont.unloadCity }}</view>
 				</view>
 				<view class="c-app-container min" style="margin: 0; border-radius: 0;">
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
+								<text class="num">{{ numberFormat(cont.orderReceived) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.orderReceived) }}单</text>
 							</view>
 							<view class="label">已接单</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
+								<text class="num">{{ numberFormat(cont.unloaded) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unloaded) }}单</text>
 							</view>
 							<view class="label">已卸货</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}单</text>
+								<text class="num">{{ numberFormat(cont.settled) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.settled) }}单</text>
 							</view>
 							<view class="label">已结算</text></view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
+								<text class="num">{{ numberFormat(cont.amountActuallyPaid) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.amountActuallyPaid) }}元</text>
 							</view>
 							<view class="label">实付金额</text></view>
 						</view>

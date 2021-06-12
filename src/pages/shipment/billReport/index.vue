@@ -17,22 +17,22 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
+							<text class="num">{{ numberFormat(transHead.orderReceived) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.orderReceived) }}单</text>
 						</view>
 						<view class="label">已接单</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
+							<text class="num">{{ numberFormat(transHead.loaded) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.loaded) }}单</text>
 						</view>
 						<view class="label">已装货</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}单</text>
+							<text class="num">{{ numberFormat(transHead.unloaded) }}</text>
+							<text class="unit">{{ numberFormatUnit(transHead.unloaded) }}单</text>
 						</view>
 						<view class="label">已卸货</text></view>
 					</view>
@@ -43,34 +43,34 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.settledCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.settledCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(costHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(costHead.settledMoney) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.settledMoney) }}元</text>
 						</view>
 						<view class="label">已核算</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.appliedCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.appliedCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(costHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(costHead.appliedInvoiceMoney) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.appliedInvoiceMoney) }}元</text>
 						</view>
 						<view class="label">已申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count" style="margin-bottom: 30upx;">
-							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}单</text>
+							<text class="num" style="font-size: 32upx;">{{ numberFormat(costHead.paidCount) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.paidCount) }}单</text>
 						</view>
 						<view class="count">
-							<text class="num">{{ numberFormat(costHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(costHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(costHead.paidMoneyMoney) }}</text>
+							<text class="unit">{{ numberFormatUnit(costHead.paidMoneyMoney) }}元</text>
 						</view>
 						<view class="label">已打款</text></view>
 					</view>
@@ -81,22 +81,22 @@
 				<view class="ly-flex-pack-around">
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(billingHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(billingHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(billingHead.toBeInvoiced) }}</text>
+							<text class="unit">{{ numberFormatUnit(billingHead.toBeInvoiced) }}元</text>
 						</view>
 						<view class="label">待申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(billingHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(billingHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(billingHead.applyForInvoice) }}</text>
+							<text class="unit">{{ numberFormatUnit(billingHead.applyForInvoice) }}元</text>
 						</view>
 						<view class="label">已申请</view>
 					</view>
 					<view class="c-count-box">
 						<view class="count">
-							<text class="num">{{ numberFormat(billingHead.receiveCount) }}</text>
-							<text class="unit">{{ numberFormatUnit(billingHead.receiveCount) }}元</text>
+							<text class="num">{{ numberFormat(billingHead.invoiced) }}</text>
+							<text class="unit">{{ numberFormatUnit(billingHead.invoiced) }}元</text>
 						</view>
 						<view class="label">已开票</text></view>
 					</view>
@@ -109,26 +109,26 @@
 		<uni-collapse v-if="tab === 1" :accordion="true" @change="transChange">
 			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
 				<view v-for="(cont, index) in transData" :key="index" class="c-app-container min">
-					<view class="time">{{ parseTime(cont.dayTime, '{m}月{d}日') }}</view>
+					<view class="time">{{ parseTime(cont.createTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.receiveCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.receiveCount) }}单</text>
+								<text class="num">{{ numberFormat(cont.orderReceived) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.orderReceived) }}单</text>
 							</view>
 							<view class="label">已接单</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.loadedCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.loadedCount) }}单</text>
+								<text class="num">{{ numberFormat(cont.loaded) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.loaded) }}单</text>
 							</view>
 							<view class="label">已装货</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unloadedCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unloadedCount) }}单</text>
+								<text class="num">{{ numberFormat(cont.unloaded) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.unloaded) }}单</text>
 							</view>
 							<view class="label">已卸货</text></view>
 						</view>
@@ -141,27 +141,27 @@
 		<uni-collapse v-if="tab === 2" :accordion="true" @change="costChange">
 			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
 				<view v-for="(cont, index) in costData" :key="index" class="c-app-container min">
-					<view class="time">{{ parseTime(cont.dayTime, '{m}月{d}日') }}</view>
+					<view class="time">{{ parseTime(cont.createTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count" style="margin-bottom: 30upx;">
-								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.unpaidCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unpaidCount) }}单</text>
+								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.settledCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.settledCount) }}单</text>
 							</view>
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unpaidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unpaidSum) }}元</text>
+								<text class="num">{{ numberFormat(cont.settledMoney) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.settledMoney) }}元</text>
 							</view>
 							<view class="label">已核算</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count" style="margin-bottom: 30upx;">
-								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.paidCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.paidCount) }}单</text>
+								<text class="num" style="font-size: 28upx;">{{ numberFormat(cont.appliedCount) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.appliedCount) }}单</text>
 							</view>
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.paidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.paidSum) }}元</text>
+								<text class="num">{{ numberFormat(cont.appliedInvoiceMoney) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.appliedInvoiceMoney) }}元</text>
 							</view>
 							<view class="label">已申请</view>
 						</view>
@@ -171,8 +171,8 @@
 								<text class="unit">{{ numberFormatUnit(cont.paidCount) }}单</text>
 							</view>
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.paidSum) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.paidSum) }}元</text>
+								<text class="num">{{ numberFormat(cont.paidMoneyMoney) }}</text>
+								<text class="unit">{{ numberFormatUnit(cont.paidMoneyMoney) }}元</text>
 							</view>
 							<view class="label">已打款</view>
 						</view>
@@ -189,22 +189,22 @@
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+								<text class="num">{{ numberFormat(transHead.toBeInvoiced) }}</text>
+								<text class="unit">{{ numberFormatUnit(transHead.toBeInvoiced) }}元</text>
 							</view>
 							<view class="label">待申请</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+								<text class="num">{{ numberFormat(transHead.applyForInvoice) }}</text>
+								<text class="unit">{{ numberFormatUnit(transHead.applyForInvoice) }}元</text>
 							</view>
 							<view class="label">已申请</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(transHead.receiveCount) }}</text>
-								<text class="unit">{{ numberFormatUnit(transHead.receiveCount) }}元</text>
+								<text class="num">{{ numberFormat(transHead.invoiced) }}</text>
+								<text class="unit">{{ numberFormatUnit(transHead.invoiced) }}元</text>
 							</view>
 							<view class="label">已开票</text></view>
 						</view>
