@@ -24,10 +24,10 @@
 			  <!-- 这里是状态栏 -->
 			</view>
 			<view class="top-title flex align-center justify-between">
-				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
-				<view v-else style="width: 18upx;"></view>
+				<text v-if="showBack" class="cuIcon-back back" @click="back"></text>
+				<view v-else style="width: 100upx;"></view>
 				<slot name="title"></slot>
-				<view style="width: 18upx;"></view>
+				<view style="width: 100upx;"></view>
 			</view>
 		</view>
 		<view v-if="showBg" class="top-bgframe2">
@@ -146,7 +146,7 @@
 	.top-title{
 		height: 100upx;
 		width: 100%;
-		padding: 0 20upx;
+		padding: 0 30upx;
 		font-size: 36rpx;
 		font-family: PingFang SC;
 		font-weight: 500;
@@ -177,6 +177,11 @@
 }
 .status_bar{
 	height: 35upx;
+}
+.back{
+	line-height: 100upx;
+	width: 100upx;
+	font-size: 42upx;
 }
 
 .header{
