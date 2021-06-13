@@ -2,7 +2,7 @@
 	<view class="chart-container">
 		<Loading v-if="loading"></Loading>
 		<template v-else>
-			<view v-if="seriesData && seriesData.length > 0 && seriesData[0].data > 0" class="lengend-box ly-flex-v ly-flex-pack-around">
+			<view v-if="seriesData && seriesData.length > 0 && seriesData[0].data.length > 0" class="lengend-box ly-flex-v ly-flex-pack-around">
 				<view class="time ly-flex-pack-start">{{ today }}</view>
 				<view class="legend ly-flex-pack-start">
 					<view class="legend-item ly-flex-align-center" v-for="(item, index) in legendData" :key="index">
