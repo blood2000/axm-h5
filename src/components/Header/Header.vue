@@ -24,9 +24,9 @@
 			  <!-- 这里是状态栏 -->
 			</view>
 			<view class="top-title flex align-center justify-between">
-				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
+				<text v-if="showBack" class="cuIcon-back back" @click="back"></text>
 				<view v-else style="width: 18upx;"></view>
-				<slot name="title"></slot>
+				<view class="title"><slot name="title"></slot></view>
 				<view style="width: 18upx;"></view>
 			</view>
 		</view>
@@ -153,6 +153,12 @@
 		color: #FFFFFF;
 		position: relative;
 		z-index: 10;
+		>.title{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
 	.top-bgframe1{
 		position: relative;
@@ -180,7 +186,7 @@
 }
 .back{
 	line-height: 100upx;
-	width: 100upx;
+	width: 60upx;
 	font-size: 42upx;
 }
 
