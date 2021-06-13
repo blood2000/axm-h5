@@ -236,7 +236,7 @@
 			getStatisticFun() {
 				this.statisticLoading = true;
 				this.statisticTask = uni.request({
-				    url: 'apis/transportation/team-app/statistics/getTeamOfCarAndDriver',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/team-app/statistics/getTeamOfCarAndDriver',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -261,7 +261,7 @@
 			getTransportFun() {
 				this.transportLoading = true;
 				this.transportTask = uni.request({
-				    url: 'apis/transportation/team-app/statistics/getTeamWaybillCount',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/team-app/statistics/getTeamWaybillCount',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -307,7 +307,7 @@
 			getPeeFun() {
 				this.peeLoading = true;
 				this.peeTask = uni.request({
-				    url: 'apis/transportation/team-app/statistics/getTeamWaybillFreight',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/team-app/statistics/getTeamWaybillFreight',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -343,7 +343,7 @@
 			getCarFun() {
 				this.carLoading = true;
 				this.carTask = uni.request({
-				    url: 'apis/transportation/team-app/statistics/getTeamVehicleRanking',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/team-app/statistics/getTeamVehicleRanking',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -363,7 +363,7 @@
 			getDriverFun() {
 				this.driverLoading = true;
 				this.driverTask = uni.request({
-				    url: 'apis/transportation/team-app/statistics/getTeamDriverRanking',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/team-app/statistics/getTeamDriverRanking',
 				    data: {
 						timeType: this.TabCur
 					},

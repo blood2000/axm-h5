@@ -183,7 +183,7 @@
 			getStatisticFun() {
 				this.statisticLoading = true;
 				this.statisticTask = uni.request({
-				    url: 'apis/transportation/driverStatistics/headStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/driverStatistics/headStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -207,7 +207,7 @@
 			getTransportFun() {
 				this.transportLoading = true;
 				this.transportTask = uni.request({
-				    url: 'apis/transportation/driverStatistics/transportStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/driverStatistics/transportStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -242,7 +242,7 @@
 			getPeeFun() {
 				this.peeLoading = true;
 				this.peeTask = uni.request({
-				    url: 'apis/transportation/driverStatistics/shippingStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/driverStatistics/shippingStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -271,7 +271,7 @@
 			getCarFun() {
 				this.carLoading = true;
 				this.carTask = uni.request({
-				    url: 'apis/transportation/driverStatistics/carStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/driverStatistics/carStatistics',
 				    data: {
 						timeType: this.TabCur
 					},

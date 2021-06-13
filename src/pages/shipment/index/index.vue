@@ -242,7 +242,7 @@
 			getStatisticFun() {
 				this.statisticLoading = true;
 				this.statisticTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/queryStatisticsData',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/bulkCargoStatistics/queryStatisticsData',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -268,7 +268,7 @@
 			getOrderFun() {
 				this.orderLoading = true;
 				this.orderTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/querySourceStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/bulkCargoStatistics/querySourceStatistics',
 				    data: {
 						timeType: this.TabCur,
 						topNumber: 3
@@ -291,7 +291,7 @@
 			getTransportFun() {
 				this.transportLoading = true;
 				this.transportTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/queryTransportationStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/bulkCargoStatistics/queryTransportationStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -335,7 +335,7 @@
 			getPeeFun() {
 				this.peeLoading = true;
 				this.peeTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/queryFreightStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/bulkCargoStatistics/queryFreightStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
@@ -366,7 +366,7 @@
 			getBillFun() {
 				this.billLoading = true;
 				this.billTask = uni.request({
-				    url: 'apis/transportation/bulkCargoStatistics/queryBillingStatistics',
+				    url: process.env.VUE_APP_BASE_API + '/transportation/bulkCargoStatistics/queryBillingStatistics',
 				    data: {
 						timeType: this.TabCur
 					},
