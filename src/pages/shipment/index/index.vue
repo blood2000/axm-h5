@@ -85,7 +85,7 @@
 										<image class="order" :src="'/static/order_' + (index + 1) + '.png'"></image>
 										<text class="name">{{ item.goodsBigTypeName }}</text>
 									</view>
-									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}单</text>
+									<text class="c-order-box__count">{{item.sourceStatistics ? item.sourceStatistics : 0}}元</text>
 								</view>
 								<view class="c-order-address">{{ (item.loadCity ? item.loadCity: '') + ((item.loadCity || item.unloadCity) ? '—' : '') + (item.unloadCity ? item.unloadCity : '') }}</view>
 							</template>
