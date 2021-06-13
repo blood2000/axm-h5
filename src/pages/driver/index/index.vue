@@ -189,7 +189,15 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.statisticData = res.data.data;
+						if (res.data && res.data.data) {
+							this.statisticData = res.data.data;
+						} else {
+							this.statisticData = {
+								waybillFinishNum: 0,
+								actualFreight: 0,
+								transportCar: 0
+							}
+						}
 					},
 					complete: () => {
 						this.statisticLoading = false;
@@ -205,19 +213,26 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.transportTime = res.data.data.xtime;
+						this.transportTime = [];
+						let orderReceivedList = [];
+						let unloadedList = [];
+						if (res.data && res.data.data) {
+							this.transportTime = res.data.data.xtime || [];
+							orderReceivedList = res.data.data.orderReceivedList || [];
+							unloadedList = res.data.data.unloadedList || [];
+						}
 						this.transportData = [{
 							name: '已接单',
-							data: res.data.data.orderReceivedList,
+							data: orderReceivedList,
 							color: '#FFCF5B'
 						},{
 							name: '已卸货',
-							data: res.data.data.unloadedList,
+							data: unloadedList,
 							color: '#477AE4'
 						}];
 						this.$nextTick(() => {
 							this.$refs['TransportRef'].initChart();
-							})
+						})
 					},
 					complete: () => {
 						this.transportLoading = false;
@@ -233,10 +248,15 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.peeTime = res.data.data.xtime;
+						this.peeTime = [];
+						let actualAmountList = [];
+						if (res.data && res.data.data) {
+							this.peeTime = res.data.data.xtime || [];
+							actualAmountList = res.data.data.actualAmountList || [];
+						}
 						this.peeData = [{
 							name: '实收金额',
-							data: res.data.data.actualAmountList,
+							data: actualAmountList,
 							color: '#55C876'
 						}];
 						this.$nextTick(() => {
@@ -257,8 +277,13 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.carNum = res.data.data.carNum;
-						this.carList = res.data.data.carStatisticsList;
+						if (res.data && res.data.data) {
+							this.carNum = res.data.data.carNum || 0;
+							this.carList = res.data.data.carStatisticsList || [];
+						} else {
+							this.carNum = 0;
+							this.carList = [];
+						}
 					},
 					complete: () => {
 						this.carLoading = false;

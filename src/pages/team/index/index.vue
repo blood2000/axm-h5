@@ -242,7 +242,16 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.statisticData = res.data.data;
+						if (res.data && res.data.data) {
+							this.statisticData = res.data.data;
+						} else {
+							this.statisticData = {
+								vechicleNum: 0,
+								activeVechicleNum: 0,
+								driverNum: 0,
+								activeDriverNum: 0
+							};
+						}
 					},
 					complete: () => {
 						this.statisticLoading = false;
@@ -258,21 +267,24 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.orderNum = res.data.data.orderUnloaCount;
-						const { orderReceivingList, orderUnloadList } = res.data.data;
+						this.orderNum = 0;
+						this.transportTime = [];
 						const orderArr = [];
 						const unloadArr = [];
-						this.transportTime = [];
-						if(orderReceivingList){
-							orderReceivingList.forEach(el => {
-								this.transportTime.push(el.timeTag);
-								orderArr.push(el.waybill);
-							});
-						}
-						if(orderUnloadList){
-							orderUnloadList.forEach(el => {
-								unloadArr.push(el.waybill);
-							});
+						if (res.data && res.data.data) {
+							this.orderNum = res.data.data.orderUnloaCount || 0;
+							const { orderReceivingList, orderUnloadList } = res.data.data;
+							if(orderReceivingList){
+								orderReceivingList.forEach(el => {
+									this.transportTime.push(el.timeTag);
+									orderArr.push(el.waybill);
+								});
+							}
+							if(orderUnloadList){
+								orderUnloadList.forEach(el => {
+									unloadArr.push(el.waybill);
+								});
+							}
 						}
 						this.transportData = [{
 							name: '已接单',
@@ -301,15 +313,18 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.PeeNum = res.data.data.waybillAmount;
-						const { freightVoList } = res.data.data;
-						const peeArr = [];
+						this.PeeNum = 0;
 						this.peeTime = [];
-						if(freightVoList){
-							freightVoList.forEach(el => {
-								this.peeTime.push(el.timeTag);
-								peeArr.push(el.money);
-							});
+						const peeArr = [];
+						if (res.data && res.data.data) {
+							this.PeeNum = res.data.data.waybillAmount || 0;
+							const { freightVoList } = res.data.data;
+							if(freightVoList){
+								freightVoList.forEach(el => {
+									this.peeTime.push(el.timeTag);
+									peeArr.push(el.money);
+								});
+							}
 						}
 						this.peeData = [{
 							name: '实收金额',
@@ -334,7 +349,11 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.carList = res.data.data;
+						if (res.data && res.data.data) {
+							this.carList = res.data.data;
+						} else {
+							this.carList = [];
+						}
 					},
 					complete: () => {
 						this.carLoading = false;
@@ -350,7 +369,11 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.driverList = res.data.data;
+						if (res.data && res.data.data) {
+							this.driverList = res.data.data;
+						} else {
+							this.driverList = [];
+						}
 					},
 					complete: () => {
 						this.driverLoading = false;

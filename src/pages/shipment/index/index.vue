@@ -248,7 +248,17 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.statisticData = res.data.data;
+						if (res.data && res.data.data) {
+							this.statisticData = res.data.data;
+						} else {
+							this.statisticData = {
+								sourceOfGoods: 0,
+								project: 0,
+								sumInvoicedAmountApplied: 0,
+								sumShipperRealPay: 0,
+								waybillCompleted: 0
+							}
+						}
 					},
 					complete: () => {
 						this.statisticLoading = false;
@@ -265,8 +275,13 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						this.orderList = res.data.data.receivingOrdersStatisticsVos;
-						this.peeList = res.data.data.paymentStatisticsVos;
+						if (res.data && res.data.data) {
+							this.orderList = res.data.data.receivingOrdersStatisticsVos || [];
+							this.peeList = res.data.data.paymentStatisticsVos || [];
+						} else {
+							this.orderList = [];
+							this.peeList = [];
+						}
 					},
 					complete: () => {
 						this.orderLoading = false;
@@ -282,20 +297,22 @@
 					},
 					header: Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, this.headerInfo),
 					success: (res) => {
-						const { orderReceivedStatisticsVo, unloadedStatisticsVo } = res.data.data;
 						const orderArr = [];
 						const unloadArr = [];
 						this.transportTime = [];
-						if(orderReceivedStatisticsVo){
-							orderReceivedStatisticsVo.forEach(el => {
-								this.transportTime.push(el.createTime);
-								orderArr.push(el.numberStatistics);
-							});
-						}
-						if(unloadedStatisticsVo){
-							unloadedStatisticsVo.forEach(el => {
-								unloadArr.push(el.numberStatistics)
-							});
+						if (res.data && res.data.data) {
+							const { orderReceivedStatisticsVo, unloadedStatisticsVo } = res.data.data;
+							if(orderReceivedStatisticsVo){
+								orderReceivedStatisticsVo.forEach(el => {
+									this.transportTime.push(el.createTime);
+									orderArr.push(el.numberStatistics);
+								});
+							}
+							if(unloadedStatisticsVo){
+								unloadedStatisticsVo.forEach(el => {
+									unloadArr.push(el.numberStatistics)
+								});
+							}
 						}
 						this.transportData = [{
 							name: '已接单',
@@ -326,10 +343,12 @@
 					success: (res) => {
 						const arr = [];
 						this.peeTime = [];
-						res.data.data.forEach(el => {
-							this.peeTime.push(el.createTime);
-							arr.push(el.numberStatistics);
-						});
+						if (res.data && res.data.data) {
+							res.data.data.forEach(el => {
+								this.peeTime.push(el.createTime);
+								arr.push(el.numberStatistics);
+							});
+						}
 						this.peeData = [{
 							name: '实付金额',
 							data: arr,
@@ -355,10 +374,12 @@
 					success: (res) => {
 						const arr = [];
 						this.billTime = [];
-						res.data.data.forEach(el => {
-							this.billTime.push(el.createTime);
-							arr.push(el.numberStatistics);
-						});
+						if (res.data && res.data.data) {
+							res.data.data.forEach(el => {
+								this.billTime.push(el.createTime);
+								arr.push(el.numberStatistics);
+							});
+						}
 						this.billData = [{
 							name: '已开票金额',
 							data: arr,
