@@ -19,7 +19,7 @@
 			headerInfo: {
 				handler(value) {
 					// 模拟拦截
-					if(JSON.stringify(value) !== '{}') {
+					if(value && JSON.stringify(value) !== '{}') {
 						this.$isResolve();
 					}
 				},

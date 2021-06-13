@@ -35,6 +35,10 @@
 		},
 		async onLoad(options) {
 			await this.$onLaunched;
+			// uni.showToast({
+			// 	title: 'header: ' + JSON.stringify(this.headerInfo),
+			// 	icon: 'none'
+			// });
 			this.getData(options);
 		},
 		methods: {

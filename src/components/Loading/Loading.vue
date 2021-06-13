@@ -1,6 +1,6 @@
 <template>
 	<view class="c-loading-box">
-		<image src="https://image.weilanwl.com/gif/loading-1.gif" mode="aspectFit" class="gif-white response" style="height:240upx"></image>
+		<image src="/static/loading.gif" mode="aspectFit" class="gif-white response" style="height:240upx"></image>
 	</view>
 </template>
 
