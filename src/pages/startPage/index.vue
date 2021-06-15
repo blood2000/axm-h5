@@ -34,11 +34,21 @@
 			}
 		},
 		async onLoad(options) {
+			// from web
+			if(options.isWeb) {
+				this.$store.dispatch('getLoginInfoAction', {
+					"Authorization":options.tk,
+					"App-Type":"1",
+					"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
+					"Terminal-Type":"app",
+					"App-Version":"2.0",
+					"Produce-Code":"776ca8e240574192b6e0f69b417163df",
+					"statusBarHeight": 0,
+					"role-type":3
+				});
+			}
+			// from app
 			await this.$onLaunched;
-			// uni.showToast({
-			// 	title: 'header: ' + JSON.stringify(this.headerInfo),
-			// 	icon: 'none'
-			// });
 			this.getData(options);
 		},
 		methods: {
