@@ -13,6 +13,9 @@
 			></ItemCard>
 		</view>
 		
+		<!-- 加载失败 -->
+		<NonePage v-if="itemList.length === 0"></NonePage>
+		
 		<!-- 弹框加载 -->
 		<view class="cu-load load-modal" v-if="loadModal">
 			<view class="gray-text">加载中...</view>
@@ -34,10 +37,12 @@
 	import Header from '@/components/Header/Header.vue';
 	import ItemCard from '@/components/ItemCard/ItemCard.vue';
 	import { ListStatistics } from '@/config/service/statistic.js';
+	import NonePage from '@/components/NonePage/NonePage.vue';
 	export default {
 		components: {
 			Header,
-			ItemCard
+			ItemCard,
+			NonePage
 		},
 		computed: {
 			...mapState({
