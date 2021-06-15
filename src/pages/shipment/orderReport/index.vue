@@ -9,43 +9,43 @@
 			<view class="c-title-box ly-flex-pack-justify ly-flex-align-center">
 				<text class="text">{{ cont.goodsBigTypeName }}</text>
 			</view>
-			<view style="margin-top: 30upx;">
+			<view v-for="(item, index) in cont.activity" :key="index" style="margin-top: 30upx;">
 				<view class="order-load flex align-center">
 					<image class="order-loadimg" style="margin-right: 7upx;" src="../../../static/report/icon_load.png" mode=""></image>
-					<view class="order-loadname">{{ cont.loadCity }}</view>
+					<view class="order-loadname">{{ item.loadCity }}</view>
 				</view>
 				<image class="order-icon" src="../../../static/report/icon_shu.png" mode=""></image>
 				<view class="order-load flex align-center">
 					<image class="order-loadimg" src="../../../static/report/icon_unload.png" mode=""></image>
-					<view class="order-loadname">{{  cont.unloadCity }}</view>
+					<view class="order-loadname">{{  item.unloadCity }}</view>
 				</view>
 				<view class="c-app-container min" style="margin: 0; border-radius: 0;">
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.orderReceived) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.orderReceived) }}单</text>
+								<text class="num">{{ numberFormat(item.orderReceived) }}</text>
+								<text class="unit">{{ numberFormatUnit(item.orderReceived) }}单</text>
 							</view>
 							<view class="label">已接单</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.unloaded) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.unloaded) }}单</text>
+								<text class="num">{{ numberFormat(item.unloaded) }}</text>
+								<text class="unit">{{ numberFormatUnit(item.unloaded) }}单</text>
 							</view>
 							<view class="label">已卸货</view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.settled) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.settled) }}单</text>
+								<text class="num">{{ numberFormat(item.settled) }}</text>
+								<text class="unit">{{ numberFormatUnit(item.settled) }}单</text>
 							</view>
 							<view class="label">已结算</text></view>
 						</view>
 						<view class="c-count-box">
 							<view class="count">
-								<text class="num">{{ numberFormat(cont.amountActuallyPaid) }}</text>
-								<text class="unit">{{ numberFormatUnit(cont.amountActuallyPaid) }}元</text>
+								<text class="num">{{ numberFormat(item.amountActuallyPaid) }}</text>
+								<text class="unit">{{ numberFormatUnit(item.amountActuallyPaid) }}元</text>
 							</view>
 							<view class="label">实付金额</text></view>
 						</view>
@@ -104,11 +104,36 @@
 				this.loadModal = true;
 				getOrderReport(this.tabCur, this.headerInfo).then(response => {
 					this.loadModal = false;
-					this.orderList = response.data
+					// this.orderList = response.data;
+					this.orderList = this.unique(response.data, 'goodsBigTypeName');
+					console.log(this.orderList);
 				}).catch(() => {
 					this.loadModal = false;
 				});
 			},
+			// arr为初始数组，key为需要处理的key名称
+			unique(arr, key){
+				var tempArr = []
+				var newArr = []
+				for (let i = 0; i < arr.length; i++) {
+					console.log(tempArr.indexOf(arr[i][key]));
+					if (tempArr.indexOf(arr[i][key]) === -1) {
+						newArr.push({
+							[key]: arr[i][key],
+							activity: [arr[i]]
+						})
+						tempArr.push(arr[i][key]);
+					} else {
+						for (let j = 0; j < newArr.length; j++) {
+							if (newArr[j][key] == arr[i][key]) {
+								newArr[j].activity = newArr[j].activity.concat(arr[i])
+								console.log(newArr);
+							}
+						}
+					}
+				}
+				return newArr
+			}
 		}
 	}
 </script>

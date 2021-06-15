@@ -108,7 +108,7 @@
 		<!-- 运输报表内容 -->
 		<uni-collapse v-if="tab === 1" :accordion="true" @change="transChange">
 			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
-				<view v-for="(cont, index) in transData" :key="index" class="c-app-container min">
+				<view v-for="(cont, index) in transData[item]" :key="index" class="c-app-container min">
 					<view class="time">{{ parseTime(cont.createTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
@@ -140,7 +140,7 @@
 		<!-- 费用报表内容 -->
 		<uni-collapse v-if="tab === 2" :accordion="true" @change="costChange">
 			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
-				<view v-for="(cont, index) in costData" :key="index" class="c-app-container min">
+				<view v-for="(cont, index) in costData[item]" :key="index" class="c-app-container min">
 					<view class="time">{{ parseTime(cont.createTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
@@ -184,7 +184,7 @@
 		<!-- 开票报表内容 -->
 		<uni-collapse v-if="tab === 3" :accordion="true" @change="billingChange">
 			<uni-collapse-item v-for="(item, index) in monthList" :key="index" :name="item" :title="parseTime(item, '{y}年{m}月')" :show-animation="true">
-				<view v-for="(cont, index) in billingData" :key="index" class="c-app-container min">
+				<view v-for="(cont, index) in billingData[item]" :key="index" class="c-app-container min">
 					<view class="time">{{ parseTime(cont.dayTime, '{m}月{d}日') }}</view>
 					<view class="ly-flex-pack-around">
 						<view class="c-count-box">
@@ -247,13 +247,14 @@
 				tablist: [{ tabName: '运输报表', tab: 1 }, { tabName: '费用报表', tab: 2 }, { tabName: '开票报表', tab: 3 }],
 				tab: 1,
 				timeType: 1,
+				judge: false,
 				monthList: [],
 				transHead: {},
-				transData: [],
+				transData: {},
 				costHead: {},
-				costData: [],
+				costData: {},
 				billingHead: {},
-				billingData: []
+				billingData: {}
 			}
 		},
 		onLoad(options) {
@@ -273,22 +274,52 @@
 			}
 		},
 		methods: {
+			// 判断数组是否有该项值
+			judgeList(list, key){
+				this.judge = false;
+				this.judge = list.hasOwnProperty(key);
+			},
 			transChange(e){
-				this.transData = [];
-				if(e.length !== 0){
-					this.getTransData(e);
+				// console.log(e);
+				if (e.length !== 0){
+					if(this.transData){
+						this.judgeList(this.transData, e[0])
+						if (this.judge){
+							return;
+						}else{
+							this.getTransData(e[0]);
+						}
+					}else{
+						this.getTransData(e[0]);
+					}
 				}
 			},
 			costChange(e){
-				this.costData = [];
 				if (e.length !== 0){
-					this.getCostData(e);
+					if(this.costData){
+						this.judgeList(this.costData, e[0])
+						if (this.judge){
+							return;
+						}else{
+							this.getCostData(e[0]);
+						}
+					}else{
+						this.getCostData(e[0]);
+					}
 				}
 			},
 			billingChange(e){
-				this.billingData = [];
 				if (e.length !== 0){
-					this.getBillingData(e);
+					if(this.billingData){
+						this.judgeList(this.billingData, e[0])
+						if (this.judge){
+							return;
+						}else{
+							this.getBillingData(e[0]);
+						}
+					}else{
+						this.getBillingData(e[0]);
+					}
 				}
 			},
 			handleClick(e){
@@ -319,9 +350,9 @@
 			},
 			// 获取运输报表月份数据
 			getTransData(e) {
-				// console.log(e);
-				getTransData(e[0], this.headerInfo).then(response => {
-					this.transData = response.data;
+				getTransData(e, this.headerInfo).then(response => {
+					this.transData = {...this.transData, [e]: response.data};
+					console.log(this.transData);
 				})
 			},
 			// 获取费用报表月份
@@ -338,8 +369,8 @@
 			},
 			// 获取费用报表月份数据
 			getCostData(e) {
-				getCostData(e[0], this.headerInfo).then(response => {
-					this.costData = response.data;
+				getCostData(e, this.headerInfo).then(response => {
+					this.costData = {...this.costData, [e]: response.data};
 				})
 			},
 			// 获取开票报表月份
@@ -357,7 +388,7 @@
 			// 获取开票报表月份数据
 			getBillingData(e) {
 				getBillingData(e[0], this.headerInfo).then(response => {
-					this.billingData = response.data;
+					this.billingData = {...this.billingData, [e]: response.data};
 				})
 			}
 		}
