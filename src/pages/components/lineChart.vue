@@ -48,12 +48,20 @@
 			loading: {
 				type: Boolean,
 				default: false
+			},
+			tabCur: {
+				type: Number,
+				default: 1
 			}
 		},
 		computed: {
 			today(){
 				const today = new Date();
-				return (today.getMonth() + 1) + '月' + today.getDate() + '日'
+				if (this.tabCur === 1 || this.tabCur === 2) {
+					return (today.getMonth() + 1) + '月' + today.getDate() + '日'
+				} else if (this.tabCur === 3 || this.tabCur === 4) {
+					return today.getFullYear() + '年' + (today.getMonth() + 1) + '月'
+				}
 			},
 			isWan(){
 				if (this.isChange) {

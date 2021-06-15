@@ -107,6 +107,7 @@
 					:unit="transportUnit"
 					:unitTime="transportUnitTime"
 					:loading="transportLoading"
+					:tabCur="TabCur"
 				></LineChart>
 			</view>
 			
@@ -123,6 +124,7 @@
 					:unit="peeUnit"
 					:unitTime="peeUnitTime"
 					:loading="peeLoading"
+					:tabCur="TabCur"
 				></LineChart>
 			</view>
 			
@@ -139,6 +141,7 @@
 					:unit="billUnit"
 					:unitTime="billUnitTime"
 					:loading="billLoading"
+					:tabCur="TabCur"
 				></LineChart>
 			</view>
 		</view>
