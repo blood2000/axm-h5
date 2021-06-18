@@ -33,7 +33,7 @@
 		<view v-if="showBg" class="top-bgframe2">
 			<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
 		</view>
-		<view :style="{height: titleHeight + 'upx' }"></view>
+		<view class="bg-height" :style="{height: titleHeight + 'upx' }"></view>
 		<!-- <view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
