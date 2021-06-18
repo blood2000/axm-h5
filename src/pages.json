@@ -52,7 +52,7 @@
 			"style": {
 				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": false
 			}
 		}
 		,{
@@ -60,7 +60,7 @@
 			"style": {
 				"navigationBarTitleText": "项目报表",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": false
 			}
 		}
 		,{
@@ -68,7 +68,7 @@
 			"style": {
 				"navigationBarTitleText": "货源报表",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": false
 			}
 		}
 		,{
@@ -76,7 +76,7 @@
 			"style": {
 				"navigationBarTitleText": "运输报表",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": false
 			}
 		}
 		//统计页入口 - 司机
@@ -86,7 +86,7 @@
             {
                 "navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
-                "enablePullDownRefresh": true
+                "enablePullDownRefresh": false
             }
         },{
 		    "path" : "pages/driver/billReport/index",
@@ -94,7 +94,7 @@
 		    {
 		        "navigationBarTitleText": "运输报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		},{
 		    "path" : "pages/driver/vehicleReport/index",
@@ -102,7 +102,7 @@
 		    {
 		        "navigationBarTitleText": "车辆报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		}
 		//统计页入口 - 车队
@@ -112,7 +112,7 @@
 		    {
 		        "navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		    
 		},{
@@ -121,7 +121,7 @@
 		    {
 		        "navigationBarTitleText": "运输报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": true
+		        "enablePullDownRefresh": false
 		    }
 		},{
 		    "path" : "pages/team/driverReport/index",
@@ -236,6 +236,16 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "充值说明",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		// 加油入口
+		{
+		    "path" : "pages/refuel/index/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "加油",
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
