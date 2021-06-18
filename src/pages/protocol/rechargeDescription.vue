@@ -1,8 +1,8 @@
 <template>
 	<view class="service-page">
-		<view class="service-page__header">充值说明</view>
+		<!-- <view class="service-page__header">充值说明</view> -->
 		
-		<view class="service-page__content">
+		<view class="service-page__content" style="margin-top: 60rpx">
 			<view v-if="companyName && companyName !== ''" style="text-indent: 0;">{{ companyName }}：</view>
 			<view>您好！这是贵司充值运费的账号，必须使用与超好运注册账户一致的企业对公户进行充值，充值成功后在超好运货主端APP的个人中心即可显示充值的金额。</view>
 		</view>
@@ -46,8 +46,8 @@
 	export default {
 		data(){
 			return {
-				companyName: null,
-				account: null
+				companyName: '',
+				account: ''
 			}
 		},
 		computed: {
@@ -60,8 +60,8 @@
 		},
 		methods: {
 			getData(options) {
-				this.companyName = options.companyName ? options.companyName : null;
-				this.account = options.account ? options.account : null;
+				this.companyName = options.companyName ? options.companyName : '';
+				this.account = options.account ? options.account : '';
 			},
 			copyText() {
 				// #ifdef H5

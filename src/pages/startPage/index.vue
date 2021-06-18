@@ -34,11 +34,20 @@
 			}
 		},
 		async onLoad(options) {
+			// from web
+			if(options.isWeb) {
+				this.$store.dispatch('getLoginInfoAction', {
+					"Authorization": options.tk,
+					"App-Type":"1",
+					"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
+					"Terminal-Type":"web",
+					"App-Version":"2.0",
+					"Produce-Code":"776ca8e240574192b6e0f69b417163df",
+					"role-type":3
+				});
+			}
+			// from app
 			await this.$onLaunched;
-			// uni.showToast({
-			// 	title: 'header: ' + JSON.stringify(this.headerInfo),
-			// 	icon: 'none'
-			// });
 			this.getData(options);
 		},
 		methods: {
@@ -52,6 +61,7 @@
 					this.isSecondaryPage = true;
 				}
 				getPageJump(this.headerInfo).then(response => {
+					console.log(this.headerInfo)
 					this.loading = false;
 					const role = response.data;
 					// 1跳转调度者统计 2跳转司机统计 3跳转货主大宗统计 4跳转货主渣土统计
