@@ -61,7 +61,11 @@
 		methods: {
 			getData(options) {
 				this.companyName = options.companyName ? options.companyName : '';
-				this.account = options.account ? options.account : '';
+				if(options.account && options.account !== 'null'){
+					this.account = options.account;
+				}else{
+					this.account = '';
+				}
 			},
 			copyText() {
 				// #ifdef H5
