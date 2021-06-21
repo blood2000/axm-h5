@@ -12,6 +12,9 @@ import { parseTime, numberFormat, numberFormatUnit } from './utils/ddc.js';
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
+import {VueJsonp} from 'vue-jsonp'
+Vue.use(VueJsonp)
+
 Vue.prototype.$onLaunched = new Promise(resolve => {
 	Vue.prototype.$isResolve = resolve;
 })
