@@ -1,11 +1,25 @@
+var vm = ''
+ 
 /**
- * 微信小程序JavaScriptSDK
- * 
- * @version 1.2
- * @date 2019-03-06
- * @author v_ylyue@tencent.com
+ * 这里是重写部分
  */
-
+var wx = {
+    request(obj){
+        obj.data.output = 'jsonp'
+        vm.$jsonp(obj.url,obj.data)
+        .then(json => {
+                if(json.status == 0){
+                    obj.success(json)
+                }else {
+                    obj.fail(json)
+                }
+            })
+            .catch(err => {
+                obj.fail(err)
+            })
+    }
+}
+ 
 var ERROR_CONF = {
     KEY_ERR: 311,
     KEY_ERR_MSG: 'key格式错误',
@@ -61,7 +75,7 @@ var Utils = {
     /* append padding */
     x[len >> 5] |= 0x80 << (len % 32);
     x[((len + 64) >>> 9 << 4) + 14] = len;
-
+ 
     var i;
     var olda;
     var oldb;
@@ -71,13 +85,13 @@ var Utils = {
     var b = -271733879;
     var c = -1732584194;
     var d = 271733878;
-
+ 
     for (i = 0; i < x.length; i += 16) {
       olda = a;
       oldb = b;
       oldc = c;
       oldd = d;
-
+ 
       a = this.md5ff(a, b, c, d, x[i], 7, -680876936);
       d = this.md5ff(d, a, b, c, x[i + 1], 12, -389564586);
       c = this.md5ff(c, d, a, b, x[i + 2], 17, 606105819);
@@ -94,7 +108,7 @@ var Utils = {
       d = this.md5ff(d, a, b, c, x[i + 13], 12, -40341101);
       c = this.md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
       b = this.md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
-
+ 
       a = this.md5gg(a, b, c, d, x[i + 1], 5, -165796510);
       d = this.md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
       c = this.md5gg(c, d, a, b, x[i + 11], 14, 643717713);
@@ -111,7 +125,7 @@ var Utils = {
       d = this.md5gg(d, a, b, c, x[i + 2], 9, -51403784);
       c = this.md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
       b = this.md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
-
+ 
       a = this.md5hh(a, b, c, d, x[i + 5], 4, -378558);
       d = this.md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
       c = this.md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
@@ -128,7 +142,7 @@ var Utils = {
       d = this.md5hh(d, a, b, c, x[i + 12], 11, -421815835);
       c = this.md5hh(c, d, a, b, x[i + 15], 16, 530742520);
       b = this.md5hh(b, c, d, a, x[i + 2], 23, -995338651);
-
+ 
       a = this.md5ii(a, b, c, d, x[i], 6, -198630844);
       d = this.md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
       c = this.md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
@@ -145,7 +159,7 @@ var Utils = {
       d = this.md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
       c = this.md5ii(c, d, a, b, x[i + 2], 15, 718787259);
       b = this.md5ii(b, c, d, a, x[i + 9], 21, -343485551);
-
+ 
       a = this.safeAdd(a, olda);
       b = this.safeAdd(b, oldb);
       c = this.safeAdd(c, oldc);
@@ -221,7 +235,7 @@ var Utils = {
   hexHMACMD5(k, d) {
     return this.rstr2hex(this.rawHMACMD5(k, d));
   },
-
+ 
   md5(string, key, raw) {
     if (!key) {
       if (!raw) {
@@ -297,7 +311,7 @@ var Utils = {
         }
         return query;
     },
-
+ 
     /**
      * 计算角度
      */
@@ -319,7 +333,7 @@ var Utils = {
       }
       return endLocation;
     },
-
+ 
     /**
      * 计算两点间直线距离
      * @param a 表示纬度差
@@ -347,7 +361,7 @@ var Utils = {
             complete: complete
         });
     },
-
+ 
     /**
      * 获取location参数
      */
@@ -365,7 +379,7 @@ var Utils = {
         }
         return location;
     },
-
+ 
     /**
      * 回调函数默认处理
      */
@@ -374,7 +388,7 @@ var Utils = {
         param.fail = param.fail || function () { };
         param.complete = param.complete || function () { };
     },
-
+ 
     /**
      * 验证param对应的key值是否为空
      * 
@@ -390,7 +404,7 @@ var Utils = {
         }
         return false;
     },
-
+ 
     /**
      * 验证参数中是否存在检索词keyword
      * 
@@ -399,7 +413,7 @@ var Utils = {
     checkKeyword(param){
         return !this.checkParamKeyEmpty(param, 'keyword');
     },
-
+ 
     /**
      * 验证location值
      * 
@@ -415,7 +429,7 @@ var Utils = {
         }
         return true;
     },
-
+ 
     /**
      * 构造错误数据结构
      * @param {Number} errCode 错误码
@@ -427,7 +441,7 @@ var Utils = {
             message: errMsg
         };
     },
-
+ 
     /**
      * 
      * 数据处理函数
@@ -580,7 +594,7 @@ var Utils = {
         param.success(data);
       }
     },
-
+ 
     /**
      * 构造微信请求参数，公共属性处理
      * 
@@ -593,7 +607,7 @@ var Utils = {
         options.header = { "content-type": "application/json" };
         options.method = 'GET';
         options.success = function (res) {
-            var data = res.data;
+            var data = res;
             if (data.status === 0) {
               that.handleData(param, data, feature);
             } else {
@@ -623,12 +637,12 @@ var Utils = {
                 default:{
                     param.complete(that.buildErrorConfig(ERROR_CONF.SYSTEM_ERR, ERROR_CONF.SYSTEM_ERR_MSG));
                 }
-
+ 
             }
         };
         return options;
     },
-
+ 
     /**
      * 处理用户参数是否传入坐标进行不同的处理
      */
@@ -651,10 +665,10 @@ var Utils = {
         }
     }
 };
-
-
+ 
+ 
 class QQMapWX {
-
+ 
     /**
      * 构造函数
      * 
@@ -664,9 +678,10 @@ class QQMapWX {
         if (!options.key) {
             throw Error('key值不能为空');
         }
+        vm = options.vm
         this.key = options.key;
     };
-
+ 
     /**
      * POI周边检索
      *
@@ -678,13 +693,13 @@ class QQMapWX {
     search(options) {
         var that = this;
         options = options || {};
-
+ 
         Utils.polyfillParam(options);
-
+ 
         if (!Utils.checkKeyword(options)) {
             return;
         }
-
+ 
         var requestParam = {
             keyword: options.keyword,
             orderby: options.orderby || '_distance',
@@ -693,30 +708,30 @@ class QQMapWX {
             output: 'json',
             key: that.key
         };
-
+ 
         if (options.address_format) {
             requestParam.address_format = options.address_format;
         }
-
+ 
         if (options.filter) {
             requestParam.filter = options.filter;
         }
-
+ 
         var distance = options.distance || "1000";
         var auto_extend = options.auto_extend || 1;
         var region = null;
         var rectangle = null;
-
+ 
         //判断城市限定参数
         if (options.region) {
           region = options.region;
         }
-
+ 
         //矩形限定坐标(暂时只支持字符串格式)
         if (options.rectangle) {
           rectangle = options.rectangle;
         }
-
+ 
         var locationsuccess = function (result) {        
           if (region && !rectangle) {
             //城市限定参数拼接
@@ -743,7 +758,7 @@ class QQMapWX {
         };
         Utils.locationProcess(options, locationsuccess);
     };
-
+ 
     /**
      * sug模糊检索
      *
@@ -756,11 +771,11 @@ class QQMapWX {
         var that = this;
         options = options || {};
         Utils.polyfillParam(options);
-
+ 
         if (!Utils.checkKeyword(options)) {
             return;
         }
-
+ 
         var requestParam = {
             keyword: options.keyword,
             region: options.region || '全国',
@@ -803,7 +818,7 @@ class QQMapWX {
           }, "suggest"));      
         }        
     };
-
+ 
     /**
      * 逆地址解析
      *
@@ -825,7 +840,7 @@ class QQMapWX {
         if (options.poi_options) {
             requestParam.poi_options = options.poi_options
         }
-
+ 
         var locationsuccess = function (result) {
             requestParam.location = result.latitude + ',' + result.longitude;
           if (options.sig) {
@@ -838,7 +853,7 @@ class QQMapWX {
         };
         Utils.locationProcess(options, locationsuccess);
     };
-
+ 
     /**
      * 地址解析
      *
@@ -851,33 +866,33 @@ class QQMapWX {
         var that = this;
         options = options || {};
         Utils.polyfillParam(options);
-
+ 
         if (Utils.checkParamKeyEmpty(options, 'address')) {
             return;
         }
-
+ 
         var requestParam = {
             address: options.address,
             output: 'json',
             key: that.key
         };
-
+ 
         //城市限定
         if (options.region) {
           requestParam.region = options.region;
         }
-
+ 
         if (options.sig) {
           requestParam.sig = Utils.getSig(requestParam, options.sig, 'geocoder');
         }
-
+ 
         wx.request(Utils.buildWxRequestConfig(options, {
             url: URL_GET_GEOCODER,
             data: requestParam
         },'geocoder'));
     };
-
-
+ 
+ 
     /**
      * 获取城市列表
      *
@@ -894,17 +909,17 @@ class QQMapWX {
             output: 'json',
             key: that.key
         };
-
+ 
         if (options.sig) {
           requestParam.sig = Utils.getSig(requestParam, options.sig, 'getCityList');
         }
-
+ 
         wx.request(Utils.buildWxRequestConfig(options, {
             url: URL_CITY_LIST,
             data: requestParam
         },'getCityList'));
     };
-
+ 
     /**
      * 获取对应城市ID的区县列表
      *
@@ -917,27 +932,27 @@ class QQMapWX {
         var that = this;
         options = options || {};
         Utils.polyfillParam(options);
-
+ 
         if (Utils.checkParamKeyEmpty(options, 'id')) {
             return;
         }
-
+ 
         var requestParam = {
             id: options.id || '',
             output: 'json',
             key: that.key
         };
-
+ 
         if (options.sig) {
           requestParam.sig = Utils.getSig(requestParam, options.sig, 'getDistrictByCityId');
         }
-
+ 
         wx.request(Utils.buildWxRequestConfig(options, {
             url: URL_AREA_LIST,
             data: requestParam
         },'getDistrictByCityId'));
     };
-
+ 
     /**
      * 用于单起点到多终点的路线距离(非直线距离)计算：
      * 支持两种距离计算方式：步行和驾车。
@@ -954,22 +969,22 @@ class QQMapWX {
         var that = this;
         options = options || {};
         Utils.polyfillParam(options);
-
+ 
         if (Utils.checkParamKeyEmpty(options, 'to')) {
             return;
         }
-
+ 
         var requestParam = {
             mode: options.mode || 'walking',
             to: Utils.location2query(options.to),
             output: 'json',
             key: that.key
         };
-
+ 
         if (options.from) {
           options.location = options.from;
         }
-
+ 
         //计算直线距离
         if(requestParam.mode == 'straight'){        
           var locationsuccess = function (result) {
@@ -1018,11 +1033,11 @@ class QQMapWX {
               data: requestParam
             },'calculateDistance'));
           };
-
+ 
           Utils.locationProcess(options, locationsuccess);
         }      
     };
-
+ 
   /**
    * 路线规划：
    * 
@@ -1035,16 +1050,16 @@ class QQMapWX {
     var that = this;
     options = options || {};
     Utils.polyfillParam(options);
-
+ 
     if (Utils.checkParamKeyEmpty(options, 'to')) {
       return;
     }
-
+ 
     var requestParam = {
       output: 'json',
       key: that.key
     };
-
+ 
     //to格式处理
     if (typeof options.to == 'string') {
       requestParam.to = options.to;
@@ -1055,14 +1070,14 @@ class QQMapWX {
     var SET_URL_DIRECTION = null;
     //设置默认mode属性
     options.mode = options.mode || MODE.driving;
-
+ 
     //设置请求域名
     SET_URL_DIRECTION = URL_DIRECTION + options.mode;
-
+ 
     if (options.from) {
       options.location = options.from;
     }
-
+ 
     if (options.mode == MODE.driving) {
       if (options.from_poi) {
         requestParam.from_poi = options.from_poi;
@@ -1095,7 +1110,7 @@ class QQMapWX {
         requestParam.plate_number = options.plate_number;
       }
     }
-
+ 
     if (options.mode == MODE.transit) {
       if (options.departure_time) {
         requestParam.departure_time = options.departure_time;
@@ -1104,7 +1119,7 @@ class QQMapWX {
         requestParam.policy = options.policy;
       }
     } 
-
+ 
     var locationsuccess = function (result) {
       requestParam.from = result.latitude + ',' + result.longitude;
       if (options.sig) {
@@ -1115,9 +1130,9 @@ class QQMapWX {
         data: requestParam
       }, 'direction'));
     };
-
+ 
     Utils.locationProcess(options, locationsuccess);
   }
 };
-
+ 
 module.exports = QQMapWX;
