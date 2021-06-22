@@ -1,10 +1,15 @@
 <template>
 	<view class="index-contail">
 		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
-			<text slot="title">加油</text>
+			<text slot="title">费用支付</text>
 		</Header>
-		<view class="qrcode-frame">
-			<image class="qrcode-code" src="" mode=""></image>
+		<view class="qrcode-frame flex flex-direction align-center justify-center">
+			<view class="refuel-title">{{payInfo.stationName || '福建至简至一加油站'}}</view>
+			<image class="qrcode-code" src="/static/erweima.jpg" mode=""></image>
+			<view class="pay-frame flex flex-direction align-center justify-center">
+				<view class="">支付成功</view>
+				<view class="margin-mtop">支付金额： <text class="pay-money">666.66</text> 元</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -17,19 +22,8 @@
 		},
 	    data() {
 	        return {
-				queryParams:{
-					car_no: "",
-					foreign_driver_id: "",
-					foreign_unique_id: "",
-					fuel_no: "",
-					lat: "",
-					lng: "",
-					mobile: "",
-					money: "",
-					name: "",
-					si_id: "",
-					user_code: ""
-				}
+				isSecondaryPage: false,
+				payInfo: {}
 			}
 		},
 		computed:{
@@ -39,10 +33,8 @@
 		},
 		async onLoad(options){
 			await this.$onLaunched;
-			const isSecondaryPage = options.isSecondaryPage;
-			if (isSecondaryPage === '1') {
-				this.isSecondaryPage = true;
-			}
+			this.isSecondaryPage = true;
+			this.payInfo = JSON.parse(decodeURIComponent(options.payInfo));
 		},
 		methods: {
 			
@@ -52,7 +44,30 @@
 
 <style>
 	.qrcode-code{
-		height: 100upx;
-		width: 100upx;
+		height: 500upx;
+		width: 500upx;
+	}
+	.qrcode-frame{
+		/* height: 800upx; */
+		width: 100%;
+	}
+	.refuel-title{
+		padding: 50upx;
+		font-size: 42upx;
+		font-weight: bold;
+	}
+	.pay-frame{
+		margin-top: 100upx;
+		background-color: #0081FF50;
+		border-radius: 10upx;
+		height: 200upx;
+		width: 500upx;
+	}
+	.margin-mtop{
+		margin-top: 20upx;
+	}
+	.pay-money{
+		font-size: 36upx;
+		font-weight: bold;
 	}
 </style>

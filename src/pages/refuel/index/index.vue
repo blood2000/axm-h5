@@ -7,10 +7,10 @@
 			<view class="cu-bar search bg-white">
 				<view class="search-form round">
 					<text class="cuIcon-search"></text>
-					<input @focus="InputFocus" @blur="InputBlur" :adjust-position="false" type="text" placeholder="请输入加油站名称、高速、地区搜索油站" confirm-type="search" />
+					<input :value="queryParams.searchCriteria" :adjust-position="false" type="text" placeholder="请输入加油站名称、高速、地区搜索油站" confirm-type="search" />
 				</view>
 				<view class="action">
-					<button class="cu-btn bg-blue shadow-blur round">搜索</button>
+					<button class="cu-btn bg-blue shadow-blur round" @click="search">搜索</button>
 				</view>
 			</view>
 			<view class="top-screen flex align-center justify-around">
@@ -18,12 +18,12 @@
 					<view class="">{{ district || '地区' }}<text class="cuIcon-unfold text-gray" /></view>
 				</pick-regions>
 				<view class="flex align-center" @tap="showModal" data-target="ChooseModal">
-					<view class="top-screen-title">{{ queryParams.oilType || '油类' }}</view>
+					<view class="top-screen-title">{{ queryParams.fuelName || '油类' }}</view>
 					<text class="cuIcon-unfold text-gray" />
 				</view>
 				<picker @change="PickerChange" :value="index" :range="picker">
 					<view class="flex align-center">
-						<view class="top-screen-title">{{ queryParams.brand || '品牌' }}</view>
+						<view class="top-screen-title">{{ queryParams.brandName || '品牌' }}</view>
 						<text class="cuIcon-unfold text-gray" />
 					</view>
 				</picker>
@@ -38,10 +38,10 @@
 			<view class="cu-dialog" @tap.stop="">
 				<view class="cu-bar bg-white">
 					<view class="action text-grey text-lg" @tap="hideModal">取消</view>
-					<view class="action text-blue text-lg" @tap="oilTypeSearch">完成</view>
+					<view class="action text-blue text-lg" @tap="fuelNameSearch">完成</view>
 				</view>
 				<view class="grid col-3 padding-sm">
-					<view v-for="(item,index) in oilType" class="padding-xs" :key="index">
+					<view v-for="(item,index) in fuelName" class="padding-xs" :key="index">
 						<button class="cu-btn blue lg block" :class="item.check?'bg-blue':'line-blue'" @tap="ChooseCheckbox"
 						 :data-value="item.oils"> {{item.oils}}</button>
 					</view>
@@ -49,21 +49,23 @@
 			</view>
 		</view>
 		<view class="mapclock">
-			<view class="bottom-section">
+			<view v-if="gasStationList.length !== 0" class="bottom-section">
 				<!-- 加油站列表 -->
-				<view v-for="(item, index) in 10" :key="index" class="refuel-frame">
+				<view v-for="(item, index) in gasStationList" :key="index" class="refuel-frame">
 					<view class="refuel-info">
 						<view class="flex align-center justify-between">
 							<view class="flex flex-direction">
-								<view class="refuel-title">连江服务区中石化加油站</view>
-								<view class="">营业时间：00:00-23:59</view>
+								<view class="refuel-title">{{item.stationName}}</view>
+								<view class="">营业时间：{{item.openTime}}</view>
 							</view>
 							<button class="cu-btn bg-blue" @click="navToPay(item)">加油</button>
 						</view>
-						<view class='cu-tag light bg-orange round' style="margin: 20upx 0;">G18荣乌高速</view>
-						<view class="refuel-oil flex align-center justify-between">
-							<view class="refuel-oil-name">-20#柴油</view>
-							<view class="refuel-oil-price">5.50 <text class="refuel-oil-unit">元/升</text></view>
+						<view class="flex align-center" style="margin: 20upx 0;" v-if="item.hids.length>0">
+							<view v-for="(hids, index) in item.hids" :key="index" class='cu-tag light bg-orange round' style="margin-right: 10upx;">{{ hids }}</view>
+						</view>
+						<view class="refuel-oil flex align-center justify-between" v-for="(oilsVos, index) in item.oilsVos" :key="index">
+							<view class="refuel-oil-name">{{ oilsVos.oilsName }}</view>
+							<view class="refuel-oil-price">{{ oilsVos.oilsPrice }} <text class="refuel-oil-unit">元/升</text></view>
 						</view>
 						<view class="refuel-tag">本价格仅供参考，以实际站内挂牌价为准</view>
 					</view>
@@ -73,11 +75,11 @@
 							<view class="flex align-center">
 								<view class="cuIcon-location"></view>
 								<view style="margin-left: 10upx;">距我</view>
-								<view class="refuel-address-dis">29.09km</view>
+								<view class="refuel-address-dis">{{ item.distance }}km</view>
 							</view>
-							<view class="refuel-address-info">福建省福州市连江县东湖镇连江服务区</view>
+							<view class="refuel-address-info">{{ item.address }}</view>
 						</view>
-						<view class="refuel-address-imgframe">
+						<view class="refuel-address-imgframe" @click="openLocation(item)">
 							<image class="refuel-address-img" src="../../../static/icon_address.png" mode=""></image>
 						</view>
 					</view>
@@ -93,6 +95,32 @@
 				<view class="gray-text">加载中...</view>
 			</view>
 		</view>
+		<!-- 选择车辆 -->
+		<view class="cu-modal" :class="modalName=='vehicleModel'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">请选择需要加油的车辆</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<radio-group class="block" @change="RadioChange">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in vehiclelist" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{ item.licenseNumber }}</view>
+								<radio class="blue radio" :class="radio== item.licenseNumber ?'checked':''" :checked="radio== item.licenseNumber ?true:false"
+								 :value="item.licenseNumber"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
+				<view class="cu-bar bg-white">
+					<view class="action margin-0 flex-sub text-green solid-left" @tap="hideModal">取消</view>
+					<view class="action margin-0 flex-sub  solid-left" @tap="getQrCode">确定</view>
+				</view>
+			</view>
+		</view>
 	</view>
 	
 </template>
@@ -102,7 +130,7 @@
 	import Header from '@/components/Header/Header.vue';
 	import QQMapWX from "@/components/qqmap-wx-jssdk.js"
 	import pickRegions from '@/components/pick-regions/pick-regions.vue'
-	import { getBrandList, getOilsList, getDriver } from '@/config/service/refuel.js';
+	import { getGasStationList, getBrandList, getOilsList, getDriver, getVehicleList, getRefuelInfo } from '@/config/service/refuel.js';
 	export default {
 		components: {
 			Header,
@@ -130,10 +158,25 @@
 				defaultRegionCode:'350103',
 				// 司机信息
 				driverInfo: {},
+				// 加油站列表
+				gasStationList:[],
+				// 是否没了
+				isEnd: false,
+				// 车辆列表
+				vehiclelist: [],
+				radio: '',
+				// 付款信息
+				payInfo: {},
 				queryParams: {
-					oilType: '',
-					brand: '',
-					distance: false
+					pageNum: 1,
+					pageSize: 10,
+					areaCode: '',
+					fuelName: '',
+					brandName: '',
+					distance: undefined,
+					searchCriteria: '',
+					lat: 0,
+					lng: 0,
 				},
 				oilingQuery: {
 					car_no: "",
@@ -143,12 +186,13 @@
 					mobile: "",
 					name: "",
 					si_id: "",
-					user_code: ""
+					user_code: "",
+					money: ''
 				},
 				// 选择
 				index: -1,
 				picker: [],
-				oilType: [],
+				fuelName: [],
 				isSecondaryPage: false
 			}
 		},
@@ -173,7 +217,7 @@
 			});
 			// 获取油类列表
 			getOilsList(this.headerInfo).then(response => {
-				this.oilType = response.data;
+				this.fuelName = response.data;
 			});
 			// 获取司机信息
 			const driverCode = '3b280e3f93c648468d59866f6fa05fd0'
@@ -182,13 +226,19 @@
 				this.driverInfo = response.data;
 				this.oilingQuery = {
 					...this.oilingQuery,
-					car_no: response.data.licenseNumber,
-					foreign_driver_id: driverCode,
+					// car_no: response.data.licenseNumber,
+					foreign_driver_id: response.data.code,
 					mobile: response.data.telphone,
 					name: response.data.name,
 					user_code: response.data.identificationNumber
 				}
-				console.log(this.oilingQuery);
+				// 获取车辆列表
+				getVehicleList(this.driverInfo.code, this.headerInfo).then(response => {
+					console.log(response);
+					this.vehiclelist = response.rows;
+					this.oilingQuery.car_no = this.vehiclelist[0].licenseNumber;
+					this.radio = this.vehiclelist[0].licenseNumber;
+				});
 			});
 			// this.loadModal = true;
 			var that = this;
@@ -201,10 +251,26 @@
 					that.mylongitude = res.longitude;
 					that.latitude = res.latitude;
 					that.longitude = res.longitude;
-					
+					that.queryParams.lat = res.latitude;
+					that.queryParams.lng = res.longitude;
+					console.log(that.mylatitude, that.mylongitude);
 					that.getLocationMap(res.latitude,res.longitude);
 				}
 			});
+		},
+		onPullDownRefresh() {
+			this.gasStationList = []
+			this.queryParams.pageNum = 1
+			this.getList()
+			uni.stopPullDownRefresh();  //停止下拉刷新动画
+		},
+		// 触底加载
+		onReachBottom() {
+			// console.log("触底")
+			if(!this.isEnd) {
+				this.queryParams.pageNum++
+				this.getList()
+			}
 		},
 		methods: {
 			// 获取选择的地区
@@ -212,17 +278,22 @@
 				console.log(region);
 				this.region = region;
 				this.district = region[2].name;
+				this.queryParams.areaCode = region[0].code;
 				console.log(this.district);
+				this.gasStationList = [];
+				this.getList();
 			},
 			// 品牌筛选
 			PickerChange(e) {
-				this.queryParams.brand = this.picker[e.detail.value];
+				this.queryParams.brandName = this.picker[e.detail.value];
 				this.index = e.detail.value;
 				console.log(this.queryParams);
+				this.gasStationList = [];
+				this.getList();
 			},
 			// 油类型筛选
 			ChooseCheckbox(e) {
-				let items = this.oilType;
+				let items = this.fuelName;
 				let values = e.currentTarget.dataset.value;
 				for (let i = 0, lenI = items.length; i < lenI; ++i) {
 					if (items[i].oils == values) {
@@ -232,75 +303,80 @@
 				}
 			},
 			// 油类型选择
-			oilTypeSearch(){
+			fuelNameSearch(){
 				let oils = [];
-				this.oilType.forEach(item=> {
+				this.fuelName.forEach(item=> {
 					if (item.check === true){
 						oils.push(item.oils);
 					}
 				});
-				this.queryParams.oilType = oils.join(',');
+				this.queryParams.fuelName = oils.join(',');
 				this.modalName = null;
-				console.log(this.queryParams);
+				this.gasStationList = [];
+				this.getList();
 			},
+			// 距离筛选
 			screenDistance(){
-				this.queryParams.distance = !this.queryParams.distance;
+				this.gasStationList = [];
+				if (this.queryParams.distance){
+					this.queryParams.distance = undefined;
+					this.getList();
+				} else {
+					this.queryParams.distance = 50;
+					this.getList();
+				}
 			},
-			navToPay(e){
-				
+			// 搜索
+			search(){
+				this.gasStationList = [];
+				console.log(this.queryParams);
+				this.getList();
 			},
-			getAddress() {
-				this.get(api.categoryUrl,{id: this.TabCur,provinceName: this.provinceName, cityName:this.cityName,countryName:this.countryName})
-				.then(res => {
-					// console.log(res)
-					if(res.data.errno === 0) {
-						this.tabList = res.data.data
-						// console.log(this.tabList)
-						this.tabList1 = this.tabList[0].level2 //默认第一个
-						this.categoryId = this.tabList[0].level2[this.TabCur1].id
-						this.getMechanicLocation()
-					}else {
-						this.$api.msg(res.data.errmsg)
-					}
-				})
+			// 车辆选择
+			RadioChange(e) {
+				this.radio = e.detail.value;
+				this.oilingQuery.car_no = e.detail.value;
 			},
-			getMechanicLocation() {
-				this.get(api.mechanicUrl,{categoryId: this.categoryId,provinceName: this.provinceName, cityName: this.cityName, countryName: this.countryName})
-				.then(res => {
-					// console.log(res)
-					if(res.data.errno === 0) {
-						this.covers = res.data.data
-						this.covers.forEach(item => {
-							this.$set(item, "latitude", item.lat)
-							this.$set(item, "longitude", item.lon)
-							this.$set(item, 'iconPath', '/static/location.png')
-							this.$set(item, 'width', '30')
-							this.$set(item, 'height', '30')
-							this.$set(item, "callout", {
-								content : item.nickname,
-								color: "#FFFFFF",
-								bgColor: "#494C5B",
-								fontSize:14,
-								borderRadius:5,
-								padding: 5,
-								display:'ALWAYS',
-							})
-						})
-						// console.log(this.covers)
-					}
+			// 加油按钮点击
+			navToPay(item){
+				this.payInfo.stationName = item.stationName;
+				this.oilingQuery.si_id = item.stationId;
+				this.oilingQuery.lat = item.lat;
+				this.oilingQuery.lng = item.lng;
+				console.log(this.oilingQuery);
+				if(this.vehiclelist.length > 1){
+					this.modalName = 'vehicleModel'
+				}else{
+					this.getQrCode();
+				}
+			},
+			// 生成加油二维码
+			getQrCode(){
+				getRefuelInfo(this.oilingQuery, this.headerInfo).then(response => {
+					let str = JSON.parse(response.data)
+					console.log(str);
 					
-				})
+					this.payInfo = {
+						...this.payInfo,
+						...str.result
+					}
+					console.log(this.payInfo);
+					// uni.navigateTo({
+					// 	url: '/pages/refuel/oiling/index?payInfo=' + encodeURIComponent(JSON.stringify(this.payInfo))
+					// })
+				});
 			},
 			getLocationMap(latitude,longitude){
 				var that = this;
 				that.qqmapsdk.reverseGeocoder({
 					location:{
 						latitude: latitude,
-						longitude: longitude            
+						longitude: longitude
 					},
 					success:function(res){
 						console.log(res);
 						that.defaultRegionCode = res.result.ad_info.adcode;
+						that.queryParams.areaCode = res.result.ad_info.adcode.substring(0, 2);
 						// 完整地址
 						that.myaddress = res.result.address;
 						// 省
@@ -316,10 +392,73 @@
 						detailLocation["countryName"] = that.countryName
 						uni.setStorageSync('detailLocation',detailLocation)
 						that.loadModal = false;
-						// that.getAddress()
+						that.getList();
 						//that.formSubmit(latitude+","+longitude,'24.604625,118.041341');
 					}
 				})
+			},
+			getList() {
+				getGasStationList(this.queryParams, this.headerInfo).then(response => {
+					if(response.data.length === 0) {
+						this.isEnd = true;
+						return
+					}
+					this.gasStationList = [...this.gasStationList,...response.data]
+					this.getStationLocation();
+				});
+			},
+			// 地图上标记油站
+			getStationLocation() {
+				this.covers = this.gasStationList.map(res => {
+					return {
+						latitude: res.lat,
+						longitude: res.lng,
+						stationName: res.stationName
+					}
+				});
+				this.covers.forEach(item => {
+					// this.$set(item, "latitude", item.lat)
+					// this.$set(item, "longitude", item.lng)
+					this.$set(item, 'iconPath', '/static/icon_station.png')
+					this.$set(item, 'width', '30')
+					this.$set(item, 'height', '30')
+					this.$set(item, "callout", {
+						content : item.stationName,
+						color: "#FFFFFF",
+						bgColor: "#494C5B",
+						fontSize:14,
+						borderRadius:5,
+						padding: 5,
+						display:'ALWAYS',
+					})
+				})
+				const point = this.gasStationList.map(res => {
+					return {
+						longitude: res.lng,
+						latitude: res.lat
+					}
+				});
+				const that = this;
+				// 缩放显示全部标记点
+				uni.createMapContext("clockmap", that).includePoints ({
+					points: [
+						...point,
+						{
+						longitude: that.mylongitude,
+						latitude: that.mylatitude
+						}
+					],
+					padding:[50,50,50,50]
+				});
+			},
+			openLocation(item){
+				uni.openLocation({
+					latitude: item.lat,
+					longitude: item.lng,
+					success: function () {
+						console.log('success');
+					}
+				});
 			},
 			// 点击标记点事件
 			onmarkertap(){
@@ -338,27 +477,6 @@
 					}
 				});
 			},
-			// 点击控件事件
-			oncontroltap(control){
-				var that = this;
-				that.screen = '';
-				uni.createMapContext("clockmap", that).includePoints ({
-					points: [{
-						longitude: that.circles[0].longitude,
-						latitude: that.circles[0].latitude,
-					},{
-						longitude: that.mylongitude,
-						latitude: that.mylatitude,
-					}],
-					padding:[50,50,50,50]
-				});
-			},
-			tabSelect(e,item) {
-				this.TabCur = e.currentTarget.dataset.id;
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60;
-				this.tabList1 = this.tabList[this.TabCur].level2
-				
-			},
 			hideModal(e) {
 				this.modalName = null
 			},
@@ -374,7 +492,7 @@
 		color: #333333;
 	}
 	.mapclock{
-		height: 100vh;
+		/* height: 100vh; */
 		width: 100vw;
 	}
 	.map-frame{
@@ -391,18 +509,10 @@
 	::v-deep .bg-height{
 		/* height: 0 !important; */
 	}
-	.agree-title{
-		height: 80upx;
-		width: 100%;
-		border-top: 1upx solid #DDDDDD;
-		color: #999999;
-		font-size: 26upx;
-		font-weight: 400;
-	}
 	/* 打卡弹窗 */
 	.top-section{
 		position: fixed;
-		top: 0;
+		/* top: 0; */
 		left: 0;
 		z-index: 10;
 		width: 100%;
@@ -420,47 +530,12 @@
 	.top-screen-cont{
 		color: #0081FF;
 	}
-	.top-frame{
-		height: 80upx;
-		padding: 0 30upx;
-	}
-	.top-img{
-		margin-right: 20upx;
-		height: 60upx;
-		width: 60upx;
-		border-radius: 50%;
-	}
-	.top-bgframe{
-		position: relative;
-		height: 0;
-		top: 0upx;
-		left: 0upx;
-		z-index: -1;
-	}
-	.top-bg{
-		width: 100%;
-	}
-	.top-city{
-		font-size: 26upx;
-		color: #333333;
-		font-weight: 400;
-	}
-	.nav .cu-item {
-		margin: 0 30rpx !important;
-		padding: 0 !important;
-		font-size: 32upx !important;
-	}
-	.nav-color{
-		color: #EC6F34;
-		font-weight: bold !important;
-	}
-	
 	
 	/* 底部模块 */
 	.bottom-section{
-		min-height: 100vh;
+		min-height: 800upx;
 		position: relative;
-		margin-top: 740upx;
+		margin-top: 900upx;
 		padding-bottom: 20upx;
 		width: 100%;
 		z-index: 9;
@@ -476,13 +551,18 @@
 		padding: 30upx 30upx 20upx;
 	}
 	.refuel-title{
+		max-width: 520upx;
 		font-size: 36upx;
 		font-weight: bold;
+		overflow: hidden; //超出隐藏
+		white-space: nowrap; //
+		text-overflow: ellipsis;
 	}
 	.refuel-oil{
 		padding: 20upx 30upx;
 		background-color: #F9FBFA;
 		border-radius: 8upx;
+		margin-top: 10upx;
 	}
 	.refuel-oil-name{
 		font-size: 30upx;
@@ -524,21 +604,5 @@
 	.address-img{
 		height: 80upx;
 		width: 80upx;
-	}
-	.address-tag{
-		color: #6E6A8E;
-		font-size: 28upx;
-		font-weight: 400;
-	}
-	.address-choose{
-		background-color: #F8F8F8;
-		border-radius: 16upx;
-		padding: 30upx;
-		margin: 0 30upx;
-	}
-	.address-title{
-		color: #494C5B;
-		font-size: 36upx;
-		font-weight: bold;
 	}
 </style>
