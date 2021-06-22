@@ -249,6 +249,14 @@
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
+		},{
+		    "path" : "pages/refuel/oiling/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "费用支付",
+				"navigationStyle": "custom",
+		        "enablePullDownRefresh": false
+		    }
 		}
     ],
 	"globalStyle": {
