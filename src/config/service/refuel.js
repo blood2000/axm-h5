@@ -1,6 +1,16 @@
 import uniRequest from "../request.js";
 
 // 获取加油站品牌
+export function getGasStationList(query, config) {
+  return uniRequest({
+    url: '/transportation/petrolStation/getPetrolStationInfo',
+    method: 'get',
+	data: query,
+	headers: config
+  });
+}
+
+// 获取加油站品牌
 export function getBrandList(config) {
   return uniRequest({
     url: '/transportation/petrolStation/getBrandList',
@@ -32,7 +42,22 @@ export function getRefuelInfo(data, config) {
   return uniRequest({
     url: '/iot/nucarf/getRefuelInfo',
     method: 'post',
-	headers: config,
-	data: data
+	data: data,
+	headers: {
+		...config,
+		'Content-Type': 'application/json'
+	}
+  });
+}
+
+// 获取车辆列表
+export function getVehicleList(driverCode, config) {
+  return uniRequest({
+    url: '/assets/vehicle/list',
+    method: 'get',
+	data: {
+		driverCode: driverCode
+	},
+	headers: config
   });
 }
