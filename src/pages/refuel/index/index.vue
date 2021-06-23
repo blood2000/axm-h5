@@ -7,7 +7,7 @@
 			<view class="cu-bar search bg-white">
 				<view class="search-form round">
 					<text class="cuIcon-search"></text>
-					<input :value="queryParams.searchCriteria" :adjust-position="false" type="text" placeholder="请输入加油站名称、高速、地区搜索油站" confirm-type="search" />
+					<input @blur="changeValue" :adjust-position="false" type="text" placeholder="请输入加油站名称、高速、地区搜索油站" confirm-type="search" />
 				</view>
 				<view class="action">
 					<button class="cu-btn bg-blue shadow-blur round" @click="search">搜索</button>
@@ -187,7 +187,8 @@
 					name: "",
 					si_id: "",
 					user_code: "",
-					money: ''
+					money: '',
+					stationName: ''
 				},
 				// 选择
 				index: -1,
@@ -273,6 +274,13 @@
 			}
 		},
 		methods: {
+			// 重置列表
+			clearQuery(){
+				this.gasStationList = [];
+				this.queryParams.pageNum = 1;
+				this.isEnd = false;
+				this.getStationLocation();
+			},
 			// 获取选择的地区
 			handleGetRegion(region){
 				console.log(region);
@@ -280,7 +288,7 @@
 				this.district = region[2].name;
 				this.queryParams.areaCode = region[0].code;
 				console.log(this.district);
-				this.gasStationList = [];
+				this.clearQuery();
 				this.getList();
 			},
 			// 品牌筛选
@@ -288,7 +296,7 @@
 				this.queryParams.brandName = this.picker[e.detail.value];
 				this.index = e.detail.value;
 				console.log(this.queryParams);
-				this.gasStationList = [];
+				this.clearQuery();
 				this.getList();
 			},
 			// 油类型筛选
@@ -312,24 +320,27 @@
 				});
 				this.queryParams.fuelName = oils.join(',');
 				this.modalName = null;
-				this.gasStationList = [];
+				this.clearQuery();
 				this.getList();
 			},
 			// 距离筛选
 			screenDistance(){
-				this.gasStationList = [];
+				this.clearQuery();
 				if (this.queryParams.distance){
 					this.queryParams.distance = undefined;
 					this.getList();
 				} else {
-					this.queryParams.distance = 50;
+					this.queryParams.distance = 300000;
 					this.getList();
 				}
 			},
+			changeValue(e){
+				console.log(e);
+				this.queryParams.searchCriteria = e.detail.value;
+			},
 			// 搜索
 			search(){
-				this.gasStationList = [];
-				console.log(this.queryParams);
+				this.clearQuery();
 				this.getList();
 			},
 			// 车辆选择
@@ -339,7 +350,7 @@
 			},
 			// 加油按钮点击
 			navToPay(item){
-				this.payInfo.stationName = item.stationName;
+				this.oilingQuery.stationName = item.stationName;
 				this.oilingQuery.si_id = item.stationId;
 				this.oilingQuery.lat = item.lat;
 				this.oilingQuery.lng = item.lng;
@@ -352,19 +363,9 @@
 			},
 			// 生成加油二维码
 			getQrCode(){
-				getRefuelInfo(this.oilingQuery, this.headerInfo).then(response => {
-					let str = JSON.parse(response.data)
-					console.log(str);
-					
-					this.payInfo = {
-						...this.payInfo,
-						...str.result
-					}
-					console.log(this.payInfo);
-					// uni.navigateTo({
-					// 	url: '/pages/refuel/oiling/index?payInfo=' + encodeURIComponent(JSON.stringify(this.payInfo))
-					// })
-				});
+				uni.navigateTo({
+					url: '/pages/refuel/oiling/index?oilingQuery=' + encodeURIComponent(JSON.stringify(this.oilingQuery))
+				})
 			},
 			getLocationMap(latitude,longitude){
 				var that = this;
@@ -420,13 +421,13 @@
 					// this.$set(item, "latitude", item.lat)
 					// this.$set(item, "longitude", item.lng)
 					this.$set(item, 'iconPath', '/static/icon_station.png')
-					this.$set(item, 'width', '30')
+					this.$set(item, 'width', '26')
 					this.$set(item, 'height', '30')
 					this.$set(item, "callout", {
 						content : item.stationName,
 						color: "#FFFFFF",
 						bgColor: "#494C5B",
-						fontSize:14,
+						fontSize:5,
 						borderRadius:5,
 						padding: 5,
 						display:'ALWAYS',
