@@ -1,13 +1,13 @@
 <template>
 	<view class="index-contail">
-		<Header :show-bg="false" :showBack="isSecondaryPage">
+		<Header :show-bg="false" :showBack="isSecondaryPage" @close="closeInterval">
 			<text slot="title">费用支付</text>
 		</Header>
 		<view class="qrcode-frame flex flex-direction align-center justify-center">
 			<view class="refuel-title">{{oilingQuery.stationName}}</view>
 			<view class="refuel-car">{{oilingQuery.car_no}}</view>
-			<img v-if="img" class="qrcode-code" :src="img" mode=""></img>
-			<view class="pay-frame flex flex-direction align-center justify-center">
+			<img v-if="img && !paySuccess.amount" class="qrcode-code" :src="img" mode=""></img>
+			<view v-if="paySuccess.amount" class="pay-frame flex flex-direction align-center justify-center">
 				<view class="">支付成功</view>
 				<view class="margin-mtop">支付金额： <text class="pay-money">{{paySuccess.amount}}</text> 元</view>
 			</view>
@@ -39,6 +39,7 @@
 		async onLoad(options){
 			await this.$onLaunched;
 			this.isSecondaryPage = true;
+			this.paySuccess = {};
 			this.oilingQuery = JSON.parse(decodeURIComponent(options.oilingQuery));
 			getRefuelInfo(this.oilingQuery, this.headerInfo).then(response => {
 				let str = JSON.parse(response.data)
@@ -55,11 +56,14 @@
 			getLog(){
 				getLogByWaybillCode(this.payInfo.unique_str, this.headerInfo).then(response => {
 					console.log(response);
-					if (response.data){
+					if (response){
 						this.paySuccess = response.data;
-						clearInterval(this.interval);
+						this.closeInterval();
 					}
 				});
+			},
+			closeInterval(){
+				clearInterval(this.interval);
 			}
 		},
 	}
