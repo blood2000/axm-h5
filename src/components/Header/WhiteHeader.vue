@@ -1,5 +1,5 @@
 <template>
-	<view class="">
+	<view class="" :class="{showLine: showLine}">
 		<view :style="{height: titleHeight + 'upx'}"></view>
 		<view class="top-frame" :style="{height: titleHeight + 'upx'}">
 			<view class="status_bar" :style="{height: statusBarHeight*2 + 'upx'}">
@@ -20,6 +20,10 @@
 	export default {
 		props:{
 			showBack: {
+				type: Boolean,
+				default: false
+			},
+			showLine: {
 				type: Boolean,
 				default: false
 			}
@@ -68,6 +72,9 @@
 </script>
 
 <style lang="scss" scoped>
+.showLine{
+	border-bottom: 1rpx solid rgba(153, 153, 153, 0.2);
+}
 .top-frame{
 	position: fixed;
 	top: 0;
