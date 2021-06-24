@@ -3,7 +3,8 @@
             :value="multiIndex" 
             :range="multiArray" 
             @change="handleValueChange"
-            @columnchange="handleColumnChange">
+            @columnchange="handleColumnChange"
+			@cancel="handleCancel">
         <slot></slot>
     </picker>
 </template>
@@ -103,6 +104,10 @@
                 // console.log(address);
                 this.$emit('getRegion',address)
             },
+			handleCancel(){
+				let arr = []
+				this.$emit('cancel', arr)
+			},
             handleDefaultRegion(region){
                 const isCode = !Array.isArray(region)
                 this.isInitMultiArray = false;
