@@ -86,9 +86,6 @@
 					header: info,
 					success: (res) => {
 						this.formData = res.data.data;
-					},
-					complete: () => {
-						this.statisticLoading = false;
 					}
 				})
 			},
