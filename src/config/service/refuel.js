@@ -61,3 +61,13 @@ export function getVehicleList(driverCode, config) {
 	headers: config
   });
 }
+
+// 查询付款记录
+export function getLogByWaybillCode(waybillCode, config) {
+  return uniRequest({
+    url: '/payment/frreezeAmountLog/getLogByWaybillCode/' + waybillCode,
+    method: 'get',
+	headers: config
+  });
+}
+
