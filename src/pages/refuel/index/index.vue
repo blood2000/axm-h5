@@ -14,14 +14,14 @@
 				</view>
 			</view>
 			<view class="top-screen flex align-center justify-around">
-				<pick-regions :defaultRegion="defaultRegionCode" @getRegion="handleGetRegion">
+				<pick-regions :defaultRegion="defaultRegionCode" @getRegion="handleGetRegion" @cancel="cancelRegion">
 					<view class="">{{ district || '地区' }}<text class="cuIcon-unfold text-gray" /></view>
 				</pick-regions>
 				<view class="flex align-center" @tap="showModal" data-target="ChooseModal">
 					<view class="top-screen-title">{{ queryParams.fuelName || '油类' }}</view>
 					<text class="cuIcon-unfold text-gray" />
 				</view>
-				<picker @change="PickerChange" :value="index" :range="picker">
+				<picker @change="PickerChange" @cancel="cancelBrand" :value="index" :range="picker">
 					<view class="flex align-center">
 						<view class="top-screen-title">{{ queryParams.brandName || '品牌' }}</view>
 						<text class="cuIcon-unfold text-gray" />
@@ -286,8 +286,14 @@
 				console.log(region);
 				this.region = region;
 				this.district = region[2].name;
-				this.queryParams.areaCode = region[0].code;
+				this.queryParams.areaCode = region[2].code;
 				console.log(this.district);
+				this.clearQuery();
+				this.getList();
+			},
+			cancelRegion(){
+				this.queryParams.areaCode = undefined;
+				this.district = '';
 				this.clearQuery();
 				this.getList();
 			},
@@ -296,6 +302,11 @@
 				this.queryParams.brandName = this.picker[e.detail.value];
 				this.index = e.detail.value;
 				console.log(this.queryParams);
+				this.clearQuery();
+				this.getList();
+			},
+			cancelBrand(){
+				this.queryParams.brandName = undefined;
 				this.clearQuery();
 				this.getList();
 			},
@@ -377,7 +388,7 @@
 					success:function(res){
 						console.log(res);
 						that.defaultRegionCode = res.result.ad_info.adcode;
-						that.queryParams.areaCode = res.result.ad_info.adcode.substring(0, 2);
+						that.queryParams.areaCode = res.result.ad_info.adcode;
 						// 完整地址
 						that.myaddress = res.result.address;
 						// 省
