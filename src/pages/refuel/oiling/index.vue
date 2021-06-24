@@ -9,7 +9,7 @@
 			<img v-if="img" class="qrcode-code" :src="img" mode=""></img>
 			<view class="pay-frame flex flex-direction align-center justify-center">
 				<view class="">支付成功</view>
-				<view class="margin-mtop">支付金额： <text class="pay-money">666.66</text> 元</view>
+				<view class="margin-mtop">支付金额： <text class="pay-money">{{paySuccess.amount}}</text> 元</view>
 			</view>
 		</view>
 	</view>
@@ -17,7 +17,7 @@
 
 <script>
 	import { mapState } from 'vuex';
-	import { getRefuelInfo } from '@/config/service/refuel.js';
+	import { getRefuelInfo, getLogByWaybillCode } from '@/config/service/refuel.js';
 	export default {
 		components: {
 		},
@@ -26,7 +26,9 @@
 				isSecondaryPage: false,
 				oilingQuery: {},
 				payInfo: {},
-				img: ''
+				img: '',
+				paySuccess: {},
+				interval: null
 			}
 		},
 		computed:{
@@ -44,10 +46,21 @@
 				console.log(this.payInfo);
 				this.img = this.payInfo.refuel_img_url + '\\';
 				console.log(this.img);
+				if(this.payInfo){
+					this.interval = setInterval(this.getLog, 2000);
+				}
 			});
 		},
 		methods: {
-			
+			getLog(){
+				getLogByWaybillCode(this.payInfo.unique_str, this.headerInfo).then(response => {
+					console.log(response);
+					if (response.data){
+						this.paySuccess = response.data;
+						clearInterval(this.interval);
+					}
+				});
+			}
 		},
 	}
 </script>

@@ -12,7 +12,7 @@
 		</view>
 	
 		<view class="contract-page__header-left">
-			<view>甲方：<text>{{ form.branchName }}（固定显示）</text></view>
+			<view>甲方：<text>{{ form.branchName }}</text></view>
 			<view>统一社会信用代码：<text>{{ form.branchOrganizationCodeNo }}</text></view>
 			<view>联系电话：<text>{{ form.branchPhone }}</text></view>
 		</view>
@@ -184,7 +184,7 @@
 		},
 		async onLoad(option){
 			await this.$onLaunched;
-			//this.getData(option.code);
+			this.getData(option.code);
 		},
 		methods: {
 			getData(code){

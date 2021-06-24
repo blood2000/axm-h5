@@ -199,7 +199,7 @@
 		},
 		async onLoad(option){
 			await this.$onLaunched;
-			//this.getData(option.code);
+			this.getData(option.code);
 		},
 		methods: {
 			getData(code){
