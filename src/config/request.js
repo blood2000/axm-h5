@@ -38,12 +38,13 @@ uniRequest.interceptors.response.use(
 			});
 			return Promise.reject(new Error(msg));
 		} else if (code === 500) {
-			uni.showToast({
-				title: msg,
-				icon: 'none',
-				duration: 2000
-			});
-			return Promise.reject(new Error(msg));
+			return
+			// uni.showToast({
+			// 	title: msg,
+			// 	icon: 'none',
+			// 	duration: 2000
+			// });
+			// return Promise.reject(new Error(msg));
 		} else if (code !== 200) {
 			uni.showToast({
 				title: msg,
