@@ -7,9 +7,10 @@
 			</view>
 			<view class="content_center">
 				<a class="button" :href="formData.version.apk_url" download='超好运'>安全下载</a>
+				<!-- ly-flex-pack-around -->
 				<view class="box ly-flex-pack-around">
 					<view class="box_left">无病毒</view>
-					<view class="box_right">免广告骚乱</view>
+					<!-- <view class="box_right">免广告骚乱</view> -->
 				</view>
 			</view>
 			<view class="content_bottom">
