@@ -26,12 +26,19 @@
 			showLine: {
 				type: Boolean,
 				default: false
+			},
+			// 是否二级页面
+			isSecondaryPage: {
+				type: Boolean,
+				default: false
 			}
 		},
 		computed: {
 			...mapState({
 				// headerInfo: state => state.header.headerInfo,
-				statusBarHeight: state => state.header.statusBarHeight
+				statusBarHeight: state => state.header.statusBarHeight,
+				isAndroid: state => state.header.isAndroid,
+				isiOS: state => state.header.isiOS
 			})
 		},
 		data() {
@@ -45,15 +52,24 @@
 			this.pages = getCurrentPages();
 			this.titleHeight = this.statusBarHeight*2 + 95;
 		},
+		async onLoad() {
+			await this.$onLaunched;
+		},
 		onShow() {
 		},
 		methods: {
 			back() {
-				/*uni.navigateBack({
-				delta: 1
-				})*/
+				this.$emit('close')
 				//@zxyuns 处理兼容，如果没有上一级界面则返回首页
-				if (this.pages.length === 2) {
+				if (this.isSecondaryPage) {
+					if (this.isAndroid) {
+						if(window.Android !== null && typeof(window.Android) !== 'undefined') {
+							window.Android.back();
+						}
+					} else if (this.isiOS) {
+						this.$WebViewJavascriptBridge.callHandler('back');
+					}
+				} else if (this.pages.length === 2) {
 					uni.navigateBack({
 						delta: 1
 					});
@@ -84,6 +100,7 @@
 	width: 100%;
 	overflow: hidden;
 	background-color: #FFFFFF;
+	border-bottom: 1upx solid #EDEDED;
 	.top-title{
 		height: 95upx;
 		width: 100%;
