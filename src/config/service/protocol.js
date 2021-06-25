@@ -11,9 +11,9 @@ export function getCollection(data, config) {
 }
 
 // 运输合同-货主/司机
-export function getContractByCode(code, config) {
+export function getContractByCode(orderCode, config) {
   return uniRequest({
-    url: '/transportation/orderContract/' + code,
+    url: '/transportation/orderContract/replace/' + orderCode,
     method: 'get',
 	headers: config
   });
