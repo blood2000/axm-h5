@@ -1,8 +1,8 @@
 <template>
 	<view class="index-contail">
-		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
+		<WhiteHeader :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
 			<text slot="title">加油</text>
-		</Header>
+		</WhiteHeader>
 		<view class="top-section shadow shadow-lg bg-white">
 			<view class="cu-bar search bg-white">
 				<view class="search-form round">
@@ -127,13 +127,13 @@
 
 <script>
 	import { mapState } from 'vuex'
-	import Header from '@/components/Header/Header.vue';
+	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
 	import QQMapWX from "@/components/qqmap-wx-jssdk.js"
 	import pickRegions from '@/components/pick-regions/pick-regions.vue'
 	import { getGasStationList, getBrandList, getOilsList, getDriver, getVehicleList, getRefuelInfo } from '@/config/service/refuel.js';
 	export default {
 		components: {
-			Header,
+			WhiteHeader,
 			pickRegions 
 		},
 	    data() {
