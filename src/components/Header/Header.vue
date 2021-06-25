@@ -105,6 +105,7 @@
 			// 	this.modalName = null
 			// },
 			back() {
+				this.$emit('close')
 				//@zxyuns 处理兼容，如果没有上一级界面则返回首页
 				if (this.isSecondaryPage) {
 					if (this.isAndroid) {

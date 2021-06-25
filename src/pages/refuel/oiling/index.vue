@@ -1,25 +1,33 @@
 <template>
 	<view class="index-contail">
-		<Header :show-bg="false" :showBack="isSecondaryPage">
+		<WhiteHeader :show-bg="false" :showBack="isSecondaryPage" @close="closeInterval">
 			<text slot="title">费用支付</text>
-		</Header>
+		</WhiteHeader>
 		<view class="qrcode-frame flex flex-direction align-center justify-center">
 			<view class="refuel-title">{{oilingQuery.stationName}}</view>
 			<view class="refuel-car">{{oilingQuery.car_no}}</view>
 			<img v-if="img" class="qrcode-code" :src="img" mode=""></img>
-			<view class="pay-frame flex flex-direction align-center justify-center">
-				<view class="">支付成功</view>
-				<view class="margin-mtop">支付金额： <text class="pay-money">{{paySuccess.amount}}</text> 元</view>
+		</view>
+		<view class="cu-modal" :class="modalName=='success'?'show':''" @click="hideModal">
+			<view class="cu-dialog">
+				<view class="pay-frame flex flex-direction align-center justify-center">
+					<image class="pay-img" src="../../../static/icon_pay.png" mode=""></image>
+					<view class="pay-success">支付成功</view>
+					<view class="pay-money">支付金额： {{paySuccess.amountPrice}} 元</view>
+				</view>
 			</view>
 		</view>
+		
 	</view>
 </template>
 
 <script>
 	import { mapState } from 'vuex';
+	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
 	import { getRefuelInfo, getLogByWaybillCode } from '@/config/service/refuel.js';
 	export default {
 		components: {
+			WhiteHeader
 		},
 	    data() {
 	        return {
@@ -28,7 +36,8 @@
 				payInfo: {},
 				img: '',
 				paySuccess: {},
-				interval: null
+				interval: null,
+				modalName: null,
 			}
 		},
 		computed:{
@@ -39,6 +48,7 @@
 		async onLoad(options){
 			await this.$onLaunched;
 			this.isSecondaryPage = true;
+			this.paySuccess = {};
 			this.oilingQuery = JSON.parse(decodeURIComponent(options.oilingQuery));
 			getRefuelInfo(this.oilingQuery, this.headerInfo).then(response => {
 				let str = JSON.parse(response.data)
@@ -46,6 +56,14 @@
 				console.log(this.payInfo);
 				this.img = this.payInfo.refuel_img_url + '\\';
 				console.log(this.img);
+				var music = null;
+				music = uni.createInnerAudioContext(); //创建播放器对象
+				music.src = this.payInfo.audio_url;
+				music.play(); //执行播放
+				music.onEnded(() => {
+					//播放结束
+					music = null;
+				});
 				if(this.payInfo){
 					this.interval = setInterval(this.getLog, 2000);
 				}
@@ -55,11 +73,18 @@
 			getLog(){
 				getLogByWaybillCode(this.payInfo.unique_str, this.headerInfo).then(response => {
 					console.log(response);
-					if (response.data){
+					if (response){
 						this.paySuccess = response.data;
-						clearInterval(this.interval);
+						this.modalName = 'success';
+						this.closeInterval();
 					}
 				});
+			},
+			closeInterval(){
+				clearInterval(this.interval);
+			},
+			hideModal(e) {
+				this.modalName = null
 			}
 		},
 	}
@@ -67,35 +92,49 @@
 
 <style>
 	.qrcode-code{
-		height: 500upx;
-		width: 500upx;
+		height: 400upx;
+		width: 400upx;
 	}
 	.qrcode-frame{
 		/* height: 800upx; */
 		width: 100%;
 	}
 	.refuel-title{
-		padding: 30upx 30upx 0;
-		font-size: 42upx;
-		font-weight: bold;
-	}
-	.refuel-car{
-		padding: 30upx;
+		padding: 115upx 30upx 0;
 		font-size: 32upx;
 		font-weight: bold;
 	}
+	.refuel-car{
+		padding: 40upx 0 80upx;
+		font-size: 28upx;
+		font-weight: 500;
+	}
+	.cu-dialog{
+		width: auto;
+	}
 	.pay-frame{
-		margin-top: 100upx;
-		background-color: #0081FF50;
+		background-color: #FFFFFF;
 		border-radius: 10upx;
-		height: 200upx;
-		width: 500upx;
+		/* width: 500upx; */
+		padding: 66upx 88upx;
 	}
 	.margin-mtop{
 		margin-top: 20upx;
 	}
 	.pay-money{
-		font-size: 36upx;
+		font-size: 24upx;
+		font-family: PingFang SC;
+		color: #999999;
+	}
+	.pay-success{
+		margin: 60upx 0 30upx;
+		font-size: 32upx;
+		font-family: PingFang SC;
 		font-weight: bold;
+		color: #242424;
+	}
+	.pay-img{
+		width: 322upx;
+		height: 252upx;
 	}
 </style>
