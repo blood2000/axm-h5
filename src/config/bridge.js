@@ -82,18 +82,18 @@ function setDevice(val) {
 // }, 0)
 
 // 前端开发测试使用 - 司机
-setTimeout(() => {
-	saveAppParams({
-		"Authorization":"cd31d32f-01fc-47fc-84f5-c47a6f16dc4c",
-		"App-Type":"2",
-		"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
-		"Terminal-Type":"app",
-		"App-Version":"2.0",
-		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
-		"statusBarHeight": 0,
-		"role-type":2
-	})
-}, 0)
+// setTimeout(() => {
+// 	saveAppParams({
+// 		"Authorization":"cd31d32f-01fc-47fc-84f5-c47a6f16dc4c",
+// 		"App-Type":"2",
+// 		"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
+// 		"Terminal-Type":"app",
+// 		"App-Version":"2.0",
+// 		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
+// 		"statusBarHeight": 0,
+// 		"role-type":2
+// 	})
+// }, 0)
 
 // 前端开发测试使用 - 调度者
 // setTimeout(() => {
