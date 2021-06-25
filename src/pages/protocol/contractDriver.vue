@@ -58,17 +58,19 @@
 					<uni-tr>
 						<uni-td><b>计划数量</b></uni-td>
 						<uni-td class="blue">
-							{{ form.loadWeight }}
-							{{ form.stowageStatus == '0' ? '吨' : (form.stowageStatus == '1'? '立方': '车') }}
+							<text v-if="form.loadWeight">
+								{{ form.loadWeight }}
+								{{ form.stowageStatus == '0' ? '吨' : (form.stowageStatus == '1'? '立方': '车') }}
+							</text>
 						</uni-td>
 						<uni-td><b>货物描述</b></uni-td>
 						<uni-td class="blue">{{ form.goodsName }}</uni-td>
 						<uni-td><b>货值（元）</b></uni-td>
-						<uni-td class="blue">￥{{ form.deliveryFeeDeserved }}</uni-td>
+						<uni-td class="blue"><text v-if="form.deliveryFeeDeserved">￥{{ form.deliveryFeeDeserved }}</text></uni-td>
 					</uni-tr>
 					<uni-tr>
 						<uni-td><b>运费金额（元）</b></uni-td>
-						<uni-td class="blue">￥{{ form.deliveryFeeDeserved }}</uni-td>
+						<uni-td class="blue"><text v-if="form.deliveryFeeDeserved">￥{{ form.deliveryFeeDeserved }}</text></uni-td>
 						<uni-td><b>合同签订时间</b></uni-td>
 						<uni-td class="blue">{{ form.createTime }}</uni-td>
 						<uni-td><b>货物装车截止时间</b></uni-td>
@@ -184,6 +186,7 @@
 		},
 		async onLoad(option){
 			await this.$onLaunched;
+			// option.code = 'f89ecb461d98498fb6ac3d9c057829a8';
 			this.getData(option.code);
 		},
 		methods: {
