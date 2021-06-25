@@ -63,9 +63,9 @@ export function getVehicleList(driverCode, config) {
 }
 
 // 查询付款记录
-export function getLogByWaybillCode(waybillCode, config) {
+export function getLogByWaybillCode(uniquestr, config) {
   return uniRequest({
-    url: '/payment/frreezeAmountLog/getLogByWaybillCode/' + waybillCode,
+    url: '/iot/oilOrder/' + uniquestr,
     method: 'get',
 	headers: config
   });
