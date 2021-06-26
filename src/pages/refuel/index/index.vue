@@ -221,8 +221,8 @@
 				this.fuelName = response.data;
 			});
 			// 获取司机信息
-			const driverCode = '3b280e3f93c648468d59866f6fa05fd0'
-			getDriver(driverCode, this.headerInfo).then(response => {
+			// options.usercode = '3b280e3f93c648468d59866f6fa05fd0'
+			getDriver(options.usercode, this.headerInfo).then(response => {
 				console.log(response);
 				this.driverInfo = response.data;
 				this.oilingQuery = {
