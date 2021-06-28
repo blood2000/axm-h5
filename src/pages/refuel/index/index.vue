@@ -226,7 +226,7 @@
 				this.fuelName = response.data;
 			});
 			// 获取司机信息
-			options.usercode = '3b280e3f93c648468d59866f6fa05fd0'
+			// options.usercode = '3b280e3f93c648468d59866f6fa05fd0'
 			getDriver(options.usercode, this.headerInfo).then(response => {
 				console.log(response);
 				this.driverInfo = response.data;
@@ -246,8 +246,8 @@
 					this.radio = this.vehiclelist[0].licenseNumber;
 				});
 			});
-			options.latitude = 26.045788;
-			options.longitude = 119.358258;
+			// options.latitude = 26.045788;
+			// options.longitude = 119.358258;
 			this.latitude = options.latitude;
 			this.longitude = options.longitude;
 			this.queryParams.lat = options.latitude;
