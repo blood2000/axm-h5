@@ -136,6 +136,18 @@
 			WhiteHeader,
 			pickRegions 
 		},
+		computed: {
+			/** 获取当前设备的系统 Android 还是 IOS */
+			u() {
+				return navigator.userAgent;
+			},
+			isAndroid() {
+				return this.u.indexOf("Android") > -1 || this.u.indexOf("Adr") > -1;
+			},
+			isiOS() {
+				return !!this.u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+			}
+		},
 	    data() {
 	        return {
 				modalName: 'Modal',
@@ -148,8 +160,8 @@
 				covers: [],// 加油站位置信息
 				latitude: '',//地图纬度26.045772
 				longitude: '',//地图经度119.358279
-				mylatitude: '',//我的位置纬度26.046832
-				mylongitude: '',//我的位置经度119.358976
+				// mylatitude: '',//我的位置纬度26.046832
+				// mylongitude: '',//我的位置经度119.358976
 				// 定位回来的地址城市
 				myaddress: '',
 				// 省市区
@@ -241,23 +253,29 @@
 					this.radio = this.vehiclelist[0].licenseNumber;
 				});
 			});
+			// options.latitude = 26.045788;
+			// options.longitude = 119.358258;
+			this.latitude = options.latitude;
+			this.longitude = options.longitude;
+			this.queryParams.lat = options.latitude;
+			this.queryParams.lng = options.longitude;
+			this.getLocationMap(options.latitude,options.longitude);
 			// this.loadModal = true;
-			var that = this;
-			uni.getLocation({//获取当前的位置坐标
-				type: 'gcj02 ',
-				success: function (res) {
-					console.log(res);
-					// 我的位置
-					that.mylatitude = res.latitude;
-					that.mylongitude = res.longitude;
-					that.latitude = res.latitude;
-					that.longitude = res.longitude;
-					that.queryParams.lat = res.latitude;
-					that.queryParams.lng = res.longitude;
-					console.log(that.mylatitude, that.mylongitude);
-					that.getLocationMap(res.latitude,res.longitude);
-				}
-			});
+			// var that = this;
+			// uni.getLocation({//获取当前的位置坐标
+			// 	type: 'gcj02',
+			// 	success: function (res) {
+			// 		console.log(res);
+			// 		// 我的位置
+			// 		that.mylatitude = res.latitude;
+			// 		that.mylongitude = res.longitude;
+			// 		that.latitude = res.latitude;
+			// 		that.longitude = res.longitude;
+			// 		that.queryParams.lat = res.latitude;
+			// 		that.queryParams.lng = res.longitude;
+			// 		that.getLocationMap(res.latitude,res.longitude);
+			// 	}
+			// });
 		},
 		onPullDownRefresh() {
 			this.gasStationList = []
@@ -456,21 +474,28 @@
 					points: [
 						...point,
 						{
-						longitude: that.mylongitude,
-						latitude: that.mylatitude
+						longitude: that.longitude,
+						latitude: that.latitude
 						}
 					],
 					padding:[50,50,50,50]
 				});
 			},
 			openLocation(item){
-				uni.openLocation({
-					latitude: item.lat,
-					longitude: item.lng,
-					success: function () {
-						console.log('success');
-					}
-				});
+				if (this.isAndroid) {
+					window.Android.pushMapNavi(item);
+					// 数据处理 xxx
+				} else if (this.isiOS) {
+					window.webkit.messageHandlers.pushMapNavi.postMessage(item);
+				}
+				// window.location.href = `http://apis.map.qq.com/uri/v1/marker?marker=coord:${item.lat},${item.lng}`
+				// uni.openLocation({
+				// 	latitude: item.lat,
+				// 	longitude: item.lng,
+				// 	success: function () {
+				// 		console.log('success');
+				// 	}
+				// });
 			},
 			// 点击标记点事件
 			onmarkertap(){
