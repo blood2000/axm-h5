@@ -1,13 +1,15 @@
 <template>
 	<view class="index-contail">
-		<WhiteHeader :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
+		<!-- <WhiteHeader :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage" :showLine="true">
 			<text slot="title">加油</text>
-		</WhiteHeader>
+		</WhiteHeader> -->
 		<view class="top-section shadow shadow-lg bg-white">
+			<view :style="{height: statusBarHeight*2 + 'upx'}"></view>
 			<view class="cu-bar search bg-white">
+				<text class="cuIcon-back back" @click="back"></text>
 				<view class="search-form round">
 					<text class="cuIcon-search"></text>
-					<input @blur="changeValue" :adjust-position="false" type="text" placeholder="请输入加油站名称、高速、地区搜索油站" confirm-type="search" />
+					<input @blur="changeValue" :adjust-position="false" type="text" placeholder="加油站名称、高速、地区" confirm-type="search" />
 				</view>
 				<view class="action">
 					<button class="cu-btn bg-blue shadow-blur round" @click="search">搜索</button>
@@ -85,10 +87,10 @@
 					</view>
 				</view>
 			</view>
+			<view v-else class="nolist"></view>
 			<!-- 地图 -->
 			<view class="map-frame">
-				<map id="clockmap" class="map" :latitude="latitude" :longitude="longitude" :scale="scale" show-location :markers="covers"
-				@regionchange="onregionchange" />
+				<map id="clockmap" class="map" :latitude="latitude" :longitude="longitude" :scale="scale" :markers="covers" @regionchange="onregionchange" />
 			</view>
 			<!-- 弹框加载 -->
 			<view class="cu-load load-modal" v-if="loadModal">
@@ -136,21 +138,9 @@
 			WhiteHeader,
 			pickRegions 
 		},
-		computed: {
-			/** 获取当前设备的系统 Android 还是 IOS */
-			u() {
-				return navigator.userAgent;
-			},
-			isAndroid() {
-				return this.u.indexOf("Android") > -1 || this.u.indexOf("Adr") > -1;
-			},
-			isiOS() {
-				return !!this.u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-			}
-		},
 	    data() {
 	        return {
-				modalName: 'Modal',
+				modalName: 'bottomModal',
 				loadModal: false,
 				screen: 'show',
 				// 地图相关
@@ -211,7 +201,10 @@
 		},
 		computed:{
 			...mapState({
-			  headerInfo: state => state.header.headerInfo
+			  headerInfo: state => state.header.headerInfo,
+			  statusBarHeight: state => state.header.statusBarHeight,
+			  isAndroid: state => state.header.isAndroid,
+			  isiOS: state => state.header.isiOS
 			}),
 			regionName(){
 				// 转为字符串
@@ -233,7 +226,7 @@
 				this.fuelName = response.data;
 			});
 			// 获取司机信息
-			// options.usercode = '3b280e3f93c648468d59866f6fa05fd0'
+			options.usercode = '3b280e3f93c648468d59866f6fa05fd0'
 			getDriver(options.usercode, this.headerInfo).then(response => {
 				console.log(response);
 				this.driverInfo = response.data;
@@ -253,12 +246,21 @@
 					this.radio = this.vehiclelist[0].licenseNumber;
 				});
 			});
-			// options.latitude = 26.045788;
-			// options.longitude = 119.358258;
+			options.latitude = 26.045788;
+			options.longitude = 119.358258;
 			this.latitude = options.latitude;
 			this.longitude = options.longitude;
 			this.queryParams.lat = options.latitude;
 			this.queryParams.lng = options.longitude;
+			this.covers = [
+				{
+					latitude: options.latitude,
+					longitude: options.longitude,
+					iconPath: '/static/icon_location.png',
+					width: '21',
+					height: '29',
+				}
+			];
 			this.getLocationMap(options.latitude,options.longitude);
 			// this.loadModal = true;
 			// var that = this;
@@ -292,6 +294,17 @@
 			}
 		},
 		methods: {
+			back(){
+				if (this.isSecondaryPage) {
+					if (this.isAndroid) {
+						if(window.Android !== null && typeof(window.Android) !== 'undefined') {
+							window.Android.back();
+						}
+					} else if (this.isiOS) {
+						this.$WebViewJavascriptBridge.callHandler('back');
+					}
+				}
+			},
 			// 重置列表
 			clearQuery(){
 				this.gasStationList = [];
@@ -461,7 +474,17 @@
 						padding: 5,
 						display:'ALWAYS',
 					})
-				})
+				});
+				this.covers = [
+					{
+						latitude: this.latitude,
+						longitude: this.longitude,
+						iconPath: '/static/icon_location.png',
+						width: '21',
+						height: '29',
+					},
+					...this.covers
+				];
 				const point = this.gasStationList.map(res => {
 					return {
 						longitude: res.lng,
@@ -484,9 +507,8 @@
 			openLocation(item){
 				if (this.isAndroid) {
 					window.Android.pushMapNavi(item);
-					// 数据处理 xxx
 				} else if (this.isiOS) {
-					window.webkit.messageHandlers.pushMapNavi.postMessage(item);
+					this.$WebViewJavascriptBridge.callHandler('pushMapNavi', item);
 				}
 				// window.location.href = `http://apis.map.qq.com/uri/v1/marker?marker=coord:${item.lat},${item.lng}`
 				// uni.openLocation({
@@ -529,7 +551,6 @@
 		color: #333333;
 	}
 	.mapclock{
-		/* height: 100vh; */
 		width: 100vw;
 	}
 	.map-frame{
@@ -543,13 +564,10 @@
 		width: 750upx;
 		height: 100vh;
 	}
-	::v-deep .bg-height{
-		/* height: 0 !important; */
-	}
 	/* 打卡弹窗 */
 	.top-section{
 		position: fixed;
-		/* top: 0; */
+		top: 0;
 		left: 0;
 		z-index: 10;
 		width: 100%;
@@ -569,14 +587,24 @@
 	}
 	
 	/* 底部模块 */
+	.nolist{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 9;
+		height: 300upx;
+		width: 100%;
+		background: linear-gradient(#FFFFFF00 20%, #FFFFFF 80%);
+	}
 	.bottom-section{
-		min-height: 800upx;
+		/* min-height: 100vh; */
 		position: relative;
-		margin-top: 900upx;
+		top: 900upx;
+		/* margin-top: 900upx; */
 		padding-bottom: 20upx;
 		width: 100%;
 		z-index: 9;
-		background: linear-gradient(#00000000 5%, #FFFFFF 10%);
+		background: linear-gradient(#FFFFFF00 5%, #FFFFFF 10%);
 	}
 	.refuel-frame{
 		background-color: #FFFFFF;
@@ -641,5 +669,11 @@
 	.address-img{
 		height: 80upx;
 		width: 80upx;
+	}
+	.back{
+		text-align: right;
+		line-height: 90upx;
+		width: 70upx;
+		font-size: 42upx;
 	}
 </style>
