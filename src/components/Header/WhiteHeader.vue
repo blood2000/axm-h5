@@ -1,7 +1,6 @@
 <template>
-	<view class="" :class="{showLine: showLine}">
-		<view :style="{height: titleHeight + 'upx'}"></view>
-		<view class="top-frame" :style="{height: titleHeight + 'upx'}">
+	<view class="">
+		<view class="top-frame" :class="{showLine: showLine}">
 			<view class="status_bar" :style="{height: statusBarHeight*2 + 'upx'}">
 			  <!-- 这里是状态栏 -->
 			</view>
@@ -12,6 +11,7 @@
 				<view style="width: 18upx;"></view>
 			</view>
 		</view>
+		<view :style="{height: titleHeight + 'upx'}"></view>
 	</view>
 </template>
 
@@ -89,7 +89,7 @@
 
 <style lang="scss" scoped>
 .showLine{
-	border-bottom: 1rpx solid rgba(153, 153, 153, 0.2);
+	border-bottom: 1upx solid rgba(153, 153, 153, 0.2);
 }
 .top-frame{
 	position: fixed;
@@ -100,7 +100,6 @@
 	width: 100%;
 	overflow: hidden;
 	background-color: #FFFFFF;
-	border-bottom: 1upx solid #EDEDED;
 	.top-title{
 		height: 95upx;
 		width: 100%;
