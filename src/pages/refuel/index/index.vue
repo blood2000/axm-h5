@@ -82,7 +82,8 @@
 							<view class="refuel-address-info">{{ item.address }}</view>
 						</view>
 						<view class="refuel-address-imgframe" @click="openLocation(item)">
-							<image class="refuel-address-img" src="../../../static/icon_address.png" mode=""></image>
+							<image class="refuel-address-img" src="/static/icon_address.png" mode=""></image>
+							<!-- https://css-backup-1579076150310.obs.cn-south-1.myhuaweicloud.com/image_directory/162494798482426cfec.png -->
 						</view>
 					</view>
 				</view>
@@ -317,7 +318,7 @@
 				console.log(region);
 				this.region = region;
 				this.district = region[2].name;
-				this.queryParams.areaCode = region[2].code;
+				this.queryParams.areaCode = region[1].code;
 				console.log(this.district);
 				this.clearQuery();
 				this.getList();
@@ -419,7 +420,7 @@
 					success:function(res){
 						console.log(res);
 						that.defaultRegionCode = res.result.ad_info.adcode;
-						that.queryParams.areaCode = res.result.ad_info.adcode;
+						that.queryParams.areaCode = res.result.ad_info.adcode.substring(0,4);
 						// 完整地址
 						that.myaddress = res.result.address;
 						// 省
@@ -506,7 +507,7 @@
 			},
 			openLocation(item){
 				if (this.isAndroid) {
-					window.Android.pushMapNavi(item);
+					window.Android.pushMapNavi(JSON.stringify(item));
 				} else if (this.isiOS) {
 					this.$WebViewJavascriptBridge.callHandler('pushMapNavi', item);
 				}
