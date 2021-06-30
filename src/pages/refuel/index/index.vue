@@ -475,7 +475,7 @@
 						fontSize:5,
 						borderRadius:5,
 						padding: 5,
-						display:'ALWAYS',
+						display:'BYCLICK',
 					})
 				});
 				this.covers = [
