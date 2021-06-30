@@ -187,11 +187,11 @@
 		async onLoad(option){
 			await this.$onLaunched;
 			// option.code = 'f89ecb461d98498fb6ac3d9c057829a8';
-			this.getData(option.code);
+			this.getData(option.code, option.licenseNumber);
 		},
 		methods: {
-			getData(code){
-				getContractByCode(code, this.headerInfo).then(response => {
+			getData(code, licenseNumber){
+				getContractByCode(code, licenseNumber, this.headerInfo).then(response => {
 					this.form = { ...response.data }
 				});
 			}
