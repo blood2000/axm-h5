@@ -68,7 +68,7 @@
 						'App-Type': '1',
 						'App-Version': '2.0',
 						'Terminal-Type': 'app',
-						'Terminal-OS' = 'android'
+						'Terminal-OS': 'android'
 					}
 					this.role = 0;
 				} else { //货主
@@ -79,7 +79,7 @@
 						'App-Type': '1',
 						'App-Version': '2.0',
 						'Terminal-Type': 'app',
-						'Terminal-OS' = 'android'
+						'Terminal-OS': 'android'
 					}
 					this.role = 1;
 				}
