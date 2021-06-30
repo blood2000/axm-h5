@@ -6,7 +6,7 @@
 		<view class="qrcode-frame flex flex-direction align-center justify-center">
 			<view class="refuel-title">{{oilingQuery.stationName}}</view>
 			<view class="refuel-car">{{oilingQuery.car_no}}</view>
-			<img v-if="img && !paySuccess.amountPrice" class="qrcode-code" :src="img" mode=""></img>
+			<img v-if="payInfo.refuel_img_url && !paySuccess.amountPrice" class="qrcode-code" :src="img" mode=""></img>
 		</view>
 		<view class="cu-modal" :class="modalName=='success'?'show':''" @click="hideModal">
 			<view class="cu-dialog">

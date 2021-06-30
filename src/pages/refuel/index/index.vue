@@ -119,8 +119,8 @@
 					</view>
 				</radio-group>
 				<view class="cu-bar bg-white">
-					<view class="action margin-0 flex-sub text-green solid-left" @tap="hideModal">取消</view>
-					<view class="action margin-0 flex-sub  solid-left" @tap="getQrCode">确定</view>
+					<view class="action margin-0 flex-sub text-grey solid-left" @tap="hideModal">取消</view>
+					<view class="action margin-0 flex-sub text-blue solid-left text-lg" @tap="getQrCode">确定</view>
 				</view>
 			</view>
 		</view>
@@ -226,8 +226,9 @@
 			getOilsList(this.headerInfo).then(response => {
 				this.fuelName = response.data;
 			});
-			// 获取司机信息
-			// options.usercode = '3b280e3f93c648468d59866f6fa05fd0'
+			// 获取司机信息8425fcf69acc470a9bb844e012fb60cd
+			options.usercode = '8425fcf69acc470a9bb844e012fb60cd'
+			// 3b280e3f93c648468d59866f6fa05fd0
 			getDriver(options.usercode, this.headerInfo).then(response => {
 				console.log(response);
 				this.driverInfo = response.data;
@@ -247,8 +248,8 @@
 					this.radio = this.vehiclelist[0].licenseNumber;
 				});
 			});
-			// options.latitude = 26.045788;
-			// options.longitude = 119.358258;
+			options.latitude = 26.045788;
+			options.longitude = 119.358258;
 			this.latitude = options.latitude;
 			this.longitude = options.longitude;
 			this.queryParams.lat = options.latitude;
@@ -406,6 +407,7 @@
 			},
 			// 生成加油二维码
 			getQrCode(){
+				this.modalName = null;
 				uni.navigateTo({
 					url: '/pages/refuel/oiling/index?oilingQuery=' + encodeURIComponent(JSON.stringify(this.oilingQuery))
 				})
