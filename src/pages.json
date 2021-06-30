@@ -255,7 +255,8 @@
 		    {
 		        "navigationBarTitleText": "费用支付",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
 		    }
 		}
         ,{
@@ -264,7 +265,8 @@
             {
                 "navigationBarTitleText": "超好运",
 				"navigationStyle": "custom",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
             }
             
         }
