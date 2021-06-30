@@ -67,7 +67,8 @@
 						'App-Code': '80bb50e40895928e2dc0d101350a25d0',
 						'App-Type': '1',
 						'App-Version': '2.0',
-						'Terminal-Type': 'app'
+						'Terminal-Type': 'app',
+						'Terminal-OS' = 'android'
 					}
 					this.role = 0;
 				} else { //货主
@@ -77,7 +78,8 @@
 						'App-Code': '9d3017728cb34eac947ba350c4e997be',
 						'App-Type': '1',
 						'App-Version': '2.0',
-						'Terminal-Type': 'app'
+						'Terminal-Type': 'app',
+						'Terminal-OS' = 'android'
 					}
 					this.role = 1;
 				}
