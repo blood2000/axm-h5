@@ -2,7 +2,9 @@
 	<view class="download-page">
 		<view class="content">
 			<view class="content_top">
-				<view class="content_top_img" :class="role === 0 ? 'driver' : 'shipment'"></view>
+				<view v-if="role === 0" class="content_top_img driver"></view>
+				<view v-if="role === 1" class="content_top_img shipment"></view>
+				<view v-if="role === 2" class="content_top_img kyd"></view>
 				<view class="content_top_text">{{ formData.appCnName }}</view>
 			</view>
 			<view class="content_center">
@@ -48,7 +50,7 @@
 						version: '2.0'
 					}
 				},
-				role: 0 // 0司机 1货主
+				role: 0 // 0司机 1货主 2凯意达
 			}
 		},
 		created(){
@@ -71,7 +73,7 @@
 						'Terminal-OS': 'android'
 					}
 					this.role = 0;
-				} else { //货主
+				} else if(role === '1') { //货主
 					info = {
 						'Content-Type': 'application/x-www-form-urlencoded',
 						'Produce-Code': '776ca8e240574192b6e0f69b417163df',
@@ -82,6 +84,17 @@
 						'Terminal-OS': 'android'
 					}
 					this.role = 1;
+				} else if(role === 'kydsz') { //凯意达
+					info = {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Produce-Code': 'd0a5b72f0dc44855b6894b00b3280572',
+						'App-Code': '35226a363c3e4793a79dbbb8e74549fb',
+						'App-Type': '1',
+						'App-Version': '1.0',
+						'Terminal-Type': 'app',
+						'Terminal-OS': 'android'
+					}
+					this.role = 2;
 				}
 				uni.request({
 				    url: process.env.VUE_APP_BASE_API + '/system/application/info',
@@ -127,6 +140,10 @@
 				}
 				&.shipment{
 					background: url('/static/download/shipment.png') no-repeat;
+					background-size: 100% 100%;
+				}
+				&.kyd{
+					background: url('/static/download/kyd.png') no-repeat;
 					background-size: 100% 100%;
 				}
 			}
