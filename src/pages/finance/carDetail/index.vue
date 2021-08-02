@@ -15,7 +15,7 @@
 				<view class="cont-loadtime">装货时间</view>
 				<view class="cont-man">经手人</view>
 			</view>
-			<view v-for="(item, index) in cardetaillist" :key="index" class="cont-cont flex align-center justify-around">
+			<view v-for="(item, index) in cardetaillist" :key="index" class="cont-cont flex align-center justify-around" @click="openDetail(item.waybillCode)">
 				<view class="cont-id">{{ index +1 }}</view>
 				<view class="cont-unloadaddress">{{ item.unloadAddress }}</view>
 				<view class="cont-loadtime">{{ item.loadTime }}</view>
@@ -54,7 +54,9 @@
 		},
 		computed: {
 			...mapState({
-			  headerInfo: state => state.header.headerInfo
+			  headerInfo: state => state.header.headerInfo,
+			  isAndroid: state => state.header.isAndroid,
+			  isiOS: state => state.header.isiOS
 			})
 		},
 		data() {
@@ -122,6 +124,18 @@
 			primary(){
 				this.getData();
 				this.modalName = null
+			},
+			openDetail(waybillCode) {
+				const obj = {
+					waybillCode: waybillCode
+				}
+				if (this.isAndroid) {
+					if(window.Android !== null && typeof(window.Android) !== 'undefined') {
+						window.Android.pushWaybillDetail(JSON.stringify(obj));
+					}
+				} else if (this.isiOS) {
+					this.$WebViewJavascriptBridge.callHandler('pushWaybillDetail', JSON.stringify(obj));
+				}
 			}
 		}
 	}
