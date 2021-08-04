@@ -195,8 +195,10 @@
 					position: relative;
 					padding: 0 20rpx;
 					font-size: 24rpx;
+					color: #999999;
 					&.active{
-						background: #D0DDF6;
+						background: rgba(208, 221, 246, 0.5);
+						color: #4478e4;
 					}
 					&:not(:last-child){
 						&::after{
