@@ -89,7 +89,7 @@
 .item-card{
 	width: calc(100% - 44rpx);
 	height: 259rpx;
-	background: rgba(255, 255, 255, 0.98);
+	background: rgba(255, 255, 255, 1);
 	border-radius: 30rpx;
 	padding: 0 24rpx;
 	margin-bottom: 24rpx;

@@ -43,12 +43,19 @@
 			queryDate: {
 				type: String,
 				default: null
+			},
+			groudActive: {
+				type: String,
+				default: ''
 			}
 		},
 		computed: {
 			...mapState({
 			  headerInfo: state => state.header.headerInfo
-			})
+			}),
+			waybillClasses() {
+				return this.groudActive === '2' ? '' : this.groudActive
+			}
 		},
 		data() {
 			return {
@@ -67,6 +74,9 @@
 				if (val) {
 					this.getData();
 				}
+			},
+			groudActive(val) {
+				this.getData();
 			}
 		},
 		async mounted() {
@@ -77,7 +87,8 @@
 			getData(){
 				MudtailDetails({
 					projectCode: this.projectCode,
-					queryDate: this.queryDate
+					queryDate: this.queryDate,
+					waybillClasses: this.waybillClasses
 				}, this.headerInfo).then(response => {
 					this.total = response.data.total || 0;
 					this.muckardCounts = response.data.muckardCounts || [];

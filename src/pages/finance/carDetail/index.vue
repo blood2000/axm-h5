@@ -4,8 +4,14 @@
 			<text slot="title">车辆明细</text>
 		</WhiteHeader>
 		<view class="top-bar flex align-center justify-between bg-white">
-			<uni-dateformat :date="info.queryDate" format="yyyy/MM/dd"></uni-dateformat>
-			<view  @tap="showModal" data-target="RadioModal">车辆:{{ info.licenseNumber }} <text class="cuIcon-unfold text-gray marginleft" /></view>
+			<picker mode="date" :value="queryDate" start="2000-01-01" end="2200-01-01" @change="DateChange">
+				<view class="picker">
+					<uni-dateformat :date="queryDate" format="yyyy/MM/dd"></uni-dateformat>
+					<text class="g-icon-arrow"></text>
+				</view>
+			</picker>
+			<view @tap="showGroudModal" data-target="RadioGroudModal">班次:{{ groudLabel }} <text class="cuIcon-unfold text-gray marginleft" /></view>
+			<view @tap="showModal" data-target="RadioModal">车辆:{{ info.licenseNumber }} <text class="cuIcon-unfold text-gray marginleft" /></view>
 		</view>
 		<view style="height: 100upx;"></view>
 		<view class="cont-frame">
@@ -41,6 +47,25 @@
 				</view>
 			</view>
 		</view>
+		<view class="cu-modal" :class="modalName=='RadioGroudModal'?'show':''" @tap="hideGroudModal">
+			<view class="cu-dialog" @tap.stop="">
+				<radio-group class="block" @change="RadioGroudChange">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in groudList" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{ item.label }}</view>
+								<radio class="blue radio" :class="groudActive == item.code ?'checked':''" :checked="groudActive== item.code ?true:false"
+								 :value="item.code"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
+				<view class="bottom-btn flex align-center justify-around">
+					<button class="btn-cancel" type="default" @tap="hideGroudModal">取消</button>
+					<button class="btn-primary" type="default" @tap="GroudPrimary">确认</button>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -59,20 +84,38 @@
 			  isiOS: state => state.header.isiOS
 			})
 		},
+		watch: {
+			queryDate(val) {
+				if (val && this.flag) {
+					this.vehicleQuery.queryDate = this.queryDate;
+					this.getData();
+				}
+			}
+		},
 		data() {
 			return {
 				modalName: null,
 				radio: '',
 				info: {},
+				queryDate: '',
 				vehicleQuery: {
 					pageNum: 1,
 					pageSize: 10,
 					projectCode: '',
 					queryDate: '',
 					vechicleCode: '',
+					waybillClasses: ''
 				},
 				vehiclelist: [],
-				cardetaillist: []
+				cardetaillist: [],
+				groudActive: '2',
+				groudLabel: '所有',
+				groudList: [
+					{label: '所有', code: '2'},
+					{label: '白班', code: '0'},
+					{label: '晚班', code: '1'}
+				],
+				flag: false
 			};
 		},
 		async onLoad(option) {
@@ -81,6 +124,9 @@
 			this.vehicleQuery.projectCode = this.info.projectCode;
 			this.vehicleQuery.queryDate = this.info.queryDate;
 			this.vehicleQuery.vechicleCode = this.info.vehicleCode;
+			this.vehicleQuery.waybillClasses = (this.info.groudActive === '2' ? '' : this.info.groudActive);
+			this.groudActive = this.info.groudActive;
+			this.queryDate = this.info.queryDate;
 			this.radio = this.info.vehicleCode;
 			this.getCar();
 		},
@@ -94,6 +140,11 @@
 					return response.vehicleCode === this.info.vehicleCode;
 				});
 				this.info.licenseNumber = car.licenseNumber;
+				const groud = this.groudList.find(response => {
+					return response.code === this.groudActive;
+				});
+				this.groudLabel = groud.label;
+				this.flag = true;
 			},
 			// 获取车辆列表
 			getCar(){
@@ -113,7 +164,13 @@
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},
+			showGroudModal(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
 			hideModal(e) {
+				this.modalName = null
+			},
+			hideGroudModal(e) {
 				this.modalName = null
 			},
 			RadioChange(e) {
@@ -121,9 +178,20 @@
 				this.vehicleQuery.vechicleCode = e.detail.value;
 				this.info.vehicleCode = e.detail.value;
 			},
+			RadioGroudChange(e) {
+				this.groudActive = e.detail.value;
+			},
 			primary(){
 				this.getData();
 				this.modalName = null
+			},
+			GroudPrimary() {
+				this.vehicleQuery.waybillClasses = (this.groudActive === '2' ? '' : this.groudActive);
+				this.getData();
+				this.modalName = null
+			},
+			DateChange(e) {
+				this.queryDate = e.detail.value
 			},
 			openDetail(waybillCode) {
 				const obj = {
@@ -154,7 +222,7 @@
 		// top: 130upx;
 		left: 0;
 		width: 100%;
-		padding: 30upx 90upx;
+		padding: 30upx 30upx;
 		border-top: 1upx solid #F3F3F3;
 	}
 	.cont-frame{

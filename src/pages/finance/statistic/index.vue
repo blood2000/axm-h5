@@ -18,6 +18,15 @@
 							<text class="g-icon-arrow"></text>
 						</view>
 					</picker>
+					<view class="time-groud">
+						<text 
+							v-for="item in groudList" 
+							:key="item.code" 
+							class="time-groud-item" 
+							:class="{active: groudActive === item.code}" 
+							@click="changeGroud(item.code)"
+						>{{ item.label }}</text>
+					</view>
 				</view>
 				<view class="statistic-page__content__tab">
 					<view class="tab-bar" :class="'tab-bar-' + currentIndex">
@@ -35,18 +44,21 @@
 							v-show="currentIndex === 0" 
 							:projectCode="itemData.projectCode"
 							:queryDate="queryDate"
+							:groudActive="groudActive"
 						></ProjectCard>
 						<!-- 进出明细 -->
 						<InOutDetailCard 
 							v-show="currentIndex === 1" 
 							:projectCode="itemData.projectCode"
 							:queryDate="queryDate"
+							:groudActive="groudActive"
 						></InOutDetailCard>
 						<!-- 泥尾统计 -->
 						<MudTail 
 							v-show="currentIndex === 2" 
 							:projectCode="itemData.projectCode"
 							:queryDate="queryDate"
+							:groudActive="groudActive"
 						></MudTail>
 					</view>
 				</view>
@@ -74,7 +86,13 @@
 				itemData: {},
 				queryDate: '',
 				tabList: ['项目统计', '进出明细', '泥尾统计'],
-				currentIndex: 0
+				currentIndex: 0,
+				groudActive: '2',
+				groudList: [
+					{label: '所有', code: '2'},
+					{label: '白班', code: '0'},
+					{label: '晚班', code: '1'}
+				]
 			};
 		},
 		onLoad(option){
@@ -101,6 +119,10 @@
 				if (obj) {
 					this.itemData = obj;
 				}
+			},
+			changeGroud(code) {
+				if (this.groudActive === code) return;
+				this.groudActive = code;
 			}
 		}
 	}
@@ -155,6 +177,39 @@
 				font-size: 28rpx;
 				font-family: PingFang SC;
 				font-weight: 500;
+			}
+			.time-groud{
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				right: 0;
+				border: 1rpx solid #EAEAEA;
+				height: 50rpx;
+				line-height: 50rpx;
+				border-radius: 20rpx;
+				overflow: hidden;
+				font-size: 0;
+				.time-groud-item{
+					display: inline-block;
+					line-height: 48rpx;
+					position: relative;
+					padding: 0 20rpx;
+					font-size: 24rpx;
+					&.active{
+						background: #D0DDF6;
+					}
+					&:not(:last-child){
+						&::after{
+							content: '';
+							position: absolute;
+							right: 0;
+							top: 0;
+							bottom: 0;
+							width: 1rpx;
+							background: #EAEAEA;
+						}
+					}
+				}
 			}
 		}
 		&__tab{
