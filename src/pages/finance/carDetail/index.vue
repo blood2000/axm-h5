@@ -27,6 +27,7 @@
 				<view class="cont-loadtime">{{ item.loadTime }}</view>
 				<view class="cont-man">{{ item.noteTaker }}</view>
 			</view>
+			<view class="none-page-box" v-if="cardetaillist.length === 0 && !loading">暂无数据</view>
 		</view>
 		<view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal">
 			<view class="cu-dialog" @tap.stop="">
@@ -115,7 +116,8 @@
 					{label: '白班', code: '0'},
 					{label: '晚班', code: '1'}
 				],
-				flag: false
+				flag: false,
+				loading: true
 			};
 		},
 		async onLoad(option) {
@@ -133,8 +135,12 @@
 		methods: {
 			// 获取列表信息
 			getData(){
+				this.loading = true;
 				ListVechicleDetails(this.vehicleQuery, this.headerInfo).then(response => {
 					this.cardetaillist = response.data || [];
+					this.loading = false;
+				}).catch(() => {
+					this.loading = false;
 				});
 				const car = this.vehiclelist.find(response => {
 					return response.vehicleCode === this.info.vehicleCode;
@@ -230,6 +236,12 @@
 		border-radius: 20upx;
 		margin: 24upx 24upx 120upx;
 		padding: 0 18upx;
+		.none-page-box{
+			text-align: center;
+			border-top: 1upx solid #F3F3F3;
+			padding: 30upx 0;
+			font-size: 28upx;
+		}
 		.cont-title{
 			font-size: 32upx;
 			font-weight: bold;
