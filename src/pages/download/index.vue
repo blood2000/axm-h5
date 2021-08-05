@@ -5,6 +5,7 @@
 				<view v-if="role === 0" class="content_top_img driver"></view>
 				<view v-if="role === 1" class="content_top_img shipment"></view>
 				<view v-if="role === 2" class="content_top_img kyd"></view>
+				<view v-if="role === 3" class="content_top_img zt"></view>
 				<view class="content_top_text">{{ formData.appCnName }}</view>
 			</view>
 			<view class="content_center">
@@ -50,7 +51,7 @@
 						version: '2.0'
 					}
 				},
-				role: 0 // 0司机 1货主 2凯意达
+				role: 0 // 0司机 1货主 2凯意达 3渣土
 			}
 		},
 		created(){
@@ -95,6 +96,17 @@
 						'Terminal-OS': 'android'
 					}
 					this.role = 2;
+				} else if(role === 'chyzt') { //渣土超好运
+					info = {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Produce-Code': '776ca8e240574192b6e0f69b417163df',
+						'App-Code': '1970a1697da64471b79764397e295184',
+						'App-Type': '1',
+						'App-Version': '2.0',
+						'Terminal-Type': 'app',
+						'Terminal-OS': 'android'
+					}
+					this.role = 3;
 				}
 				uni.request({
 				    url: process.env.VUE_APP_BASE_API + '/system/application/info',
@@ -144,6 +156,10 @@
 				}
 				&.kyd{
 					background: url('/static/download/kyd.png') no-repeat;
+					background-size: 100% 100%;
+				}
+				&.zt{
+					background: url('/static/download/finance.png') no-repeat;
 					background-size: 100% 100%;
 				}
 			}
