@@ -7,7 +7,7 @@
 			<view class="in-out-table__content__item" v-for="(item, index) in dataList" :key="item.vehicleCode + index">
 				<view class="title">
 					<view class="plate">
-						<text class="index">{{ index + 1 > 9 ? index : '0'+(index + 1) }}</text>
+						<text class="index">{{ index+1>9 ? index+1 : '0'+(index+1) }}</text>
 						<text class="label">{{ item.licenseNumber }}</text>
 					</view>
 					<view class="time">进 : {{ item.inTime }} &nbsp; 出 : {{ item.outTime }}</view>
