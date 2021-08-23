@@ -210,12 +210,12 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
-		//用户协议入口
+		//隐私政策入口
 		,{
 		    "path" : "pages/protocol/user",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "用户协议",
+		        "navigationBarTitleText": "隐私政策",
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }

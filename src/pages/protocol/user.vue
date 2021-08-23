@@ -1,7 +1,7 @@
 <template>
 	<view class="user-page">
 		<!-- <WhiteHeader :showBack="true">
-			<text slot="title">用户协议</text>
+			<text slot="title">隐私政策</text>
 		</WhiteHeader> -->
 		
 		<view class="user-page__header">隐私政策</view>
