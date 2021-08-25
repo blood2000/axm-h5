@@ -215,7 +215,7 @@
 		    "path" : "pages/protocol/user",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "隐私政策",
+		        "navigationBarTitleText": "超好运平台隐私政策",
 				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }

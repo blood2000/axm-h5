@@ -98,6 +98,8 @@
 		<view class="contract-page__mintitle">10.1.本协议之效力、解释、变更、执行与争议解决均适用中华人民共和国大陆地区法律，因使用平台所产生的争议，协商不成的，任何一方可以向被告所在地有管辖权的人民法院提起诉讼。</view>
 		<view class="contract-page__mintitle">10.2.本规则所有条款的标题仅为阅读方便，本身并无实际涵义，不能作为本规则涵义解释的依据。</view>
 		<view class="contract-page__mintitle">10.3.本规则条款无论因何种原因部分无效或不可执行，其余条款仍有效，对双方具有约束力。</view>
+		
+		<view style="margin-bottom: 50rpx"></view>
 	</view>
 </template>
 
@@ -152,21 +154,20 @@
 		}
 	}
 	&__header-left{
-		font-size: 28rpx;
-		margin-bottom: 30rpx;
+		font-size: 26rpx;
+		margin-bottom: 20rpx;
 		line-height: 40rpx;
 	}
 	&__content{
 		font-size: 26rpx;
 		text-indent: 2em;
 		line-height: 40rpx;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__table{
-		font-size: 26rpx;
 		font-weight: normal;
 		line-height: 40rpx;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 		.table--border, .uni-table-td{
 			border-color: #606266;
 		}
@@ -175,17 +176,18 @@
 			padding: 10rpx 12rpx;
 			text-align: center !important;
 			word-break: break-all;
+			font-size: 26rpx;
 		}
 	}
 	&__title{
-		font-size: 30rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__mintitle{
-		font-size: 28rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__after{
 		display: flex;
@@ -196,7 +198,7 @@
 		flex-wrap: wrap;
 		&__box{
 			width: 100%;
-			margin-bottom: 30rpx;
+			margin-bottom: 20rpx;
 			.text{
 				margin-bottom: 15rpx;
 			}

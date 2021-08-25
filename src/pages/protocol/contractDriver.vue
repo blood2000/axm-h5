@@ -224,18 +224,17 @@
 		}
 	}
 	&__header-left{
-		font-size: 28rpx;
-		margin-bottom: 30rpx;
+		font-size: 26rpx;
+		margin-bottom: 20rpx;
 		line-height: 40rpx;
 	}
 	&__content{
 		font-size: 26rpx;
 		text-indent: 2em;
 		line-height: 40rpx;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__table{
-		font-size: 26rpx;
 		font-weight: normal;
 		line-height: 40rpx;
 		margin: 30rpx 0;
@@ -247,12 +246,13 @@
 			padding: 10rpx 12rpx;
 			text-align: center !important;
 			word-break: break-all;
+			font-size: 26rpx;
 		}
 	}
 	&__title{
-		font-size: 28rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__after{
 		display: flex;
@@ -263,7 +263,7 @@
 		flex-wrap: wrap;
 		&__box{
 			width: 100%;
-			margin-bottom: 30rpx;
+			margin-bottom: 20rpx;
 			.text{
 				margin-bottom: 15rpx;
 			}

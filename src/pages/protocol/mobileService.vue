@@ -119,6 +119,7 @@
 		<view class="contract-page__mintitle">公司地址：广州市天河区高唐路333号</view>
 		<view class="contract-page__mintitle">联系电话：10086</view>
 		<view class="contract-page__mintitle">中国移动版权所有</view>
+		<view style="margin-bottom: 50rpx"></view>
 	</view>
 </template>
 
@@ -173,21 +174,20 @@
 		}
 	}
 	&__header-left{
-		font-size: 28rpx;
-		margin-bottom: 30rpx;
+		font-size: 26rpx;
+		margin-bottom: 20rpx;
 		line-height: 40rpx;
 	}
 	&__content{
 		font-size: 26rpx;
 		text-indent: 2em;
 		line-height: 40rpx;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__table{
-		font-size: 26rpx;
 		font-weight: normal;
 		line-height: 40rpx;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 		.table--border, .uni-table-td{
 			border-color: #606266;
 		}
@@ -196,17 +196,18 @@
 			padding: 10rpx 12rpx;
 			text-align: center !important;
 			word-break: break-all;
+			font-size: 26rpx;
 		}
 	}
 	&__title{
-		font-size: 30rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__mintitle{
-		font-size: 28rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__after{
 		display: flex;
@@ -217,7 +218,7 @@
 		flex-wrap: wrap;
 		&__box{
 			width: 100%;
-			margin-bottom: 30rpx;
+			margin-bottom: 20rpx;
 			.text{
 				margin-bottom: 15rpx;
 			}

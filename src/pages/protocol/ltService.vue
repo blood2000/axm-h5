@@ -35,7 +35,7 @@
 		<view class="service-page__content">7.3、中国联通对于本协议条款在法律范围内进行解释说明。用户对服务之任何部分或本服务条款的任何部分之意见及建议可联系本公司，客服电话：4000096800。</view>
 		
 		<view class="service-page__content">中国联合网络通信有限公司</view>
-		
+		<view style="margin-bottom: 50rpx"></view>
 	</view>
 </template>
 
@@ -45,7 +45,7 @@
 <style lang="scss" scoped>
 	.service-page{
 		height: 100%;
-		padding: 0 60rpx;
+		padding: 0 40rpx;
 		background: #fff;
 		color: #444;
 		overflow-y: auto;
@@ -59,16 +59,16 @@
 			color: #333;
 		}
 		&__title{
-			font-size: 28rpx;
+			font-size: 26rpx;
 			font-weight: 700;
-			margin: 30rpx 0;
+			margin: 20rpx 0;
 		}
 		&__content{
-			font-size: 28rpx;
-			// text-indent: 2em;
+			font-size: 26rpx;
+			text-indent: 2em;
 			line-height: 40rpx;
 			word-break: break-all;
-			margin-bottom: 40rpx;
+			margin-bottom: 20rpx;
 		}
 	}
 </style>

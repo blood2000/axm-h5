@@ -177,6 +177,7 @@
 		<view class="contract-page__content">如果您对我们的回复不满意，特别是我们的个人信息处理行为损害了您的合法权益，您还可以通过法律途径或前往行业自律协会机构寻求解决方案。</view>
 		<view class="contract-page__content">企业名称：世纪龙信息网络有限责任公司</view>
 		<view class="contract-page__content">地点：广州市天河区龙口中路211号华天国际广场东苑1、2层</view>
+		<view style="margin-bottom: 50rpx"></view>
 	</view>
 </template>
 
@@ -231,18 +232,17 @@
 		}
 	}
 	&__header-left{
-		font-size: 28rpx;
-		margin-bottom: 30rpx;
+		font-size: 26rpx;
+		margin-bottom: 20rpx;
 		line-height: 40rpx;
 	}
 	&__content{
 		font-size: 26rpx;
 		text-indent: 2em;
 		line-height: 40rpx;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__table{
-		font-size: 26rpx;
 		font-weight: normal;
 		line-height: 40rpx;
 		margin: 30rpx 0;
@@ -254,17 +254,18 @@
 			padding: 10rpx 12rpx;
 			text-align: center !important;
 			word-break: break-all;
+			font-size: 26rpx;
 		}
 	}
 	&__title{
-		font-size: 30rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__mintitle{
-		font-size: 28rpx;
+		font-size: 26rpx;
 		font-weight: 700;
-		margin: 30rpx 0;
+		margin: 20rpx 0;
 	}
 	&__after{
 		display: flex;
@@ -275,7 +276,7 @@
 		flex-wrap: wrap;
 		&__box{
 			width: 100%;
-			margin-bottom: 30rpx;
+			margin-bottom: 20rpx;
 			.text{
 				margin-bottom: 15rpx;
 			}
