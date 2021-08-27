@@ -149,6 +149,13 @@
 					   <uni-td>否</uni-td>
 					   <uni-td>是</uni-td>
 					</uni-tr>
+					<uni-tr>
+					   <uni-td>获取用户的软件安装列表</uni-td>
+					   <uni-td>基础业务</uni-td>
+					   <uni-td>判断用户是否安装地图应用</uni-td>
+					   <uni-td>否</uni-td>
+					   <uni-td>是</uni-td>
+					</uni-tr>
 			    </tbody>
 			</uni-table>
 		</view>
