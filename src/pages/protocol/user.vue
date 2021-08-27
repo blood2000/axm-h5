@@ -10,7 +10,7 @@
 		<view class="user-page__content" style="text-align: right;margin: 0;">2021年8月25日生效</view>
 		<view style="margin-bottom: 20rpx"></view>
 		
-		<view class="user-page__content"><strong>“超好运”是由福建至简至一信息科技有限公司（“我们”）运营的能够为您提供物流运输业务可视化服务、全流程管理的互联网物流信息平台。本隐私政策适用于超好运手机客户端、网页端、微信端和其他开放平台产品及服务。请您务必认真阅读本隐私政策，在确认充分了解并同意后使用超好运。如果您不同意本隐私政策的任何内容，您应该立即停止使用超好运。当您开始使用超好运服务，即表示您已经同意我们按照本政策来收集、保存、使用、共享、保护您的个人信息。</strong></view>
+		<view class="user-page__content"><strong>“超好运”是由福建大道成物流科技有限公司（“我们”）运营的能够为您提供物流运输业务可视化服务、全流程管理的互联网物流信息平台。本隐私政策适用于超好运手机客户端、网页端、微信端和其他开放平台产品及服务。请您务必认真阅读本隐私政策，在确认充分了解并同意后使用超好运。如果您不同意本隐私政策的任何内容，您应该立即停止使用超好运。当您开始使用超好运服务，即表示您已经同意我们按照本政策来收集、保存、使用、共享、保护您的个人信息。</strong></view>
 		<view class="user-page__content"><strong>我们个人信息安全投诉、举报、保护联系人：信息安全组</strong></view>
 		<view class="user-page__content"><strong>联系方式：400-827-0535</strong></view>
 		
@@ -341,7 +341,7 @@
 		<view class="user-page__title">九. 如何联系我们</view>
 		<view class="user-page__content">1.您可以通过客服电话（400-827-0535）与超好运的客服团队取得联系，反馈您的意见或投诉。</view>
 		<view class="user-page__content">2.如果您对本隐私政策的任意内容，有任何的疑问、意见或建议，或者无法准确理解超好运对条款的解释，请通过超好运客服渠道进行询问（客服热线：400-827-0535），超好运安排客服人员值班答疑。</view>
-		<view class="user-page__content"><strong>3.超好运运营者为福建至简至一信息科技有限公司，注册地址为福建省福州市福清市龙田镇龙飞路95-3-115。</strong></view>
+		<view class="user-page__content"><strong>3.超好运运营者为福建大道成物流科技有限公司，注册地址为福建省福州市福清市龙田镇龙飞路95-3-37。</strong></view>
 		<view class="user-page__content">4.一般情况下，我们将在十五天内回复。如果您对我们的回复不满意，特别是我们的个人信息处理行为损害了您的合法权益，您还可以向网信、电信、公安及工商等监管部门进行投诉或举报，或<strong>通过向被告住所地有管辖权的法院提起诉讼来寻求解决方案。</strong></view>
 				
 		<view style="margin-bottom: 50rpx"></view>
