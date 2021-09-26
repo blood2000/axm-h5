@@ -12,22 +12,13 @@
 			<uni-tr>
 				<uni-th align="center">车牌号码</uni-th>
 				<uni-th align="center">车次</uni-th>
-				<uni-th align="center">车牌号码</uni-th>
-				<uni-th align="center">车次</uni-th>
 			</uni-tr>
-			 <uni-tr v-for="(item,index) in vehicleOdd" :key="index">
-				<!-- 奇数列 -->
+			 <uni-tr v-for="(item,index) in vehicleList" :key="index">
 				<uni-td align="center" @click.native="navToCar(item)">
 					{{ item.licenseNumber }}
 					<text class="g-icon-arrow"></text>
 				</uni-td>
 				<uni-td align="center">{{ item.trainNumber }}</uni-td>
-				<!-- 偶数列 -->
-				<uni-td align="center" @click.native="navToCar(vehicleEven[index])">
-					{{ vehicleEven[index] ? vehicleEven[index].licenseNumber : '' }}
-					<text class="g-icon-arrow" v-show="vehicleEven[index]"></text>
-				</uni-td>
-				<uni-td align="center">{{ vehicleEven[index] ? vehicleEven[index].trainNumber : '' }}</uni-td>
 			</uni-tr>
 		</uni-table>
 	</view>
@@ -62,9 +53,7 @@
 		data() {
 			return {
 				countData: {},
-				vehicleList: [],
-				vehicleOdd: [], // 奇数列
-				vehicleEven: [] // 偶数列
+				vehicleList: []
 			}
 		},
 		watch: {
@@ -95,15 +84,7 @@
 				}, this.headerInfo).then(response => {
 					this.countData = response.data || {};
 					if(response.data.vehicleCounts){
-						this.vehicleOdd = [];
-						this.vehicleEven = [];
-						response.data.vehicleCounts.forEach((el, index) => {
-							if((index + 1) % 2 == 0){
-								this.vehicleEven.push(el);
-							}else{
-								this.vehicleOdd.push(el);
-							}
-						});
+						this.vehicleList = response.data.vehicleCounts;
 					}else{
 						this.vehicleList = [];
 					}
