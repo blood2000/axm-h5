@@ -263,7 +263,7 @@
             "path" : "pages/download/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "超好运",
+                "navigationBarTitleText": "至简至一",
 				"navigationStyle": "custom",
                 "enablePullDownRefresh": false,
 				"navigationBarTextStyle": "black"
