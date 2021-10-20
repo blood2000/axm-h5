@@ -6,6 +6,7 @@
 				<view v-if="role === 1" class="content_top_img shipment"></view>
 				<view v-if="role === 2" class="content_top_img kyd"></view>
 				<view v-if="role === 3" class="content_top_img zt"></view>
+				<view v-if="role === 4" class="content_top_img zjz1"></view>
 				<view class="content_top_text">{{ formData.appCnName }}</view>
 			</view>
 			<view class="content_center">
@@ -51,7 +52,7 @@
 						version: '2.0'
 					}
 				},
-				role: 0 // 0司机 1货主 2凯意达 3渣土
+				role: 0 // 0司机 1货主 2凯意达 3渣土 4至简管车
 			}
 		},
 		created(){
@@ -107,6 +108,17 @@
 						'Terminal-OS': 'android'
 					}
 					this.role = 3;
+				} else if(role === 'zjz1') { //至简管车
+					info = {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Produce-Code': '1c3646219beb4c7b978b4600965b2c9f',
+						'App-Code': '4bff446cdd7543a3a65694ae0a8277c5',
+						'App-Type': '1',
+						'App-Version': '1.0.0',
+						'Terminal-Type': 'app',
+						'Terminal-OS': 'android'
+					}
+					this.role = 4;
 				}
 				uni.request({
 				    url: process.env.VUE_APP_BASE_API + '/system/application/info',
@@ -160,6 +172,10 @@
 				}
 				&.zt{
 					background: url('/static/download/finance.png') no-repeat;
+					background-size: 100% 100%;
+				}
+				&.zjz1{
+					background: url('/static/download/zjz1.png') no-repeat;
 					background-size: 100% 100%;
 				}
 			}
