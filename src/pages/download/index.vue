@@ -112,9 +112,9 @@
 					info = {
 						'Content-Type': 'application/x-www-form-urlencoded',
 						'Produce-Code': '1c3646219beb4c7b978b4600965b2c9f',
-						'App-Code': '4bff446cdd7543a3a65694ae0a8277c5',
+						'App-Code': '625d02d3efbd4823962651f387cdc3d5',
 						'App-Type': '1',
-						'App-Version': '1.0.0',
+						'App-Version': '1.0',
 						'Terminal-Type': 'app',
 						'Terminal-OS': 'android'
 					}
