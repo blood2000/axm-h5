@@ -8,12 +8,13 @@
 		</view>
 		
 		<button class="service-page__button" type="default" size="mini" @click="copyText">复制账号信息</button>
-
-		<uni-table border emptyText="暂无数据">
+		
+		<!-- 网商显示 -->
+		<uni-table border emptyText="暂无数据" v-if="form.paymentChannels === 'WSBK'">
 		    <tbody>
 				<uni-tr>
 				   <uni-td>银行卡号</uni-td>
-				   <uni-td>{{ account ? account : '' }}</uni-td>
+				   <uni-td>{{ form.account ? form.account : '' }}</uni-td>
 				</uni-tr>
 				<uni-tr>
 				   <uni-td>开户名称</uni-td>
@@ -38,34 +39,67 @@
 		    </tbody>
 		</uni-table>
 		
+		<!-- 民生显示 -->
+		<uni-table border emptyText="暂无数据" v-if="form.paymentChannels === 'CMBC'">
+		    <tbody>
+				<uni-tr>
+				   <uni-td>银行账号</uni-td>
+				   <uni-td>{{ form.bankAcc ? form.bankAcc : '' }}</uni-td>
+				</uni-tr>
+				<uni-tr>
+				   <uni-td>开户名称</uni-td>
+				   <uni-td>{{ form.accName ? form.accName : '' }}</uni-td>
+				</uni-tr>
+				<uni-tr>
+				   <uni-td>开户行</uni-td>
+				   <uni-td>民生银行</uni-td>
+				</uni-tr>
+				<uni-tr>
+				   <uni-td>当前绑定卡号（请使用当前绑定卡号充值，否则无法到账）</uni-td>
+				   <uni-td>{{ form.atBindBankCard ? form.atBindBankCard : '' }}</uni-td>
+				</uni-tr>
+		    </tbody>
+		</uni-table>
+		
 		<view style="margin-bottom: 100rpx"></view>
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex';
+	import { getUserWalletBank } from '@/config/service/protocol.js';
 	export default {
 		data(){
 			return {
 				companyName: '',
-				account: ''
+				form: {}
 			}
 		},
 		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo
+			}),
 		    inputValue() {
-				return `银行账号：${this.account ? this.account : ''}; 开户名称：福建大道成物流科技有限公司; 开户行：浙江网商银行; 省份：浙江省; 城市：杭州市; 联行号：323331000001`;
-		    }
+				let result = '';
+				if (this.form.paymentChannels === 'WSBK') {
+					result = `银行账号：${this.form.account ? this.form.account : ''}; 开户名称：福建大道成物流科技有限公司; 开户行：浙江网商银行; 省份：浙江省; 城市：杭州市; 联行号：323331000001`;
+				}
+				if (this.form.paymentChannels === 'CMBC') {
+					result = `银行账号：${this.form.bankAcc ? this.form.bankAcc : ''}; 开户名称：${this.form.accName ? this.form.accName : ''}; 开户行：民生银行; 当前绑定卡号（请使用当前绑定卡号充值，否则无法到账）：${this.form.atBindBankCard ? this.form.atBindBankCard : ''}`;
+				}
+				return result;
+			}
 		},
-		onLoad(options){
+		async onLoad(options){
+			await this.$onLaunched;
 			this.getData(options);
 		},
 		methods: {
 			getData(options) {
 				this.companyName = options.companyName ? options.companyName : '';
-				if(options.account && options.account !== 'null'){
-					this.account = options.account;
-				}else{
-					this.account = '';
-				}
+				getUserWalletBank(this.headerInfo).then(response => {
+					this.form = response.data || {};
+				});
 			},
 			copyText() {
 				// #ifdef H5

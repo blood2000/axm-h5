@@ -18,3 +18,12 @@ export function getContractByCode(orderCode, licenseNumber, config) {
 	headers: config
   });
 }
+
+// 充值说明
+export function getUserWalletBank(config) {
+  return uniRequest({
+    url: '/payment/wallet/getUserWalletBank',
+    method: 'post',
+	headers: config
+  });
+}
