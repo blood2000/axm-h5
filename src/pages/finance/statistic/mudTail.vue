@@ -10,7 +10,7 @@
 		<view class="mud-tail-table__content">
 			<view class="mud-tail-table__content__item" v-for="(item, index) in dataList" :key="index">
 				<view class="title">
-					<text class="index">{{ index + 1 > 9 ? index : '0'+(index + 1) }}</text>
+					<text class="index">{{ index+1>9 ? index+1 : '0'+(index+1) }}</text>
 					<text class="label">{{ item.licenseNumber }}</text>
 				</view>
 				<!-- for -->

@@ -45,3 +45,21 @@ export function ListVechicleDetails(data, config) {
 	headers: config
   });
 }
+// 泥尾统计-按时间
+export function MudtailDetailsByTime(data, config) {
+  return uniRequest({
+    url: '/transportation/statistics/getStatisticsMudtail',
+    method: 'get',
+    data: data,
+	headers: config
+  });
+}
+// 根据项目code统计数据
+export function getCountByTime(data, config) {
+  return uniRequest({
+    url: '/transportation/statistics/statisticsProjectByProjectCode',
+    method: 'get',
+    data: data,
+	headers: config
+  });
+}

@@ -69,7 +69,7 @@
 
 <script>
 	import Header from '@/components/Header/Header.vue';
-	import ItemCard from '@/components/ItemCard/ItemCard.vue';
+	import ItemCard from '@/components/ItemCard/ItemCard_2.vue';
 	import ProjectCard from './project.vue';
 	import InOutDetailCard from './inOutDetail.vue';
 	import MudTail from './mudTail.vue';
