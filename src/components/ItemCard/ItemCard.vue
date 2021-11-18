@@ -327,6 +327,6 @@
 	padding: 0;
 }
 /deep/.uni-date__input{
-	width: 160rpx;
+	width: 175rpx;
 }
 </style>
