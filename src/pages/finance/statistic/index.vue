@@ -8,6 +8,7 @@
 				class="statistic-page__item-card"
 				:item-data="itemData"
 				place="statistic"
+				hasTime
 			></ItemCard>
 			<view class="statistic-page__content">
 				<view class="statistic-page__content__title flex align-center">
@@ -69,7 +70,7 @@
 
 <script>
 	import Header from '@/components/Header/Header.vue';
-	import ItemCard from '@/components/ItemCard/ItemCard_2.vue';
+	import ItemCard from '@/components/ItemCard/ItemCard.vue';
 	import ProjectCard from './project.vue';
 	import InOutDetailCard from './inOutDetail.vue';
 	import MudTail from './mudTail.vue';
