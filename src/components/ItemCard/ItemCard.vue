@@ -23,19 +23,19 @@
 					v-model="range"
 					type="daterange"
 					rangeSeparator="-"
-					:border="false"
-					:clear-icon="true"
+					:border="true"
+					:clear-icon="false"
 					@change="changeTime"
 				/>
 			</view>
 		</view>
 		<view class="item-card__content">
 			<view class="item-card__content__block">
-				<text class="count">{{ itemDataCount.todayFinishCount || 0 }}</text>
+				<text class="count">{{ itemData.todayFinishCount || 0 }}</text>
 				<text class="label">今日完成量</text>
 			</view>
 			<view class="item-card__content__block">
-				<text class="count">{{ itemDataCount.todayApproachCount || 0 }}</text>
+				<text class="count">{{ itemData.todayApproachCount || 0 }}</text>
 				<text class="label">今日进场量</text>
 			</view>
 			<view class="item-card__content__block" @click="handleCountDetail">
@@ -318,11 +318,11 @@
 }
 
 // 时间控件样式
-/deep/.uni-date__icon-logo{
-	display: none;
+/deep/.uni-date__icon-logo, /deep/.uni-date__icon-clear{
+	display: none !important;
 }
 /deep/.uni-date-x {
-	height: 24rpx;
+	height: 58rpx;
 	font-size: 22rpx;
 	padding: 0;
 }
