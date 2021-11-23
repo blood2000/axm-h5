@@ -46,8 +46,9 @@
 		
 		<uni-popup ref="popup" type="center" :mask-click="true">
 			<view class="own-popup-page">
+				<!-- 泥尾统计 -->
 				<h5>
-					累计完成量
+					泥尾完成量
 					<uni-icons class="fr" type="closeempty" size="22" style="font-weight: normal;margin-top: -2upx;" @click="closePopup"></uni-icons>
 				</h5>
 				<view class="row" v-for="(item, index) in muckardCounts" :key="index">
@@ -57,6 +58,19 @@
 				<view class="total">
 					<text class="label">合计：</text>
 					<text class="text">{{ muckardTotal }}</text>
+				</view>
+				<!-- 车队统计 -->
+				<h5>
+					车队完成量
+					<uni-icons class="fr" type="closeempty" size="22" style="font-weight: normal;margin-top: -2upx;opacity: 0;"></uni-icons>
+				</h5>
+				<view class="team-row row" v-for="(item, index) in teamCounts" :key="index">
+					<text class="label">{{ item.mudtail }}：</text>
+					<text class="text">{{ item.trainNumber }}</text>
+				</view>
+				<view class="total">
+					<text class="label">合计：</text>
+					<text class="text">{{ teamTotal }}</text>
 				</view>
 			</view>
 		</uni-popup>
@@ -92,7 +106,9 @@
 				range: [this.parseTime(new Date(), '{y}-{m}-{d}'), this.parseTime(new Date(), '{y}-{m}-{d}')],
 				itemDataCount: this.itemData,
 				muckardCounts: [],
-				muckardTotal: 0
+				muckardTotal: 0,
+				teamCounts: [],
+				teamTotal: 0
 			}
 		},
 		computed: {
@@ -151,6 +167,8 @@
 				}, this.headerInfo).then(response => {
 					this.muckardCounts = response.data.muckardCounts || [];
 					this.muckardTotal = response.data.total || 0;
+					this.teamCounts = response.data.temaCounts || [];
+					this.teamTotal = response.data.total || 0;
 				})
 			},
 			// 按时间段查统计量
@@ -310,9 +328,12 @@
 			font-size: 28rpx;
 		}
 		>.total{
-			margin-top: 20rpx;
+			margin-top: 15rpx;
 			text-align: right;
 			font-weight: bold;
+		}
+		>.team-row{
+			width: 100%;
 		}
 	}
 }

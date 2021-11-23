@@ -110,7 +110,8 @@
 .home-page{
 	width: 100%;
 	// height: 100vh;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	&__scroll{
 		width: 100%;
 		height: calc(100% - 185rpx);
