@@ -1,7 +1,7 @@
 <template>
 	<view class="item-card">
 		<view class="item-card__title" @click="handleItem()">
-			<view class="title-box">
+			<view class="title-box" :style="hasTime?'width: 40%':''">
 				<text class="label">项目：</text>
 				<text class="title">{{ itemDataCount.projectName }}</text>
 			</view>
@@ -18,15 +18,15 @@
 				<text v-if="changed === itemDataCount.projectCode" class="change-text">已选择</text>
 				<button v-else type="default" class="change-button" @click="changeItem">选择</button>
 			</template>
-			<view v-if="hasTime" class="example-body" @click.stop>
-				<uni-datetime-picker
-					v-model="range"
-					type="daterange"
-					rangeSeparator="-"
-					:border="true"
-					:clear-icon="false"
-					@change="changeTime"
-				/>
+			<view v-if="hasTime" class="example-body ly-flex" @click.stop>
+				<!-- 时间控件 -->
+				<picker mode="date" :value="bigQueryDate" :start="startDate" :end="endDate" @change="bindDateChange">
+					<view class="uni-input">{{bigQueryDate}}</view>
+				</picker>
+				<text style="margin:0 10upx">至</text>
+				<picker mode="date" :value="endQueryDate" :start="startDate" :end="endDate" @change="bindDateChange2">
+					<view class="uni-input">{{endQueryDate}}</view>
+				</picker>
 			</view>
 		</view>
 		<view class="item-card__content">
@@ -64,7 +64,7 @@
 					车队完成量
 					<uni-icons class="fr" type="closeempty" size="22" style="font-weight: normal;margin-top: -2upx;opacity: 0;"></uni-icons>
 				</h5>
-				<view class="team-row row" v-for="(item, index) in teamCounts" :key="index">
+				<view class="team-row row" v-for="(item, index) in teamCounts" :key="index+'001'">
 					<text class="label">{{ item.mudtail }}：</text>
 					<text class="text">{{ item.trainNumber }}</text>
 				</view>
@@ -102,8 +102,12 @@
 			}
 		},
 		data() {
+			const currentDate = this.getDate({
+				format: true
+			})
 			return {
-				range: [this.parseTime(new Date(), '{y}-{m}-{d}'), this.parseTime(new Date(), '{y}-{m}-{d}')],
+				bigQueryDate: currentDate,
+				endQueryDate: currentDate,
 				itemDataCount: this.itemData,
 				muckardCounts: [],
 				muckardTotal: 0,
@@ -114,13 +118,19 @@
 		computed: {
 			...mapState({
 			  headerInfo: state => state.header.headerInfo
-			})
+			}),
+			startDate() {
+				return this.getDate('start');
+			},
+			endDate() {
+				return this.getDate('end');
+			}
 		},
 		watch: {
 			'itemData.projectCode': {
 				handler(value) {
 					this.itemDataCount = this.itemData;
-					this.changeTime(this.range);
+					this.changeTime();
 				},
 			}
 		},
@@ -151,9 +161,17 @@
 				if (!this.hasTime) {
 					return;
 				}
-				if (!this.range || this.range.length === 0 || (this.range[0] === '' && this.range[1] === '')) {
+				if (!this.bigQueryDate || this.bigQueryDate === '') {
 					uni.showToast({
-						title: '起始日期-结束日期不能为空',
+						title: '起始日期不能为空',
+						icon: 'none',
+						duration: 2000
+					});
+					return;
+				}
+				if (!this.endQueryDate || this.endQueryDate === '') {
+					uni.showToast({
+						title: '结束日期不能为空',
 						icon: 'none',
 						duration: 2000
 					});
@@ -161,8 +179,8 @@
 				}
 				this.$refs.popup.open('center');
 				MudtailDetailsByTime({
-					bigQueryDate: this.range[0],
-					endQueryDate: this.range[1],
+					bigQueryDate: this.bigQueryDate,
+					endQueryDate: this.endQueryDate,
 					projectCode: this.itemDataCount.projectCode
 				}, this.headerInfo).then(response => {
 					this.muckardCounts = response.data.muckardCounts || [];
@@ -172,11 +190,11 @@
 				})
 			},
 			// 按时间段查统计量
-			changeTime(arr) {
-				if (arr && arr.length > 0) {
+			changeTime() {
+				if (this.bigQueryDate && this.endQueryDate && this.bigQueryDate !== '' && this.endQueryDate !== '') {
 					getCountByTime({
-						bigQueryDate: arr[0],
-						endQueryDate: arr[1],
+						bigQueryDate: this.bigQueryDate,
+						endQueryDate: this.endQueryDate,
 						projectCode: this.itemDataCount.projectCode
 					}, this.headerInfo).then(response => {
 						this.itemDataCount = response.data;
@@ -188,6 +206,30 @@
 			// 关闭
 			closePopup() {
 				this.$refs.popup.close()
+			},
+			// 时间控件
+			bindDateChange(e) {
+				this.bigQueryDate = e.target.value;
+				this.changeTime();
+			},
+			bindDateChange2(e) {
+				this.endQueryDate = e.target.value;
+				this.changeTime();
+			},
+			getDate(type) {
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+	
+				if (type === 'start') {
+					year = year - 60;
+				} else if (type === 'end') {
+					year = year + 2;
+				}
+				month = month > 9 ? month : '0' + month;
+				day = day > 9 ? day : '0' + day;
+				return `${year}-${month}-${day}`;
 			}
 		}
 	}
@@ -336,18 +378,5 @@
 			width: 100%;
 		}
 	}
-}
-
-// 时间控件样式
-/deep/.uni-date__icon-logo, /deep/.uni-date__icon-clear{
-	display: none !important;
-}
-/deep/.uni-date-x {
-	height: 58rpx;
-	font-size: 22rpx;
-	padding: 0;
-}
-/deep/.uni-date__input{
-	width: 185rpx;
 }
 </style>
