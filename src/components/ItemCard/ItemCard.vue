@@ -20,11 +20,11 @@
 			</template>
 			<view v-if="hasTime" class="example-body ly-flex" @click.stop>
 				<!-- 时间控件 -->
-				<picker mode="date" :value="bigQueryDate" :start="startDate" :end="endDate" @change="bindDateChange">
+				<picker mode="date" :value="bigQueryDate" :start="startDate" :end="endQueryDate" @change="bindDateChange">
 					<view class="uni-input">{{bigQueryDate}}</view>
 				</picker>
 				<text style="margin:0 10upx">至</text>
-				<picker mode="date" :value="endQueryDate" :start="startDate" :end="endDate" @change="bindDateChange2">
+				<picker mode="date" :value="endQueryDate" :start="bigQueryDate" :end="endDate" @change="bindDateChange2">
 					<view class="uni-input">{{endQueryDate}}</view>
 				</picker>
 			</view>
@@ -224,7 +224,7 @@
 	
 				if (type === 'start') {
 					year = year - 60;
-				} else if (type === 'end') {
+				} else if (type === 'end') { 
 					year = year + 2;
 				}
 				month = month > 9 ? month : '0' + month;
