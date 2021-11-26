@@ -10,10 +10,12 @@
 		</view>
 		<uni-table border stripe emptyText="暂无数据">
 			<uni-tr>
+				<uni-th align="center">序号</uni-th>
 				<uni-th align="center">车牌号码</uni-th>
 				<uni-th align="center">车次</uni-th>
 			</uni-tr>
 			 <uni-tr v-for="(item,index) in vehicleList" :key="index">
+				<uni-td align="center">{{ index+1>9 ? index+1 : '0'+(index+1) }}</uni-td>
 				<uni-td align="center" @click.native="navToCar(item)">
 					{{ item.licenseNumber }}
 					<text class="g-icon-arrow"></text>
