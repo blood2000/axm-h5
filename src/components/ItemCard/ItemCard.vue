@@ -129,9 +129,13 @@
 		watch: {
 			'itemData.projectCode': {
 				handler(value) {
-					this.itemDataCount = this.itemData;
-					this.changeTime();
+					if (this.hasTime) {
+						this.itemDataCount = this.itemData;
+						this.itemDataCount.cumulativeCount = 0;
+						this.changeTime();
+					}
 				},
+				immediate: true
 			}
 		},
 		methods: {
