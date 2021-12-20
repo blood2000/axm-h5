@@ -264,6 +264,16 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "至简至一",
+        		"navigationStyle": "custom",
+                "enablePullDownRefresh": false,
+        		"navigationBarTextStyle": "black"
+            }
+            
+        },{
+            "path" : "pages/accounting/accounting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "至简至一",
 				"navigationStyle": "custom",
                 "enablePullDownRefresh": false,
 				"navigationBarTextStyle": "black"
