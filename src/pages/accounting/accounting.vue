@@ -42,10 +42,16 @@
 						</view>
 					</view>
 				</view>
-				<view class="viewi" />
 				<view class="bottom">
-					<el-checkbox class="setUpDefault" v-model="checked">设为默认</el-checkbox>
-					<button class="confirm">修改</button>
+					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
+						<label style="display: flex; flex-direction: row; justify-content: center;">
+							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}" :checked="()=>{{sub.isDefault}}">设为默认
+							</checkbox>
+						</label>
+					</checkbox-group>
+					<label>
+						<button class="confirm">修改</button>
+					</label>
 				</view>
 			</view>
 		</view>
@@ -64,6 +70,7 @@
 						decutionCount: 1,
 						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231",
 						subsidiesCount: 3,
+						isDefault: true,
 						subsidiesInfo: "食宿补贴415，高温补贴200，节假日补贴500",
 					},
 					{
@@ -71,6 +78,7 @@
 						decutionCount: 0,
 						decutionInfo: "",
 						subsidiesCount: 3,
+						isDefault: false,
 						subsidiesInfo: "食宿补贴640，高温补贴400，节假日补贴500",
 					},
 				],
@@ -78,12 +86,16 @@
 				password: "",
 				rememberPws: false,
 				radio1: "首页",
+				checked: false,
 			};
 		},
 		methods: {
 			onDeductionClick(subsidiesCount) {
 				console.log(subsidiesCount)
-			}
+			},
+			onDefaultStateChange(index, e) {
+				console.log(e.detail)
+			},
 		},
 	};
 </script>
@@ -268,10 +280,27 @@
 	}
 
 	.setUpDefault {
+		border-radius: 20px;
 		color: #999;
-		margin-left: 12px;
-		font-size: 14sp;
+		font-size: 18px;
+		display: flex;
+		justify-content: space-between;
 		background-color: transparent;
+		transform: scale(0.7);
+
+	}
+
+	/deep/.uni-checkbox-input.uni-checkbox-input-checked {
+		margin-right: 12px;
+		border-radius: 24px;
+		border-color: #999999;
+
+	}
+
+	/deep/.uni-checkbox-input {
+		margin-right: 12px;
+		border-radius: 24px;
+		border-color: #4478e4;
 	}
 
 	.confirm {
