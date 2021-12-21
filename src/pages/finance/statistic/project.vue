@@ -136,7 +136,7 @@
 			color: #333333;
 		}
 	}
-	/deep/ .uni-table{
+	 ::v-deep.uni-table{
 		min-width: 100% !important;
 		.uni-table-th-content{
 			font-size: 28rpx;
