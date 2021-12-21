@@ -41,11 +41,11 @@
 				</view>
 				<view class="bottom">
 					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
-						<label style="display: flex; flex-direction: row; justify-content: center;">
+						<view style="display: flex; flex-direction: row; justify-content: center;">
 							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}"
 								:checked="()=>{{sub.isDefault}}">设为默认
 							</checkbox>
-						</label>
+						</view>
 					</checkbox-group>
 					<label>
 						<button class="confirm">修改</button>
@@ -306,11 +306,11 @@
 	.setUpDefault {
 		border-radius: 20upx;
 		color: #999;
-		font-size: 18upx;
+		font-size: 28upx;
 		display: flex;
 		justify-content: space-between;
 		background-color: transparent;
-		transform: scale(0.7);
+		//transform: scale(0.7);
 	}
 
 	::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
