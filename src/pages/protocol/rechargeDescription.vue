@@ -10,7 +10,7 @@
 		<button class="service-page__button" type="default" size="mini" @click="copyText">复制账号信息</button>
 		
 		<!-- 网商显示 -->
-		<uni-table border emptyText="暂无数据" v-if="form.paymentChannels === 'WSBK'">
+		<uni-table border emptyText="暂无数据" v-if="form.paymentChannels === 'WSBK' || form.paymentChannels === 'SXWSBK'">
 		    <tbody>
 				<uni-tr>
 				   <uni-td>银行卡号</uni-td>
@@ -18,7 +18,7 @@
 				</uni-tr>
 				<uni-tr>
 				   <uni-td>开户名称</uni-td>
-				   <uni-td>福建大道成物流科技有限公司</uni-td>
+				   <uni-td>{{ form.paymentChannels === 'WSBK' ? '福建大道成物流科技有限公司' : '山西道承信息技术有限公司' }}</uni-td>
 				</uni-tr>
 				<uni-tr>
 				   <uni-td>开户行</uni-td>
@@ -81,8 +81,8 @@
 			}),
 		    inputValue() {
 				let result = '';
-				if (this.form.paymentChannels === 'WSBK') {
-					result = `银行账号：${this.form.account ? this.form.account : ''}; 开户名称：福建大道成物流科技有限公司; 开户行：浙江网商银行; 省份：浙江省; 城市：杭州市; 联行号：323331000001`;
+				if (this.form.paymentChannels === 'WSBK' || this.form.paymentChannels === 'SXWSBK') {
+					result = `银行账号：${this.form.account ? this.form.account : ''}; 开户名称：${this.form.paymentChannels === 'WSBK' ? '福建大道成物流科技有限公司' : '山西道承信息技术有限公司'}; 开户行：浙江网商银行; 省份：浙江省; 城市：杭州市; 联行号：323331000001`;
 				}
 				if (this.form.paymentChannels === 'CMBC') {
 					result = `银行账号：${this.form.bankAcc ? this.form.bankAcc : ''}; 开户名称：${this.form.accName ? this.form.accName : ''}; 开户行：民生银行; 当前绑定卡号（请使用当前绑定卡号充值，否则无法到账）：${this.form.atBindBankCard ? this.form.atBindBankCard : ''}`;

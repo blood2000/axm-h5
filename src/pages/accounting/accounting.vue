@@ -1,20 +1,18 @@
 <template>
 	<view class="register">
 		<view class="root">
-			<view class="toolBar">
-				<img class="back" src="/static/ic_back.png" />
-				<h4 style="font-size: 16px;font-family: PingFang Bold;">核算规则</h4>
-				<p class="detail">新增</p>
-			</view>
+			<MenuWhiteHeader :showBack="true">
+				<text slot="title">核算规则</text>
+				<text slot="menu">详情</text>
+			</MenuWhiteHeader>
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleLeftview">
 					<view class="platformTitleItem">
-						<view style="display: flex; align-items: center; justify-content: center;">
-							<view class="platformTitle">平台默认规则</view>
-							<view class="platformStatus">{{ sub.stateName }}</view>
-						</view>
-
-						<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction()" />
+						<view class="platformTitle">平台默认规则</view>
+						<view class="platformStatus">{{ sub.stateName }}</view>
+					</view>
+					<view>
+						<i class="el-icon-close" />
 					</view>
 				</view>
 				<view class="freight">运费=装卸货最小数量*运费单价+增项-减项</view>
@@ -61,9 +59,13 @@
 </template>
 
 <script>
+	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
 	export default {
 		props: {},
 
+		components: {
+			MenuWhiteHeader,
+		},
 		data() {
 			return {
 				phone: "",
@@ -98,9 +100,6 @@
 			onDefaultStateChange(index, e) {
 				console.log(e.detail)
 			},
-			onClickDeleteAction() {
-				console.log('点击了删除')
-			}
 		},
 	};
 </script>
@@ -166,7 +165,6 @@
 		margin: 0px;
 		padding: 0px;
 		flex-direction: row;
-		justify-content: space-between;
 		align-items: center;
 		border: none;
 	}
@@ -296,14 +294,14 @@
 
 	}
 
-	::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
+	 ::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
 		margin-right: 12px;
 		border-radius: 24px;
 		border-color: #999999;
 
 	}
 
-	::v-deep.uni-checkbox-input {
+	 ::v-deep.uni-checkbox-input {
 		margin-right: 12px;
 		border-radius: 24px;
 		border-color: #4478e4;
@@ -320,14 +318,5 @@
 		border: none;
 		font-size: 13px;
 		color: white;
-	}
-
-	.closeButton {
-		width: 28upx;
-		height: 28upx;
-		border: none;
-		margin-right: 12px;
-		display: flex;
-		align-items: center;
 	}
 </style>
