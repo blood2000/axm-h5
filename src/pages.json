@@ -280,6 +280,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/accounting/accountingDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "至简至一",
+				"navigationStyle": "custom",
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

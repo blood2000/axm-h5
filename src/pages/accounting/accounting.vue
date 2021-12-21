@@ -1,11 +1,10 @@
 <template>
 	<view class="register">
 		<view class="root">
-			<view class="toolBar">
-				<img class="back" src="/static/ic_back.png" />
-				<h4 style="font-size: 16px;font-family: PingFang Bold;">核算规则</h4>
-				<p class="detail">详情</p>
-			</view>
+			<MenuWhiteHeader :showBack="true">
+				<text slot="title">核算规则</text>
+				<text slot="menu">详情</text>
+			</MenuWhiteHeader>
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleLeftview">
 					<view class="platformTitleItem">
@@ -45,7 +44,8 @@
 				<view class="bottom">
 					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
 						<label style="display: flex; flex-direction: row; justify-content: center;">
-							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}" :checked="()=>{{sub.isDefault}}">设为默认
+							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}"
+								:checked="()=>{{sub.isDefault}}">设为默认
 							</checkbox>
 						</label>
 					</checkbox-group>
@@ -59,9 +59,13 @@
 </template>
 
 <script>
+	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
 	export default {
 		props: {},
 
+		components: {
+			MenuWhiteHeader,
+		},
 		data() {
 			return {
 				phone: "",
