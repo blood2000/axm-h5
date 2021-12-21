@@ -294,14 +294,14 @@
 
 	}
 
-	/deep/.uni-checkbox-input.uni-checkbox-input-checked {
+	 ::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
 		margin-right: 12px;
 		border-radius: 24px;
 		border-color: #999999;
 
 	}
 
-	/deep/.uni-checkbox-input {
+	 ::v-deep.uni-checkbox-input {
 		margin-right: 12px;
 		border-radius: 24px;
 		border-color: #4478e4;
