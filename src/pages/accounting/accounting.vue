@@ -3,7 +3,7 @@
 		<view class="root">
 			<MenuWhiteHeader :showBack="true">
 				<text slot="title">核算规则</text>
-				<text slot="menu">详情</text>
+				<text slot="menu">新增</text>
 			</MenuWhiteHeader>
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleView">
@@ -21,7 +21,7 @@
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium" @click="onDeductionClick(sub.decutionCount)">
 								{{ sub.decutionCount }}
-								<i class="el-icon-arrow-down"></i>
+								<img class="downArrow" src="/static/icon_downArrow.png" />
 							</view>
 							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.decutionInfo }}</view>
 						</view>
@@ -227,7 +227,7 @@
 	.platformDeductionDetail {
 		background-color: #f4f4f4;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		border-radius: 4upx;
 		margin-top: 12upx;
 		margin-left: 4upx;
