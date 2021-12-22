@@ -23,7 +23,7 @@
 								{{ sub.decutionCount }}
 								<i class="el-icon-arrow-down"></i>
 							</view>
-							<view class="freightDetail">{{ sub.decutionInfo }}</view>
+							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.decutionInfo }}</view>
 						</view>
 					</view>
 				</view>
@@ -35,7 +35,7 @@
 								{{ sub.subsidiesCount }}
 								<i class="el-icon-arrow-down"></i>
 							</view>
-							<view class="freightDetail">{{ sub.subsidiesInfo }}</view>
+							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidiesInfo }}</view>
 						</view>
 					</view>
 				</view>
@@ -69,16 +69,20 @@
 				phone: "",
 				accountingData: [{
 						stateName: "默认",
-						decutionCount: 1,
+						showDecutionInfoMore: false,
+						decutionCount: 4,
 						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231",
+						showSubsidiesInfoMore: false,
 						subsidiesCount: 3,
 						isDefault: true,
 						subsidiesInfo: "食宿补贴415，高温补贴200，节假日补贴500",
 					},
 					{
 						stateName: "默认",
-						decutionCount: 0,
-						decutionInfo: "",
+						showDecutionInfoMore: false,
+						decutionCount: 4,
+						decutionInfo: "抹零规则【元】抹零。油费500，其他费用100，ETC费231",
+						showSubsidiesInfoMore: false,
 						subsidiesCount: 3,
 						isDefault: false,
 						subsidiesInfo: "食宿补贴640，高温补贴400，节假日补贴500",
