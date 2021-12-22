@@ -69,7 +69,7 @@
 				phone: "",
 				accountingData: [{
 						stateName: "默认",
-						decutionCount: 1,
+						decutionCount: 4,
 						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231",
 						subsidiesCount: 3,
 						isDefault: true,
@@ -77,8 +77,8 @@
 					},
 					{
 						stateName: "默认",
-						decutionCount: 0,
-						decutionInfo: "",
+						decutionCount: 4,
+						decutionInfo: "抹零规则【元】抹零。油费500，其他费用100，ETC费231",
 						subsidiesCount: 3,
 						isDefault: false,
 						subsidiesInfo: "食宿补贴640，高温补贴400，节假日补贴500",
