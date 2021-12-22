@@ -42,4 +42,18 @@
 		height: 100%;
 		/* overflow: hidden; */
 	}
+	uni-checkbox .uni-checkbox-input {
+        border-radius: 3upx !important;
+        color: #ffffff !important;
+    }
+
+    uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked {
+        color: #fff;
+        border-color: rgb(0, 122, 255);
+        background: rgb(0, 122, 255);
+    }
+
+    uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked:after {
+        font-size: 18px;
+    }
 </style>
