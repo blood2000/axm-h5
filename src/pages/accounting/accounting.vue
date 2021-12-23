@@ -39,6 +39,7 @@
 						</view>
 					</view>
 				</view>
+				<hr class="line">
 				<view class="bottom">
 					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
 						<view style="display: flex; flex-direction: row; justify-content: center;">
@@ -133,6 +134,16 @@
 		width: 12upx;
 		padding-left: 12upx;
 	}
+	
+	.line {
+		background-color: #EEEEEE;
+		border: none;
+		margin-left: 24upx;
+		margin-right: 24upx;
+		margin-top: 28upx;
+		margin-bottom: 10upx;
+		height: 1upx;
+	}
 
 	.detail {
 		color: #4478e4;
@@ -193,7 +204,7 @@
 	}
 
 	.platformTitle {
-		margin-left: 12upx;
+		margin-left: 25upx;
 		color: #333;
 		font-weight: bold;
 		margin-top: 12upx;
@@ -222,7 +233,7 @@
 	}
 
 	.platformDeduction {
-		margin-left: 12upx;
+		margin-left: 25upx;
 		margin-top: 24upx;
 		color: #333;
 		font-family: PingFang Bold;
@@ -260,7 +271,7 @@
 	.freight {
 		font-size: 24upx;
 		color: #878787;
-		margin-left: 12upx;
+		margin-left: 25upx;
 		margin-top: 13upx;
 		font-family: PingFang Bold;
 	}
@@ -321,7 +332,7 @@
 		display: flex;
 		justify-content: space-between;
 		background-color: transparent;
-		//transform: scale(0.7);
+		margin-left: 29upx;
 	}
 
 	::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
