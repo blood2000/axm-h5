@@ -9,7 +9,7 @@
 				<view class="platformTitleView">
 					<view class="platformTitleItem">
 						<view class="platformTitle">平台默认规则</view>
-						<view class="platformStatus">{{ sub.stateName }}</view>
+						<view v-if="sub.isDefault" class="platformStatus">{{ sub.stateName }}</view>
 					</view>
 					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction()" />
 				</view>
@@ -41,13 +41,6 @@
 				</view>
 				<hr class="line">
 				<view class="bottom">
-<!-- 					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
-						<view style="display: flex; flex-direction: row; justify-content: center;">
-							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}"
-								:checked="()=>{{sub.isDefault}}">设为默认
-							</checkbox>
-						</view>
-					</checkbox-group> -->
 					<view class="setDefault" @click="onSetupDefaultClick(sub)" >
 						<image :src="sub.isDefault ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
