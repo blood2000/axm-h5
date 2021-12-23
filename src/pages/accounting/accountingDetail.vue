@@ -116,8 +116,7 @@
 						<view class="showTypeInput">
 							<text>{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
-							<view v-if="item.showType=1"
-								style="display: flex;justify-content: flex-end;align-items: center;flex-direction: row; width: 80%;">
+							<view v-if="item.showType=1" class="showTypeInputView">
 								<input class="ruleInput"> </input>
 								<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx; "
 									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
@@ -367,7 +366,7 @@
 	}
 
 	.rowLabel {
-		font-size: 30upx;
+		font-size: 26upx;
 		font-family: bold;
 		font-style: bold;
 		color: #333333;
@@ -559,7 +558,7 @@
 
 	.showTypeInputView {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-items: center;
 		flex-direction: row;
 	}
