@@ -377,12 +377,11 @@
 		background-color: #4478e4;
 		border-radius: 5upx;
 		height: 56upx;
-		width: 110upx;
+		width: 140upx;
 		margin-right: 23upx;
-		text-align: center;
+		//text-align: center;
 		border: none;
 		font-size: 28upx;
 		color: white;
-		line-height: 43px;
 	}
 </style>
