@@ -16,8 +16,7 @@
 				<view class="freight">运费=装卸货最小数量*运费单价+增项-减项</view>
 				<view class="platformDeductionLayout">
 					<view class="platformDeduction">扣费项目</view>
-
-					<view class="item" :class="changeDeductionBg">
+					<view :class="sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
 								{{ sub.decutionCount }}
@@ -29,7 +28,7 @@
 				</view>
 				<view class="platformDeductionLayout">
 					<view class="platformDeduction">补贴项目</view>
-					<view style="width: calc(80vw)">
+					<view :class="sub.showSubsidiesInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;" @click="onSubsidiesClick(sub)">
 								{{ sub.subsidiesCount }}
@@ -96,8 +95,6 @@
 		methods: {
 			onDeductionClick(sub) {
 				sub.showDecutionInfoMore = !sub.showDecutionInfoMore;
-				
-				this.changeDeductionBg = sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall';
 			},
 			onSubsidiesClick(sub) {
 				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
