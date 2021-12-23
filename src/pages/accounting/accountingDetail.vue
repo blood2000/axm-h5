@@ -59,7 +59,7 @@
 							src="@/static/ic_required.png" />
 					</view>
 					<view style="display: flex;justify-content: center; align-items: center; text-align: end;">
-						<picker class="ruleInput " selector-type="selector" :range="caleFormula" rangeKey="formulaName"
+						<picker class="ruleInput " selector-type="selector" :range="caleFormula" rangeKey="cnName"
 							@change="onFormulaSelect">
 							<view class="ruleFomelaView" :style='{color:formulaSelected?"#333333":"#999999"}'>
 								<text>{{formulaSelectName}}</text>
@@ -103,34 +103,80 @@
 					</view>
 				</view>
 			</view>
-			<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view class="cardRow" style="margin-top: 28upx;">
-				<text class="rowLabel">扣费项目</text>
-				<image type="icon" class="required" style="width: 32upx; height: 32upx; "
-					src="@/static/ic_accounting_plus.png" @click="open" />
+			<view v-if="calePathLoss == false" style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
+			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
+				<view class="cardRow">
+					<text class="rowLabel">扣费项目</text>
+					<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+						src="@/static/ic_accounting_plus.png" @click="onDeductionPlusClick" />
+				</view>
+				<view v-if="currentDeductionProject.length > 0" class="projectRoot">
+					<view v-for="(item,index) in currentDeductionProject" class="projectItem"
+						style="margin-top: 28upx;">
+						<view class="showTypeInput">
+							<text>{{item.cnName}}</text>
+							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
+							<view v-if="item.showType=1"
+								style="display: flex;justify-content: flex-end;align-items: center;flex-direction: row; width: 80%;">
+								<input class="ruleInput"> </input>
+								<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx; "
+									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+							</view>
+							<view v-if="item.showType='2'"></view>
+							<view v-if="item.showType='3'"></view>
+							<view v-if="item.showType='4'"></view>
+						</view>
+					</view>
+				</view>
 			</view>
-			<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view class="cardRow" style="margin-top: 28upx;">
-				<text class="rowLabel">补贴项目</text>
-				<image type="icon" class="required" style="width: 32upx; height: 32upx; "
-					src="@/static/ic_accounting_plus.png" @click="open" />
+			<view v-if="currentDeductionProject.length == 0"
+				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
+			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
+				<view class="cardRow">
+					<text class="rowLabel">补贴项目</text>
+					<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+						src="@/static/ic_accounting_plus.png" @click="onSubsidiesPlusClick" />
+				</view>
+				<view v-if="currentSubsidiesProject.length > 0" class="projectRoot">
+					<view v-for="(item,index) in currentSubsidiesProject" style="margin-top: 28upx;">
+						<view class="showTypeInput">
+							<text>{{item.cnName}}</text>
+							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
+							<view v-if="item.showType=1" class="showTypeInputView">
+								<input class="ruleInput"> </input>
+								<image type="icon" class="required"
+									style="width: 39upx; height: 39upx; margin-left: 24upx; "
+									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+							</view>
+							<view v-if="item.showType='2'"></view>
+							<view v-if="item.showType='3'"></view>
+							<view v-if="item.showType='4'"></view>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 
-		<uni-popup ref="popup" type="bottom">
+		<uni-popup ref="popup">
 			<view class="projectDialog">
-				<radio-group style="width: 100%;">
-					<label style="width: 100%;"
-						v-for="(item, index) in projectList" :key="item.projectName">
-						<view class="projectItem">
-							<view>{{item.projectName}}</view>
+				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectSelected">
+					<label style="width: 100%;" v-for="(item, index) in projectList" :key="item.cnName"
+						:value="item.code">
+						<view class="popupProjectItem">
+							<view>{{item.cnName}}</view>
 							<view>
-								<radio :value="item.projectName" :checked="index === currentProject" />
+								<checkbox style="transform: scale(0.7)" :value="item.code"
+									:checked="popupTypeIsDeduction == 'true'?currentDeductionProject.includes(item):currentSubsidiesProject.includes(item)"
+									:disabled="popupTypeIsDeduction == 'true'?currentSubsidiesProject.includes(item):currentDeductionProject.includes(item)" />
 							</view>
 						</view>
-						<view v-if="index < projectList.length - 1" style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
+						<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 18upx;" />
 					</label>
-				</radio-group>
+				</checkbox-group>
+				<view style="display: flex; margin-top: 18upx;">
+					<button class="projectCancel" @click="close">取消</button>
+					<button class="projectConfirm" @click="onProjectSelected">确定</button>
+				</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -138,14 +184,29 @@
 
 <script>
 	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		getAccountingProjectList
+	} from '@/config/service/accounting.js';
 
 	export default {
 		components: {
 			MenuWhiteHeader,
 		},
+		async mounted() {
+			await this.$onLaunched
+			this.queryProjectList(0)
+			this.queryProjectList(1)
+		},
+		computed: {
+			...mapState({
+				headerInfo: state => state.header.headerInfo
+			}),
+		},
 		data() {
 			return {
-				isShowProject: false,
 				title: "新增核算规则",
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
@@ -166,19 +227,13 @@
 				formulaSelectName: "请选择路耗规则",
 				formulaSelectCode: "",
 				formulaSelected: false,
-				caleFormula: [{
-					formulaName: "重量差*货物单价",
-					formulaCode: "1",
-				}, {
-					formulaName: "(重量差-容忍值) *货物单价",
-					formulaCode: "2",
-				}],
+				caleFormula: [],
 				scheme: [{
 					schemeName: "定额",
-					schemeCode: "0",
+					schemeCode: "0"
 				}, {
-					schemeName: "定律",
-					schemeCode: "1",
+					schemeName: "定率",
+					schemeCode: "1"
 				}],
 				schemeUnit: [{
 					schemeUnitName: "kg/m³",
@@ -189,23 +244,19 @@
 				defaultSchemeMax: "5.00",
 				currentsUnitSheme: 0,
 				currentsSheme: 0,
-				projectList: [{
-					projectName: "抹零规则",
-					projectCode: "0",
+				projectList: [],
+				currentDeductionProject: [],
+				currentSubsidiesProject: [],
+				tempDeductionProject: [],
+				tempSubsidiesProject: [],
+				rules: [{
+					ruleType: "0"
 				}, {
-					projectName: "油费",
-					projectCode: "1",
-				}, {
-					projectName: "ETC费用",
-					projectCode: "2",
-				}, {
-					projectName: "超时费",
-					projectCode: "3",
-				}, {
-					projectName: "装车费",
-					projectCode: "4",
-				}, ],
-				currentProject: 0,
+					ruleType: "1",
+				}],
+				deductionUI: [],
+				subsidiesUI: [],
+				popupTypeIsDeduction: "false",
 			}
 		},
 		methods: {
@@ -223,8 +274,8 @@
 			// 选择了路耗规则
 			onFormulaSelect(e) {
 				const index = e.detail.value
-				this.formulaSelectName = this.caleFormula[index].formulaName
-				this.formulaSelectCode = this.caleFormula[index].formulaCode
+				this.formulaSelectName = this.caleFormula[index].cnName
+				this.formulaSelectCode = this.caleFormula[index].id
 				this.formulaSelected = true
 			},
 			// 选择了亏吨方案
@@ -239,19 +290,60 @@
 			},
 			//点击添加扣费项目
 			onDeductionPlusClick() {
-				console.log("点击添加扣费项目")
-				this.isShowProject = true
+				this.open("true")
 			},
 			//点击添加补贴项目
 			onSubsidiesPlusClick() {
-				this.isShowProject = true
-				console.log("点击添加补贴项目：", this.isShowProject)
+				this.open("false")
 			},
 			//展示项目选择popup
-			open() {
-				// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
-				this.$refs.popup.open('top')
-			}
+			open(isDeduction) {
+				this.popupTypeIsDeduction = isDeduction
+				this.$refs.popup.open('center')
+			},
+			close() {
+				this.$refs.popup.close()
+			},
+			//选择了添加扣费或项目
+			projectSelected(e) {
+				var tempSelectProject = []
+				// 1.文本框 2.区域 3.下拉框 4.radio
+				for (let i = 0; i < this.projectList.length; i++) {
+					if (e.detail.value.includes(this.projectList[i].code)) {
+						tempSelectProject.push(this.projectList[i]);
+					}
+				}
+				if (this.popupTypeIsDeduction == "true") {
+					this.tempDeductionProject = tempSelectProject
+				} else {
+					this.tempSubsidiesProject = tempSelectProject
+				}
+			},
+			//点击popup的确定按钮
+			onProjectSelected(e) {
+				console.log(this.popupTypeIsDeduction)
+				if (this.popupTypeIsDeduction == "true") {
+					//扣费项目
+					this.currentDeductionProject = this.tempDeductionProject
+				} else {
+					//补贴项目
+					this.currentSubsidiesProject = this.tempSubsidiesProject
+				}
+				this.close()
+			},
+
+			//获取项目列表
+			queryProjectList(param) {
+				getAccountingProjectList(param, this.headerInfo).then(response => {
+					if (param == "1") {
+						// 路耗规则
+						this.caleFormula = response.data.list
+					} else {
+						// 项目
+						this.projectList = response.data.list
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -401,13 +493,14 @@
 	}
 
 	.projectDialog {
+		padding-bottom: 24upx;
 		background-color: #FFFFFF;
 		width: calc(80vw);
 		border-radius: 20upx;
 		text-align: center;
 	}
 
-	.projectItem {
+	.popupProjectItem {
 		display: flex;
 		width: 100%;
 		flex-direction: row;
@@ -417,5 +510,57 @@
 		margin-bottom: 28upx;
 		justify-content: space-between;
 		align-items: center;
+	}
+
+	.projectCancel {
+		border-radius: 10upx;
+		border-width: 2upx;
+		color: #999999;
+		background-color: #FFFFFF;
+		min-width: 245upx;
+		max-height: 78upx;
+		font-size: 26upx;
+	}
+
+	.projectConfirm {
+		border-radius: 10upx;
+		border-width: 3upx;
+		color: #FFFFFF;
+		background-color: #4478E4;
+		min-width: 245upx;
+		max-height: 78upx;
+		font-size: 26upx;
+	}
+
+	.projectRoot {
+		background-color: #F2F7FF;
+		display: flex;
+		flex-direction: column;
+		margin-top: 24upx;
+		padding-left: 24upx;
+		padding-right: 24upx;
+		padding-bottom: 28upx;
+		border-radius: 14upx;
+	}
+
+	.projectItem {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		text-align: right;
+	}
+
+	.showTypeInput {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.showTypeInputView {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		flex-direction: row;
 	}
 </style>
