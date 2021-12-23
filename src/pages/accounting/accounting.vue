@@ -19,7 +19,7 @@
 
 					<view style="width: calc(80vw)">
 						<view class="platformDeductionDetail">
-							<view style="color: #333; font-family: medium" @click="onDeductionClick(sub.decutionCount)">
+							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
 								{{ sub.decutionCount }}
 								<img class="downArrow" src="/static/icon_downArrow.png" />
 							</view>
@@ -31,9 +31,9 @@
 					<view class="platformDeduction">补贴项目</view>
 					<view style="width: calc(80vw)">
 						<view class="platformDeductionDetail">
-							<view style="color: #333; font-family: medium; width: calc(20vw)">
+							<view style="color: #333; font-family: medium; width: calc(20vw) margin-left: 8upx;" @click="onSubsidiesClick(sub)">
 								{{ sub.subsidiesCount }}
-								<i class="el-icon-arrow-down"></i>
+								<img class="downArrow" src="/static/icon_downArrow.png" />
 							</view>
 							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidiesInfo }}</view>
 						</view>
@@ -71,7 +71,7 @@
 						stateName: "默认",
 						showDecutionInfoMore: false,
 						decutionCount: 4,
-						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231",
+						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231,抹零规则【角】抹零。油费500，其他费用100，ETC费231",
 						showSubsidiesInfoMore: false,
 						subsidiesCount: 3,
 						isDefault: true,
@@ -96,8 +96,11 @@
 			};
 		},
 		methods: {
-			onDeductionClick(subsidiesCount) {
-				console.log(subsidiesCount)
+			onDeductionClick(sub) {
+				sub.showDecutionInfoMore = !sub.showDecutionInfoMore;
+			},
+			onSubsidiesClick(sub) {
+				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
 			},
 			onDefaultStateChange(index, e) {
 				console.log(e.detail)
@@ -207,6 +210,10 @@
 		margin-top: 12upx;
 	}
 	
+	.downArrow {
+		 margin-left: 24upx;
+	}
+	
 	.platformDeductionLayout {
 		display: flex;
 		flex-direction: row;
@@ -227,8 +234,8 @@
 	.platformDeductionDetail {
 		background-color: #f4f4f4;
 		display: flex;
-		flex-direction: row;
-		border-radius: 4upx;
+		flex-direction: column;
+		border-radius: 8upx;
 		margin-top: 12upx;
 		margin-left: 4upx;
 		padding: 10upx;
@@ -259,7 +266,7 @@
 	}
 
 	.freightDetail {
-		font-size: 12upx;
+		font-size: 24upx;
 		margin-top: 6upx;
 		color: #878787;
 		font-family: PingFang Bold;
@@ -333,13 +340,13 @@
 	.confirm {
 		background-color: #4478e4;
 		border-radius: 5upx;
-		height: 28upx;
-		width: 55upx;
-		margin-right: 12upx;
-		display: flex;
-		align-items: center;
+		height: 56upx;
+		width: 110upx;
+		margin-right: 23upx;
+		text-align: center;
 		border: none;
-		font-size: 13upx;
+		font-size: 28upx;
 		color: white;
+		line-height: 43px;
 	}
 </style>
