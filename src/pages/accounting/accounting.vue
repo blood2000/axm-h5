@@ -340,13 +340,13 @@
 	.confirm {
 		background-color: #4478e4;
 		border-radius: 5upx;
-		height: 28upx;
-		width: 55upx;
-		margin-right: 12upx;
-		display: flex;
-		align-items: center;
+		height: 56upx;
+		width: 110upx;
+		margin-right: 23upx;
+		text-align: center;
 		border: none;
-		font-size: 13upx;
+		font-size: 28upx;
 		color: white;
+		line-height: 43px;
 	}
 </style>
