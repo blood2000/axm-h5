@@ -4,6 +4,8 @@
 			<text slot="title">{{title}}</text>
 			<text slot="menu">保存</text>
 		</MenuWhiteHeader>
+		<SimplePopup ref="simple" :list="categories" key="goodsName" value="goodsValue" :toggle="simpleToggle">
+		</SimplePopup>
 		<view class="cardView">
 			<view class="cardRow">
 				<view>
@@ -103,7 +105,8 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="calePathLoss == false" style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
+			<view v-if="calePathLoss == false"
+				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
 			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
 				<view class="cardRow">
 					<text class="rowLabel">扣费项目</text>
@@ -113,17 +116,27 @@
 				<view v-if="currentDeductionProject.length > 0" class="projectRoot">
 					<view v-for="(item,index) in currentDeductionProject" class="projectItem"
 						style="margin-top: 28upx;">
-						<view class="showTypeInput">
-							<text>{{item.cnName}}</text>
+						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
+							<text style="width: 30%; text-align: start;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
-							<view v-if="item.showType=1" class="showTypeInputView">
-								<input class="ruleInput"> </input>
-								<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx; "
-									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
+								<view v-if="item.showType == 1" class="showTypeInputView">
+									<input class="ruleInput" />
+									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+										src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+								</view>
+								<view v-if="item.showType == 2">
+
+								</view>
+								<view v-if="item.showType == 3" class="showTypeInputView">
+									<input class="ruleInput"> </input>
+									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx; "
+										src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+								</view>
+								<view v-if="item.showType == 4">
+
+								</view>
 							</view>
-							<view v-if="item.showType='2'"></view>
-							<view v-if="item.showType='3'"></view>
-							<view v-if="item.showType='4'"></view>
 						</view>
 					</view>
 				</view>
@@ -138,18 +151,25 @@
 				</view>
 				<view v-if="currentSubsidiesProject.length > 0" class="projectRoot">
 					<view v-for="(item,index) in currentSubsidiesProject" style="margin-top: 28upx;">
-						<view class="showTypeInput">
+						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
 							<text>{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
-							<view v-if="item.showType=1" class="showTypeInputView">
-								<input class="ruleInput"> </input>
-								<image type="icon" class="required"
-									style="width: 39upx; height: 39upx; margin-left: 24upx; "
-									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+							<view class="ly-flex ly-flex-v ly-flex-pack-justify">
+								<view v-if="item.showType == 1" class="showTypeInputView">
+									<input class="ruleInput"> </input>
+									<image type="icon" class="required"
+										style="width: 39upx; height: 39upx; margin-left: 24upx; "
+										src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+								</view>
+								<view v-if="item.showType == 2" class="showTypeInputView">
+
+								</view>
+								<view v-if="item.showType == 3" class="showTypeInputView">
+								</view>
+								<view v-if="item.showType == 4" class="showTypeInputView">
+
+								</view>
 							</view>
-							<view v-if="item.showType='2'"></view>
-							<view v-if="item.showType='3'"></view>
-							<view v-if="item.showType='4'"></view>
 						</view>
 					</view>
 				</view>
@@ -158,7 +178,29 @@
 
 		<uni-popup ref="popup">
 			<view class="projectDialog">
-				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectSelected">
+				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectChange">
+					<label style="width: 100%;" v-for="(item, index) in projectList" :key="item.cnName"
+						:value="item.code">
+						<view class="popupProjectItem">
+							<view>{{item.cnName}}</view>
+							<view>
+								<checkbox style="transform: scale(0.7)" :value="item.code"
+									:checked="popupTypeIsDeduction == 'true'?currentDeductionProject.includes(item):currentSubsidiesProject.includes(item)"
+									:disabled="popupTypeIsDeduction == 'true'?currentSubsidiesProject.includes(item):currentDeductionProject.includes(item)" />
+							</view>
+						</view>
+						<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 18upx;" />
+					</label>
+				</checkbox-group>
+				<view style="display: flex; margin-top: 18upx;">
+					<button class="projectCancel" @click="close">取消</button>
+					<button class="projectConfirm" @click="onProjectSelected">确定</button>
+				</view>
+			</view>
+		</uni-popup>
+		<uni-popup ref="popup">
+			<view class="projectDialog">
+				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectChange">
 					<label style="width: 100%;" v-for="(item, index) in projectList" :key="item.cnName"
 						:value="item.code">
 						<view class="popupProjectItem">
@@ -183,6 +225,7 @@
 
 <script>
 	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import SimplePopup from '@/components/picker/SimplePopup.vue';
 	import {
 		mapState
 	} from 'vuex';
@@ -193,6 +236,7 @@
 	export default {
 		components: {
 			MenuWhiteHeader,
+			SimplePopup,
 		},
 		async mounted() {
 			await this.$onLaunched
@@ -256,6 +300,7 @@
 				deductionUI: [],
 				subsidiesUI: [],
 				popupTypeIsDeduction: "false",
+				simpleToggle: false,
 			}
 		},
 		methods: {
@@ -269,6 +314,8 @@
 			// 计算路耗开关
 			calePathLossToggle(e) {
 				this.calePathLoss = e.detail.value.includes(this.calePathLossFlag)
+				this.showSimplePopup()
+				console.log(this.simpleToggle)
 			},
 			// 选择了路耗规则
 			onFormulaSelect(e) {
@@ -304,7 +351,7 @@
 				this.$refs.popup.close()
 			},
 			//选择了添加扣费或项目
-			projectSelected(e) {
+			projectChange(e) {
 				var tempSelectProject = []
 				// 1.文本框 2.区域 3.下拉框 4.radio
 				for (let i = 0; i < this.projectList.length; i++) {
@@ -320,7 +367,6 @@
 			},
 			//点击popup的确定按钮
 			onProjectSelected(e) {
-				console.log(this.popupTypeIsDeduction)
 				if (this.popupTypeIsDeduction == "true") {
 					//扣费项目
 					this.currentDeductionProject = this.tempDeductionProject
@@ -328,7 +374,18 @@
 					//补贴项目
 					this.currentSubsidiesProject = this.tempSubsidiesProject
 				}
+				console.log(this.currentDeductionProject)
+				for (var i = 0; i < this.currentDeductionProject.length; i++) {
+					console.log('item.showType = ', this.currentDeductionProject[i].showType)
+				}
 				this.close()
+			},
+
+			//显示通用popup
+			showSimplePopup() {
+				this.$refs.simple.open('center')
+				this.$refs.simple.setList(this.categories)
+				this.$refs.simple.setKey(this.categories[0].goodsName)
 			},
 
 			//获取项目列表
@@ -550,9 +607,6 @@
 	}
 
 	.showTypeInput {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
 		width: 100%;
 	}
 
@@ -561,5 +615,12 @@
 		justify-content: space-between;
 		align-items: center;
 		flex-direction: row;
+	}
+
+	.projectItemSpinner {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
 	}
 </style>
