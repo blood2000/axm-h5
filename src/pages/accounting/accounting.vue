@@ -21,7 +21,7 @@
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
 								{{ sub.decutionCount }}
-								<img class="downArrow" src="/static/icon_downArrow.png" />
+								<image :src="sub.showDecutionInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
 							</view>
 							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.decutionInfo }}</view>
 						</view>
@@ -31,9 +31,9 @@
 					<view class="platformDeduction">补贴项目</view>
 					<view style="width: calc(80vw)">
 						<view class="platformDeductionDetail">
-							<view style="color: #333; font-family: medium; width: calc(20vw) margin-left: 8upx;" @click="onSubsidiesClick(sub)">
+							<view style="color: #333; font-family: medium; margin-left: 8upx;" @click="onSubsidiesClick(sub)">
 								{{ sub.subsidiesCount }}
-								<img class="downArrow" src="/static/icon_downArrow.png" />
+								<image :src="sub.showSubsidiesInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
 							</view>
 							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidiesInfo }}</view>
 						</view>
@@ -223,6 +223,9 @@
 	
 	.downArrow {
 		 margin-left: 24upx;
+		 width: 25upx;
+		 height: 25upx;
+		 padding-top: 3upx;
 	}
 	
 	.platformDeductionLayout {
