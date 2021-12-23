@@ -17,7 +17,7 @@
 				<view class="platformDeductionLayout">
 					<view class="platformDeduction">扣费项目</view>
 
-					<view style="width: calc(80vw)">
+					<view class="item" :class="changeDeductionBg">
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
 								{{ sub.decutionCount }}
@@ -96,6 +96,8 @@
 		methods: {
 			onDeductionClick(sub) {
 				sub.showDecutionInfoMore = !sub.showDecutionInfoMore;
+				
+				this.changeDeductionBg = sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall';
 			},
 			onSubsidiesClick(sub) {
 				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
@@ -254,11 +256,19 @@
 	.platformDeduction {
 		margin-left: 25upx;
 		margin-top: 24upx;
+		margin-right: 20upx;
 		color: #333;
 		font-family: PingFang Bold;
-		width: calc(22vw);
+		 white-space:nowrap;
 		font-size: 28upx;
 		font-weight: bold;
+	}
+	
+	.deductionBgSmall {
+		width: 100upx;
+	}
+	
+	.deductionBgLarge {
 	}
 
 	.platformDeductionDetail {
