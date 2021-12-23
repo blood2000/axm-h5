@@ -41,13 +41,17 @@
 				</view>
 				<hr class="line">
 				<view class="bottom">
-					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
+<!-- 					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
 						<view style="display: flex; flex-direction: row; justify-content: center;">
 							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}"
 								:checked="()=>{{sub.isDefault}}">设为默认
 							</checkbox>
 						</view>
-					</checkbox-group>
+					</checkbox-group> -->
+					<view class="setDefault" @click="onSetupDefaultClick(sub)" >
+						<image :src="sub.isDefault ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
+						<view class="setUpDefault">设为默认</view>
+					</view>
 					<label>
 						<button class="confirm">修改</button>
 					</label>
@@ -108,6 +112,9 @@
 			},
 			onClickDeleteAction() {
 				console.log(点击了删除)
+			},
+			onSetupDefaultClick(sub) {
+				sub.isDefault = !sub.isDefault;
 			}
 		},
 	};
@@ -194,6 +201,15 @@
 		align-items: center;
 		border: none;
 	}
+	
+	.setDefault {
+		display: flex;
+		margin: 0upx;
+		padding: 0upx;
+		flex-direction: row;
+		align-items: center;
+		border: none;
+	}
 
 	.platformTitleLeftDiv {
 		display: flex;
@@ -226,6 +242,13 @@
 		 width: 25upx;
 		 height: 25upx;
 		 padding-top: 3upx;
+	}
+	
+	.defaultIcon {
+		margin-left: 24upx;
+		width: 34upx;
+		height: 34upx;
+		padding-top: 3upx;
 	}
 	
 	.platformDeductionLayout {
@@ -329,13 +352,12 @@
 	}
 
 	.setUpDefault {
-		border-radius: 20upx;
-		color: #999;
+		color: #4478E4;
 		font-size: 28upx;
 		display: flex;
 		justify-content: space-between;
 		background-color: transparent;
-		margin-left: 29upx;
+		margin-left: 11upx;
 	}
 
 	::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
