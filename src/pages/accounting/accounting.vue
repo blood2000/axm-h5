@@ -8,8 +8,8 @@
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleView">
 					<view class="platformTitleItem">
-						<view class="platformTitle">平台默认规则</view>
-						<view v-if="sub.isDefault" class="platformStatus">{{ sub.stateName }}</view>
+						<view class="platformTitle">{{sub.name}}</view>
+						<view v-if="sub.isDefault" class="platformStatus">默认</view>
 					</view>
 					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction()" />
 				</view>
@@ -19,10 +19,10 @@
 					<view :class="sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
-								{{ sub.decutionCount }}
+								{{ sub.deductionSize }}
 								<image :src="sub.showDecutionInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
 							</view>
-							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.decutionInfo }}</view>
+							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.deduction }}</view>
 						</view>
 					</view>
 				</view>
@@ -31,10 +31,10 @@
 					<view :class="sub.showSubsidiesInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;" @click="onSubsidiesClick(sub)">
-								{{ sub.subsidiesCount }}
+								{{ sub.subsidiesSize }}
 								<image :src="sub.showSubsidiesInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
 							</view>
-							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidiesInfo }}</view>
+							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidies }}</view>
 						</view>
 					</view>
 				</view>
@@ -110,10 +110,20 @@
 			//获取项目列表
 			queryAccountingList() {
 				console.log("获取项目列表");
-				// getAccountingList(this.headerInfo).then(response => {
-				// 	this.accountingData = response.data.list;
-				// 	console(this.accountingData);
-				// })
+				getAccountingList(this.headerInfo).then(response => {
+					response.data.list.map(item =>{
+						item.showDecutionInfoMore = false
+						item.showSubsidiesInfoMore = false
+						if (item.deductionSize == null) {
+							item.deductionSize = 0
+						}
+						if (item.subsidiesSize == null) {
+							item.subsidiesSize = 0
+						}
+					})
+					this.accountingData = response.data.list;
+					console.log(response.data.list)
+				})
 			},
 		},
 	};
