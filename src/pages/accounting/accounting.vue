@@ -41,7 +41,7 @@
 				<hr class="line">
 				<view class="bottom">
 					<view class="setDefault" @click="onSetupDefaultClick(sub)" >
-						<image :src="sub.isDefault ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
+						<image :src="sub.isDefault == 'Y' ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
 					</view>
 					<view class="confirm" @click="onModifyClick(sub)">修改</view>
@@ -57,7 +57,9 @@
 		mapState
 	} from 'vuex';
 	import {
-		getAccountingList
+		getAccountingList,
+		deleteAccounting,
+		updateAccountingIsDefault,
 	} from '@/config/service/accounting.js';
 	export default {
 		props: {},
@@ -102,7 +104,13 @@
 				console.log("点击了删除");
 			},
 			onSetupDefaultClick(sub) {
-				sub.isDefault = !sub.isDefault;
+				this.ddd(sub);
+			},
+			async ddd(sub) {
+				updateAccountingIsDefault(sub.code, sub.isDefault == "Y" ? "N" : "Y", this.headerInfo).then(response =>{
+					console.log(response)
+					sub.isDefault = sub.isDefault == "Y" ? "N" : "Y";
+				})
 			},
 			onModifyClick(sub) {
 				console.log("点击了修改");
@@ -381,7 +389,6 @@
 		margin-right: 12upx;
 		border-radius: 24upx;
 		border-color: #999999;
-
 	}
 
 	::v-deep.uni-checkbox-input {

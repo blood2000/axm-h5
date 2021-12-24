@@ -35,13 +35,29 @@ export function getAccountingList(config) {
 }
 
 // 删除规则
-export function getDeleteAccounting(ruleType, config) {
+export function deleteAccounting(code, config) {
   return uniRequest({
     url: '/transportation/ruleInfoShipment-app/delete',
     method: 'delete',
 	data: {
-		ruleType: ruleType
+		code: code
 	},
 	headers: config
+  });
+}
+
+// 修改默认规则选项
+export function updateAccountingIsDefault(code, isDefault, config) {
+  return uniRequest({
+    url: '/transportation/ruleInfoShipment-app/updateIsDefault',
+    method: 'put',
+	data: {
+		code: code,
+		isDefault: isDefault,
+	},
+	headers: {
+	...config,
+	'Content-Type': 'application/json'
+	}
   });
 }
