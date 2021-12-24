@@ -122,13 +122,25 @@
 								<view v-if="item.showType == 1" class="showTypeInputView">
 									<input class="ruleInput" />
 									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
-										src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+										src="@/static/ic_accounting_delete.png"
+										@click="()=>deleteProject(currentDeductionProject,index)" />
 								</view>
 								<view v-if="item.showType == 2">
 
 								</view>
-								<view v-if="item.showType == 3" class="showTypeInputView">
-									
+								<view v-if="item.showType == 3">
+									<view class="showTypeInputView">
+										<picker selector-type="selector" :value="index" :range="m0Rule"
+											rangeKey="dictLabel" @change="onM0Select">
+											<view class="ruleInput"
+												:style='{color:accountingM0Selected?"#333333":"#999999"}'>
+												{{accountingM0SelectName}}
+											</view>
+										</picker>
+										<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+											src="@/static/ic_accounting_delete.png"
+											@click="()=>deleteProject(currentDeductionProject,index)" />
+									</view>
 								</view>
 								<view v-if="item.showType == 4">
 
@@ -255,6 +267,9 @@
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
 				accountingSelected: false,
+				accountingM0SelectName: "请选择抹零规则",
+				accountingM0SelectCode: "",
+				accountingM0Selected: false,
 				categories: [],
 				defaultRule: false,
 				calePathLoss: true,
@@ -287,7 +302,7 @@
 				subsidiesUI: [],
 				popupTypeIsDeduction: "false",
 				simpleToggle: false,
-				m0Rule:[],
+				m0Rule: [],
 			}
 		},
 		methods: {
@@ -297,6 +312,13 @@
 				this.accountingSelectName = this.categories[index].dictLabel
 				this.accountingSelectCode = this.categories[index].dictValue
 				this.accountingSelected = true
+			},
+			// 选择了抹零规则
+			onM0Select(e) {
+				const index = e.detail.value
+				this.accountingM0SelectName = this.m0Rule[index].dictLabel
+				this.accountingM0SelectCode = this.m0Rule[index].dictValue
+				this.accountingM0Selected = true
 			},
 			// 计算路耗开关
 			calePathLossToggle(e) {
@@ -338,8 +360,13 @@
 				this.popupTypeIsDeduction = isDeduction
 				this.$refs.popup.open('center')
 			},
+			//关闭项目选择的popup
 			close() {
 				this.$refs.popup.close()
+			},
+			//删除单个已选项目
+			deleteProject(list, index) {
+				list.splice(index,1)
 			},
 			//选择了添加扣费或项目
 			projectChange(e) {
