@@ -3,7 +3,7 @@
 		<view class="root">
 			<MenuWhiteHeader :showBack="true">
 				<text slot="title">核算规则</text>
-				<text slot="menu">新增</text>
+				<text slot="menu" @click="onClickAddAction()">新增</text>
 			</MenuWhiteHeader>
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleView">
@@ -77,33 +77,12 @@
 		data() {
 			return {
 				phone: "",
-				accountingData: [{
-						stateName: "默认",
-						showDecutionInfoMore: false,
-						decutionCount: 4,
-						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231,抹零规则【角】抹零。油费500，其他费用100，ETC费231",
-						showSubsidiesInfoMore: false,
-						subsidiesCount: 3,
-						isDefault: true,
-						subsidiesInfo: "食宿补贴415，高温补贴200，节假日补贴500",
-					},
-					{
-						stateName: "默认",
-						showDecutionInfoMore: false,
-						decutionCount: 4,
-						decutionInfo: "抹零规则【元】抹零。油费500，其他费用100，ETC费231",
-						showSubsidiesInfoMore: false,
-						subsidiesCount: 3,
-						isDefault: false,
-						subsidiesInfo: "食宿补贴640，高温补贴400，节假日补贴500",
-					},
-				],
 				item: "1",
 				password: "",
 				rememberPws: false,
 				radio1: "首页",
 				checked: false,
-				accountingList: [],
+				accountingData: [],
 			};
 		},
 		methods: {
@@ -116,6 +95,9 @@
 			onDefaultStateChange(index, e) {
 				console.log(e.detail);
 			},
+			onClickAddAction() {
+				console.log("点击了添加");
+			},
 			onClickDeleteAction() {
 				console.log("点击了删除");
 			},
@@ -127,9 +109,11 @@
 			},
 			//获取项目列表
 			queryAccountingList() {
-				getAccountingProjectList(this.headerInfo).then(response => {
-					this.accountingList = response.data.list
-				})
+				console.log("获取项目列表");
+				// getAccountingList(this.headerInfo).then(response => {
+				// 	this.accountingData = response.data.list;
+				// 	console(this.accountingData);
+				// })
 			},
 		},
 	};
