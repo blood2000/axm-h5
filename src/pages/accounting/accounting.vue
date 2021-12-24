@@ -44,9 +44,7 @@
 						<image :src="sub.isDefault ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
 					</view>
-					<label>
-						<button class="confirm">修改</button>
-					</label>
+					<view class="confirm">修改</view>
 				</view>
 			</view>
 		</view>
@@ -377,11 +375,12 @@
 		background-color: #4478e4;
 		border-radius: 5upx;
 		height: 56upx;
-		width: 140upx;
+		width: 110upx;
 		margin-right: 23upx;
-		//text-align: center;
+		text-align: center;
 		border: none;
 		font-size: 28upx;
 		color: white;
+		padding-top: 8upx;
 	}
 </style>
