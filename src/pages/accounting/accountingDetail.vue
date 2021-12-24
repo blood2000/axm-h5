@@ -24,7 +24,7 @@
 						src="@/static/ic_required.png" />
 				</view>
 				<view class="uni-list-cell-db flex justify-center" style="align-items: center;">
-					<picker class="rowValue " selector-type="selector" :range="categories" rangeKey="goodsName"
+					<picker class="rowValue " selector-type="selector" :range="categories" rangeKey="dictLabel"
 						@change="onAccountingSelect">
 						<view class="uni-input flex row" :style='{color:accountingSelected?"#333333":"#999999"}'>
 							{{accountingSelectName}}
@@ -55,13 +55,13 @@
 			</view>
 			<view class="roleLossView" v-if="calePathLoss">
 				<view class="roleLossItem">
-					<view style="display: flex; flex-direction: row;">
+					<view style="display: flex; flex-direction: row; ">
 						<text class="rowLabel">路耗规则</text>
 						<image type="icon" class="required" style="width: 32upx; height: 32upx; "
 							src="@/static/ic_required.png" />
 					</view>
-					<view style="display: flex;justify-content: center; align-items: center; text-align: end;">
-						<picker class="ruleInput " selector-type="selector" :range="caleFormula" rangeKey="cnName"
+					<view class="roleLoss">
+						<picker class="ruleInput " selector-type="selector" :range="caleFormula" rangeKey="dictLabel"
 							@change="onFormulaSelect">
 							<view class="ruleFomelaView" :style='{color:formulaSelected?"#333333":"#999999"}'>
 								<text>{{formulaSelectName}}</text>
@@ -81,12 +81,11 @@
 						<view style="display: flex; flex-direction: column;">
 							<radio-group @change="onSchemeSelect" class="radioGroup">
 								<label class="uni-list-cell uni-list-cell-pd radioButton"
-									v-for="(item, index) in scheme" :key="item.schemeName">
+									v-for="(item, index) in scheme" :key="item.dictLabel">
 									<view style="display: flex;">
-										<radio :value="item.schemeCode" :checked="index === currentsSheme" />
-										<view style="margin-left: 24upx; text-align: center;">{{item.schemeName}}</view>
+										<radio :value="item.dictValue" :checked="index === currentsSheme" />
+										<view style="margin-left: 24upx; text-align: center;">{{item.dictLabel}}</view>
 									</view>
-
 								</label>
 							</radio-group>
 						</view>
@@ -129,9 +128,7 @@
 
 								</view>
 								<view v-if="item.showType == 3" class="showTypeInputView">
-									<input class="ruleInput"> </input>
-									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx; "
-										src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+									
 								</view>
 								<view v-if="item.showType == 4">
 
@@ -230,7 +227,8 @@
 		mapState
 	} from 'vuex';
 	import {
-		getAccountingProjectList
+		getAccountingProjectList,
+		getDict
 	} from '@/config/service/accounting.js';
 
 	export default {
@@ -241,7 +239,10 @@
 		async mounted() {
 			await this.$onLaunched
 			this.queryProjectList(0)
-			this.queryProjectList(1)
+			this.queryDict("ruleFormula")
+			this.queryDict("lossRule")
+			this.queryDict("lossPlan")
+			this.queryDict("M0")
 		},
 		computed: {
 			...mapState({
@@ -254,30 +255,15 @@
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
 				accountingSelected: false,
-				categories: [{
-					goodsName: "默认核算规则",
-					goodsCode: "10001",
-					goodsValue: "10000",
-				}, {
-					goodsName: "测试用的核算规则",
-					goodsCode: "20001",
-					goodsValue: "30000",
-				}],
+				categories: [],
 				defaultRule: false,
 				calePathLoss: true,
 				calePathLossFlag: "cale",
-
 				formulaSelectName: "请选择路耗规则",
 				formulaSelectCode: "",
 				formulaSelected: false,
 				caleFormula: [],
-				scheme: [{
-					schemeName: "定额",
-					schemeCode: "0"
-				}, {
-					schemeName: "定率",
-					schemeCode: "1"
-				}],
+				scheme: [],
 				schemeUnit: [{
 					schemeUnitName: "kg/m³",
 				}, {
@@ -301,33 +287,38 @@
 				subsidiesUI: [],
 				popupTypeIsDeduction: "false",
 				simpleToggle: false,
+				m0Rule:[],
 			}
 		},
 		methods: {
 			// 选择了计算公式
 			onAccountingSelect(e) {
 				const index = e.detail.value
-				this.accountingSelectName = this.categories[index].goodsName
-				this.accountingSelectCode = this.categories[index].goodsCode
+				this.accountingSelectName = this.categories[index].dictLabel
+				this.accountingSelectCode = this.categories[index].dictValue
 				this.accountingSelected = true
 			},
 			// 计算路耗开关
 			calePathLossToggle(e) {
 				this.calePathLoss = e.detail.value.includes(this.calePathLossFlag)
-				this.showSimplePopup()
-				console.log(this.simpleToggle)
+				this.showSimplePopup(this.projectList)
 			},
 			// 选择了路耗规则
 			onFormulaSelect(e) {
 				const index = e.detail.value
-				this.formulaSelectName = this.caleFormula[index].cnName
-				this.formulaSelectCode = this.caleFormula[index].id
+				console.log(index)
+				this.formulaSelectName = this.caleFormula[index].dictLabel
+				this.formulaSelectCode = this.caleFormula[index].dictValue
 				this.formulaSelected = true
 			},
 			// 选择了亏吨方案
 			onSchemeSelect(e) {
-				const index = e.detail.value
-				this.currentsUnitSheme = index
+				const dictValue = e.detail.value
+				for (var i = 0; i < this.scheme.length; i++) {
+					if (this.scheme[i].dictValue == dictValue) {
+						this.currentsUnitSheme = i
+					}
+				}
 				if (this.currentsUnitSheme == 0) {
 					this.defaultSchemeMin = "5.00"
 				} else {
@@ -374,32 +365,46 @@
 					//补贴项目
 					this.currentSubsidiesProject = this.tempSubsidiesProject
 				}
-				console.log(this.currentDeductionProject)
-				for (var i = 0; i < this.currentDeductionProject.length; i++) {
-					console.log('item.showType = ', this.currentDeductionProject[i].showType)
-				}
 				this.close()
 			},
 
 			//显示通用popup
-			showSimplePopup() {
+			showSimplePopup(list) {
 				this.$refs.simple.open('center')
-				this.$refs.simple.setList(this.categories)
-				this.$refs.simple.setKey(this.categories[0].goodsName)
+				this.$refs.simple.setList(list)
 			},
 
 			//获取项目列表
 			queryProjectList(param) {
 				getAccountingProjectList(param, this.headerInfo).then(response => {
-					if (param == "1") {
-						// 路耗规则
-						this.caleFormula = response.data.list
-					} else {
-						// 项目
-						this.projectList = response.data.list
-					}
+					// 项目
+					this.projectList = response.data.list
+					this.projectList.map(item => {
+						item.key = item.cnName
+					})
 				})
 			},
+			//获取字典数据
+			queryDict(dictType) {
+				getDict(dictType, 0, this.headerInfo).then(response => {
+					if (dictType == "ruleFormula") {
+						//计算公式
+						this.categories = response.data
+					} else if (dictType == "lossRule") {
+						//路耗规则
+						this.caleFormula = response.data
+						this.caleFormula.map(item => {
+							item.key = item.dictValue
+						})
+					} else if (dictType == "lossPlan") {
+						//定额定率
+						this.scheme = response.data
+					} else if (dictType == "M0") {
+						//抹零规则
+						this.m0Rule = response.data
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -506,6 +511,16 @@
 		padding-left: 12upx;
 		min-height: 60upx;
 		text-align: right;
+	}
+
+	.roleLoss {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: end;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.shemeItem {

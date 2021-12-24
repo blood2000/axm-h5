@@ -1,10 +1,11 @@
+<!--  -->
 <template>
 	<uni-popup ref="simplePopup">
 		<view class="popupDialog">
 			<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="popupDialogChange">
-				<label style="width: 100%;" v-for="(item, index) in list" :key="key" :value="value">
+				<label style="width: 100%;" v-for="(item, index) in list" :key="index" :value="value">
 					<view class="popupDialogItem">
-						<view>{{key}}</view>
+						<view>{{item.key}}</view>
 						<view>
 							<checkbox style="transform: scale(0.7)" :value="value" />
 						</view>
@@ -27,7 +28,7 @@
 			return {
 				list: [],
 				key: "",
-				value: "",
+				value: "", 
 				toggle: false,
 			}
 		},
