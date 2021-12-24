@@ -53,11 +53,26 @@
 
 <script>
 	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		getAccountingList
+	} from '@/config/service/accounting.js';
 	export default {
 		props: {},
 
 		components: {
 			MenuWhiteHeader,
+		},
+		async mounted() {
+			await this.$onLaunched
+			this.queryAccountingList()
+		},
+		computed: {
+			...mapState({
+				headerInfo: state => state.header.headerInfo
+			}),
 		},
 		data() {
 			return {
@@ -88,6 +103,7 @@
 				rememberPws: false,
 				radio1: "首页",
 				checked: false,
+				accountingList: [],
 			};
 		},
 		methods: {
@@ -108,7 +124,13 @@
 			},
 			onModifyClick(sub) {
 				console.log("点击了修改");
-			}
+			},
+			//获取项目列表
+			queryAccountingList() {
+				getAccountingProjectList(this.headerInfo).then(response => {
+					this.accountingList = response.data.list
+				})
+			},
 		},
 	};
 </script>

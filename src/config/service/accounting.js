@@ -11,3 +11,24 @@ export function getAccountingProjectList(ruleType, config) {
 	headers: config
   });
 }
+
+// 核算规则分页
+export function getAccountingList(config) {
+  return uniRequest({
+    url: '/transportation/ruleInfoShipment-app/list',
+    method: 'get',
+	headers: config
+  });
+}
+
+// 删除规则
+export function getDeleteAccounting(ruleType, config) {
+  return uniRequest({
+    url: '/transportation/ruleInfoShipment-app/delete',
+    method: 'delete',
+	data: {
+		ruleType: ruleType
+	},
+	headers: config
+  });
+}
