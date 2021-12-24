@@ -44,7 +44,7 @@
 						<image :src="sub.isDefault ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
 					</view>
-					<view class="confirm">修改</view>
+					<view class="confirm" @click="onModifyClick(sub)">修改</view>
 				</view>
 			</view>
 		</view>
@@ -98,13 +98,16 @@
 				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
 			},
 			onDefaultStateChange(index, e) {
-				console.log(e.detail)
+				console.log(e.detail);
 			},
 			onClickDeleteAction() {
-				console.log(点击了删除)
+				console.log("点击了删除");
 			},
 			onSetupDefaultClick(sub) {
 				sub.isDefault = !sub.isDefault;
+			},
+			onModifyClick(sub) {
+				console.log("点击了修改");
 			}
 		},
 	};
