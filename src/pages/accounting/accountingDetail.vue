@@ -360,9 +360,11 @@
 				this.popupTypeIsDeduction = isDeduction
 				this.$refs.popup.open('center')
 			},
+			//关闭项目选择的popup
 			close() {
 				this.$refs.popup.close()
 			},
+			//删除单个已选项目
 			deleteProject(list, index) {
 				list.splice(index,1)
 			},
