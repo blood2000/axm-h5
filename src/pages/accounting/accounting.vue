@@ -3,7 +3,7 @@
 		<view class="root">
 			<MenuWhiteHeader :showBack="true">
 				<text slot="title">核算规则</text>
-				<text slot="menu">新增</text>
+				<text slot="menu" @click="onClickAddAction()">新增</text>
 			</MenuWhiteHeader>
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleView">
@@ -44,9 +44,7 @@
 						<image :src="sub.isDefault ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
 					</view>
-					<label>
-						<button class="confirm">修改</button>
-					</label>
+					<view class="confirm" @click="onModifyClick(sub)">修改</view>
 				</view>
 			</view>
 		</view>
@@ -55,41 +53,36 @@
 
 <script>
 	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		getAccountingList
+	} from '@/config/service/accounting.js';
 	export default {
 		props: {},
 
 		components: {
 			MenuWhiteHeader,
 		},
+		async mounted() {
+			await this.$onLaunched
+			this.queryAccountingList()
+		},
+		computed: {
+			...mapState({
+				headerInfo: state => state.header.headerInfo
+			}),
+		},
 		data() {
 			return {
 				phone: "",
-				accountingData: [{
-						stateName: "默认",
-						showDecutionInfoMore: false,
-						decutionCount: 4,
-						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231,抹零规则【角】抹零。油费500，其他费用100，ETC费231",
-						showSubsidiesInfoMore: false,
-						subsidiesCount: 3,
-						isDefault: true,
-						subsidiesInfo: "食宿补贴415，高温补贴200，节假日补贴500",
-					},
-					{
-						stateName: "默认",
-						showDecutionInfoMore: false,
-						decutionCount: 4,
-						decutionInfo: "抹零规则【元】抹零。油费500，其他费用100，ETC费231",
-						showSubsidiesInfoMore: false,
-						subsidiesCount: 3,
-						isDefault: false,
-						subsidiesInfo: "食宿补贴640，高温补贴400，节假日补贴500",
-					},
-				],
 				item: "1",
 				password: "",
 				rememberPws: false,
 				radio1: "首页",
 				checked: false,
+				accountingData: [],
 			};
 		},
 		methods: {
@@ -100,14 +93,28 @@
 				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
 			},
 			onDefaultStateChange(index, e) {
-				console.log(e.detail)
+				console.log(e.detail);
+			},
+			onClickAddAction() {
+				console.log("点击了添加");
 			},
 			onClickDeleteAction() {
-				console.log(点击了删除)
+				console.log("点击了删除");
 			},
 			onSetupDefaultClick(sub) {
 				sub.isDefault = !sub.isDefault;
-			}
+			},
+			onModifyClick(sub) {
+				console.log("点击了修改");
+			},
+			//获取项目列表
+			queryAccountingList() {
+				console.log("获取项目列表");
+				// getAccountingList(this.headerInfo).then(response => {
+				// 	this.accountingData = response.data.list;
+				// 	console(this.accountingData);
+				// })
+			},
 		},
 	};
 </script>
@@ -377,11 +384,12 @@
 		background-color: #4478e4;
 		border-radius: 5upx;
 		height: 56upx;
-		width: 140upx;
+		width: 110upx;
 		margin-right: 23upx;
-		//text-align: center;
+		text-align: center;
 		border: none;
 		font-size: 28upx;
 		color: white;
+		padding-top: 8upx;
 	}
 </style>
