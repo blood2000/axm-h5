@@ -101,15 +101,23 @@
 				console.log("点击了添加");
 			},
 			onClickDeleteAction() {
-				console.log("点击了删除");
+				uni.showModal({
+				    title: '提示',
+				    content: '确认删除这条规则吗？',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 			},
-			onSetupDefaultClick(sub) {
-				this.ddd(sub);
-			},
-			async ddd(sub) {
+			onSetupDefaultClick(sub) {//设置默认
 				updateAccountingIsDefault(sub.code, sub.isDefault == "Y" ? "N" : "Y", this.headerInfo).then(response =>{
-					console.log(response)
-					sub.isDefault = sub.isDefault == "Y" ? "N" : "Y";
+					if (response.code == 200) {
+						sub.isDefault = sub.isDefault == "Y" ? "N" : "Y";
+					}
 				})
 			},
 			onModifyClick(sub) {
