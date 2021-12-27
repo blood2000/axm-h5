@@ -11,7 +11,7 @@
 						<view class="platformTitle">{{sub.name}}</view>
 						<view v-if="sub.isDefault" class="platformStatus">默认</view>
 					</view>
-					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction()" />
+					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction(sub)" />
 				</view>
 				<view class="freight">运费=装卸货最小数量*运费单价+增项-减项</view>
 				<view class="platformDeductionLayout">
@@ -100,7 +100,7 @@
 			onClickAddAction() {
 				console.log("点击了添加");
 			},
-			onClickDeleteAction() {
+			onClickDeleteAction(sub) {
 				uni.showModal({
 				    title: '提示',
 				    content: '确认删除这条规则吗？',
@@ -114,7 +114,7 @@
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
 				        }
-				    }
+				    }.bind(this)
 				});
 			},
 			onSetupDefaultClick(sub) {//设置默认
