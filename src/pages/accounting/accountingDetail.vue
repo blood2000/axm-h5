@@ -4,6 +4,8 @@
 			<text slot="title">{{title}}</text>
 			<text slot="menu">保存</text>
 		</MenuWhiteHeader>
+		<SimplePopup ref="simple" :list="categories" key="goodsName" value="goodsValue" :toggle="simpleToggle">
+		</SimplePopup>
 		<view class="cardView">
 			<view class="cardRow">
 				<view>
@@ -22,7 +24,7 @@
 						src="@/static/ic_required.png" />
 				</view>
 				<view class="uni-list-cell-db flex justify-center" style="align-items: center;">
-					<picker class="rowValue " selector-type="selector" :range="categories" rangeKey="goodsName"
+					<picker class="rowValue " selector-type="selector" :range="categories" rangeKey="dictLabel"
 						@change="onAccountingSelect">
 						<view class="uni-input flex row" :style='{color:accountingSelected?"#333333":"#999999"}'>
 							{{accountingSelectName}}
@@ -53,13 +55,13 @@
 			</view>
 			<view class="roleLossView" v-if="calePathLoss">
 				<view class="roleLossItem">
-					<view style="display: flex; flex-direction: row;">
+					<view style="display: flex; flex-direction: row; ">
 						<text class="rowLabel">路耗规则</text>
 						<image type="icon" class="required" style="width: 32upx; height: 32upx; "
 							src="@/static/ic_required.png" />
 					</view>
-					<view style="display: flex;justify-content: center; align-items: center; text-align: end;">
-						<picker class="ruleInput " selector-type="selector" :range="caleFormula" rangeKey="cnName"
+					<view class="roleLoss">
+						<picker class="ruleInput " selector-type="selector" :range="caleFormula" rangeKey="dictLabel"
 							@change="onFormulaSelect">
 							<view class="ruleFomelaView" :style='{color:formulaSelected?"#333333":"#999999"}'>
 								<text>{{formulaSelectName}}</text>
@@ -79,12 +81,11 @@
 						<view style="display: flex; flex-direction: column;">
 							<radio-group @change="onSchemeSelect" class="radioGroup">
 								<label class="uni-list-cell uni-list-cell-pd radioButton"
-									v-for="(item, index) in scheme" :key="item.schemeName">
+									v-for="(item, index) in scheme" :key="item.dictLabel">
 									<view style="display: flex;">
-										<radio :value="item.schemeCode" :checked="index === currentsSheme" />
-										<view style="margin-left: 24upx; text-align: center;">{{item.schemeName}}</view>
+										<radio :value="item.dictValue" :checked="index === currentsSheme" />
+										<view style="margin-left: 24upx; text-align: center;">{{item.dictLabel}}</view>
 									</view>
-
 								</label>
 							</radio-group>
 						</view>
@@ -103,7 +104,8 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="calePathLoss == false" style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
+			<view v-if="calePathLoss == false"
+				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
 			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
 				<view class="cardRow">
 					<text class="rowLabel">扣费项目</text>
@@ -113,18 +115,37 @@
 				<view v-if="currentDeductionProject.length > 0" class="projectRoot">
 					<view v-for="(item,index) in currentDeductionProject" class="projectItem"
 						style="margin-top: 28upx;">
-						<view class="showTypeInput">
-							<text>{{item.cnName}}</text>
+						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
+							<text style="width: 30%; text-align: start;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
-							<view v-if="item.showType=1"
-								style="display: flex;justify-content: flex-end;align-items: center;flex-direction: row; width: 80%;">
-								<input class="ruleInput"> </input>
-								<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx; "
-									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
+								<view v-if="item.showType == 1" class="showTypeInputView">
+									<input class="ruleInput" />
+									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+										src="@/static/ic_accounting_delete.png"
+										@click="()=>deleteProject(currentDeductionProject,index)" />
+								</view>
+								<view v-if="item.showType == 2">
+
+								</view>
+								<view v-if="item.showType == 3">
+									<view class="showTypeInputView">
+										<picker selector-type="selector" :value="index" :range="m0Rule"
+											rangeKey="dictLabel" @change="onM0Select">
+											<view class="ruleInput"
+												:style='{color:accountingM0Selected?"#333333":"#999999"}'>
+												{{accountingM0SelectName}}
+											</view>
+										</picker>
+										<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+											src="@/static/ic_accounting_delete.png"
+											@click="()=>deleteProject(currentDeductionProject,index)" />
+									</view>
+								</view>
+								<view v-if="item.showType == 4">
+
+								</view>
 							</view>
-							<view v-if="item.showType='2'"></view>
-							<view v-if="item.showType='3'"></view>
-							<view v-if="item.showType='4'"></view>
 						</view>
 					</view>
 				</view>
@@ -139,18 +160,25 @@
 				</view>
 				<view v-if="currentSubsidiesProject.length > 0" class="projectRoot">
 					<view v-for="(item,index) in currentSubsidiesProject" style="margin-top: 28upx;">
-						<view class="showTypeInput">
+						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
 							<text>{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
-							<view v-if="item.showType=1" class="showTypeInputView">
-								<input class="ruleInput"> </input>
-								<image type="icon" class="required"
-									style="width: 39upx; height: 39upx; margin-left: 24upx; "
-									src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+							<view class="ly-flex ly-flex-v ly-flex-pack-justify">
+								<view v-if="item.showType == 1" class="showTypeInputView">
+									<input class="ruleInput"> </input>
+									<image type="icon" class="required"
+										style="width: 39upx; height: 39upx; margin-left: 24upx; "
+										src="@/static/ic_accounting_delete.png" @click="onDeductionPlusClick" />
+								</view>
+								<view v-if="item.showType == 2" class="showTypeInputView">
+
+								</view>
+								<view v-if="item.showType == 3" class="showTypeInputView">
+								</view>
+								<view v-if="item.showType == 4" class="showTypeInputView">
+
+								</view>
 							</view>
-							<view v-if="item.showType='2'"></view>
-							<view v-if="item.showType='3'"></view>
-							<view v-if="item.showType='4'"></view>
 						</view>
 					</view>
 				</view>
@@ -159,7 +187,29 @@
 
 		<uni-popup ref="popup">
 			<view class="projectDialog">
-				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectSelected">
+				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectChange">
+					<label style="width: 100%;" v-for="(item, index) in projectList" :key="item.cnName"
+						:value="item.code">
+						<view class="popupProjectItem">
+							<view>{{item.cnName}}</view>
+							<view>
+								<checkbox style="transform: scale(0.7)" :value="item.code"
+									:checked="popupTypeIsDeduction == 'true'?currentDeductionProject.includes(item):currentSubsidiesProject.includes(item)"
+									:disabled="popupTypeIsDeduction == 'true'?currentSubsidiesProject.includes(item):currentDeductionProject.includes(item)" />
+							</view>
+						</view>
+						<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 18upx;" />
+					</label>
+				</checkbox-group>
+				<view style="display: flex; margin-top: 18upx;">
+					<button class="projectCancel" @click="close">取消</button>
+					<button class="projectConfirm" @click="onProjectSelected">确定</button>
+				</view>
+			</view>
+		</uni-popup>
+		<uni-popup ref="popup">
+			<view class="projectDialog">
+				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectChange">
 					<label style="width: 100%;" v-for="(item, index) in projectList" :key="item.cnName"
 						:value="item.code">
 						<view class="popupProjectItem">
@@ -184,21 +234,27 @@
 
 <script>
 	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import SimplePopup from '@/components/picker/SimplePopup.vue';
 	import {
 		mapState
 	} from 'vuex';
 	import {
-		getAccountingProjectList
+		getAccountingProjectList,
+		getDict
 	} from '@/config/service/accounting.js';
 
 	export default {
 		components: {
 			MenuWhiteHeader,
+			SimplePopup,
 		},
 		async mounted() {
 			await this.$onLaunched
 			this.queryProjectList(0)
-			this.queryProjectList(1)
+			this.queryDict("ruleFormula")
+			this.queryDict("lossRule")
+			this.queryDict("lossPlan")
+			this.queryDict("M0")
 		},
 		computed: {
 			...mapState({
@@ -211,30 +267,18 @@
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
 				accountingSelected: false,
-				categories: [{
-					goodsName: "默认核算规则",
-					goodsCode: "10001",
-					goodsValue: "10000",
-				}, {
-					goodsName: "测试用的核算规则",
-					goodsCode: "20001",
-					goodsValue: "30000",
-				}],
+				accountingM0SelectName: "请选择抹零规则",
+				accountingM0SelectCode: "",
+				accountingM0Selected: false,
+				categories: [],
 				defaultRule: false,
 				calePathLoss: true,
 				calePathLossFlag: "cale",
-
 				formulaSelectName: "请选择路耗规则",
 				formulaSelectCode: "",
 				formulaSelected: false,
 				caleFormula: [],
-				scheme: [{
-					schemeName: "定额",
-					schemeCode: "0"
-				}, {
-					schemeName: "定率",
-					schemeCode: "1"
-				}],
+				scheme: [],
 				schemeUnit: [{
 					schemeUnitName: "kg/m³",
 				}, {
@@ -257,31 +301,46 @@
 				deductionUI: [],
 				subsidiesUI: [],
 				popupTypeIsDeduction: "false",
+				simpleToggle: false,
+				m0Rule: [],
 			}
 		},
 		methods: {
 			// 选择了计算公式
 			onAccountingSelect(e) {
 				const index = e.detail.value
-				this.accountingSelectName = this.categories[index].goodsName
-				this.accountingSelectCode = this.categories[index].goodsCode
+				this.accountingSelectName = this.categories[index].dictLabel
+				this.accountingSelectCode = this.categories[index].dictValue
 				this.accountingSelected = true
+			},
+			// 选择了抹零规则
+			onM0Select(e) {
+				const index = e.detail.value
+				this.accountingM0SelectName = this.m0Rule[index].dictLabel
+				this.accountingM0SelectCode = this.m0Rule[index].dictValue
+				this.accountingM0Selected = true
 			},
 			// 计算路耗开关
 			calePathLossToggle(e) {
 				this.calePathLoss = e.detail.value.includes(this.calePathLossFlag)
+				this.showSimplePopup(this.projectList)
 			},
 			// 选择了路耗规则
 			onFormulaSelect(e) {
 				const index = e.detail.value
-				this.formulaSelectName = this.caleFormula[index].cnName
-				this.formulaSelectCode = this.caleFormula[index].id
+				console.log(index)
+				this.formulaSelectName = this.caleFormula[index].dictLabel
+				this.formulaSelectCode = this.caleFormula[index].dictValue
 				this.formulaSelected = true
 			},
 			// 选择了亏吨方案
 			onSchemeSelect(e) {
-				const index = e.detail.value
-				this.currentsUnitSheme = index
+				const dictValue = e.detail.value
+				for (var i = 0; i < this.scheme.length; i++) {
+					if (this.scheme[i].dictValue == dictValue) {
+						this.currentsUnitSheme = i
+					}
+				}
 				if (this.currentsUnitSheme == 0) {
 					this.defaultSchemeMin = "5.00"
 				} else {
@@ -301,11 +360,16 @@
 				this.popupTypeIsDeduction = isDeduction
 				this.$refs.popup.open('center')
 			},
+			//关闭项目选择的popup
 			close() {
 				this.$refs.popup.close()
 			},
+			//删除单个已选项目
+			deleteProject(list, index) {
+				list.splice(index,1)
+			},
 			//选择了添加扣费或项目
-			projectSelected(e) {
+			projectChange(e) {
 				var tempSelectProject = []
 				// 1.文本框 2.区域 3.下拉框 4.radio
 				for (let i = 0; i < this.projectList.length; i++) {
@@ -321,7 +385,6 @@
 			},
 			//点击popup的确定按钮
 			onProjectSelected(e) {
-				console.log(this.popupTypeIsDeduction)
 				if (this.popupTypeIsDeduction == "true") {
 					//扣费项目
 					this.currentDeductionProject = this.tempDeductionProject
@@ -332,18 +395,43 @@
 				this.close()
 			},
 
+			//显示通用popup
+			showSimplePopup(list) {
+				this.$refs.simple.open('center')
+				this.$refs.simple.setList(list)
+			},
+
 			//获取项目列表
 			queryProjectList(param) {
 				getAccountingProjectList(param, this.headerInfo).then(response => {
-					if (param == "1") {
-						// 路耗规则
-						this.caleFormula = response.data.list
-					} else {
-						// 项目
-						this.projectList = response.data.list
-					}
+					// 项目
+					this.projectList = response.data.list
+					this.projectList.map(item => {
+						item.key = item.cnName
+					})
 				})
 			},
+			//获取字典数据
+			queryDict(dictType) {
+				getDict(dictType, 0, this.headerInfo).then(response => {
+					if (dictType == "ruleFormula") {
+						//计算公式
+						this.categories = response.data
+					} else if (dictType == "lossRule") {
+						//路耗规则
+						this.caleFormula = response.data
+						this.caleFormula.map(item => {
+							item.key = item.dictValue
+						})
+					} else if (dictType == "lossPlan") {
+						//定额定率
+						this.scheme = response.data
+					} else if (dictType == "M0") {
+						//抹零规则
+						this.m0Rule = response.data
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -367,7 +455,7 @@
 	}
 
 	.rowLabel {
-		font-size: 30upx;
+		font-size: 26upx;
 		font-family: bold;
 		font-style: bold;
 		color: #333333;
@@ -450,6 +538,16 @@
 		padding-left: 12upx;
 		min-height: 60upx;
 		text-align: right;
+	}
+
+	.roleLoss {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: end;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.shemeItem {
@@ -551,16 +649,20 @@
 	}
 
 	.showTypeInput {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
 		width: 100%;
 	}
 
 	.showTypeInputView {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-items: center;
 		flex-direction: row;
+	}
+
+	.projectItemSpinner {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
 	}
 </style>

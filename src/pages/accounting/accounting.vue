@@ -3,53 +3,48 @@
 		<view class="root">
 			<MenuWhiteHeader :showBack="true">
 				<text slot="title">核算规则</text>
-				<text slot="menu">新增</text>
+				<text slot="menu" @click="onClickAddAction()">新增</text>
 			</MenuWhiteHeader>
 			<view class="platformItemRoot" v-for="(sub, index) in accountingData" v-bind:key="index">
 				<view class="platformTitleView">
 					<view class="platformTitleItem">
-						<view class="platformTitle">平台默认规则</view>
-						<view class="platformStatus">{{ sub.stateName }}</view>
+						<view class="platformTitle">{{sub.name}}</view>
+						<view v-if="sub.isDefault" class="platformStatus">默认</view>
 					</view>
 					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction()" />
 				</view>
 				<view class="freight">运费=装卸货最小数量*运费单价+增项-减项</view>
 				<view class="platformDeductionLayout">
 					<view class="platformDeduction">扣费项目</view>
-
-					<view style="width: calc(80vw)">
+					<view :class="sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
 							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
-								{{ sub.decutionCount }}
-								<img class="downArrow" src="/static/icon_downArrow.png" />
+								{{ sub.deductionSize }}
+								<image :src="sub.showDecutionInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
 							</view>
-							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.decutionInfo }}</view>
+							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.deduction }}</view>
 						</view>
 					</view>
 				</view>
 				<view class="platformDeductionLayout">
 					<view class="platformDeduction">补贴项目</view>
-					<view style="width: calc(80vw)">
+					<view :class="sub.showSubsidiesInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
-							<view style="color: #333; font-family: medium; width: calc(20vw) margin-left: 8upx;" @click="onSubsidiesClick(sub)">
-								{{ sub.subsidiesCount }}
-								<img class="downArrow" src="/static/icon_downArrow.png" />
+							<view style="color: #333; font-family: medium; margin-left: 8upx;" @click="onSubsidiesClick(sub)">
+								{{ sub.subsidiesSize }}
+								<image :src="sub.showSubsidiesInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
 							</view>
-							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidiesInfo }}</view>
+							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidies }}</view>
 						</view>
 					</view>
 				</view>
+				<hr class="line">
 				<view class="bottom">
-					<checkbox-group @change="(e)=>onDefaultStateChange(index,e)">
-						<view style="display: flex; flex-direction: row; justify-content: center;">
-							<checkbox class="setUpDefault" :value="()=>{{sub.isDefault}}"
-								:checked="()=>{{sub.isDefault}}">设为默认
-							</checkbox>
-						</view>
-					</checkbox-group>
-					<label>
-						<button class="confirm">修改</button>
-					</label>
+					<view class="setDefault" @click="onSetupDefaultClick(sub)" >
+						<image :src="sub.isDefault == 'Y' ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
+						<view class="setUpDefault">设为默认</view>
+					</view>
+					<view class="confirm" @click="onModifyClick(sub)">修改</view>
 				</view>
 			</view>
 		</view>
@@ -58,41 +53,38 @@
 
 <script>
 	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		getAccountingList,
+		deleteAccounting,
+		updateAccountingIsDefault,
+	} from '@/config/service/accounting.js';
 	export default {
 		props: {},
 
 		components: {
 			MenuWhiteHeader,
 		},
+		async mounted() {
+			await this.$onLaunched
+			this.queryAccountingList()
+		},
+		computed: {
+			...mapState({
+				headerInfo: state => state.header.headerInfo
+			}),
+		},
 		data() {
 			return {
 				phone: "",
-				accountingData: [{
-						stateName: "默认",
-						showDecutionInfoMore: false,
-						decutionCount: 4,
-						decutionInfo: "抹零规则【角】抹零。油费500，其他费用100，ETC费231,抹零规则【角】抹零。油费500，其他费用100，ETC费231",
-						showSubsidiesInfoMore: false,
-						subsidiesCount: 3,
-						isDefault: true,
-						subsidiesInfo: "食宿补贴415，高温补贴200，节假日补贴500",
-					},
-					{
-						stateName: "默认",
-						showDecutionInfoMore: false,
-						decutionCount: 4,
-						decutionInfo: "抹零规则【元】抹零。油费500，其他费用100，ETC费231",
-						showSubsidiesInfoMore: false,
-						subsidiesCount: 3,
-						isDefault: false,
-						subsidiesInfo: "食宿补贴640，高温补贴400，节假日补贴500",
-					},
-				],
 				item: "1",
 				password: "",
 				rememberPws: false,
 				radio1: "首页",
 				checked: false,
+				accountingData: [],
 			};
 		},
 		methods: {
@@ -103,11 +95,56 @@
 				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
 			},
 			onDefaultStateChange(index, e) {
-				console.log(e.detail)
+				console.log(e.detail);
+			},
+			onClickAddAction() {
+				console.log("点击了添加");
 			},
 			onClickDeleteAction() {
-				console.log(点击了删除)
-			}
+				uni.showModal({
+				    title: '提示',
+				    content: '确认删除这条规则吗？',
+				    success: function (res) {
+				        if (res.confirm) {
+				            deleteAccounting(sub.code, this.headerInfo).then(response =>{
+								if (response.code == 200) {
+									this.accountingData.splice(this.accountingData.indexOf(sub),1);
+								}
+							})
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			onSetupDefaultClick(sub) {//设置默认
+				updateAccountingIsDefault(sub.code, sub.isDefault == "Y" ? "N" : "Y", this.headerInfo).then(response =>{
+					if (response.code == 200) {
+						sub.isDefault = sub.isDefault == "Y" ? "N" : "Y";
+					}
+				})
+			},
+			onModifyClick(sub) {
+				console.log("点击了修改");
+			},
+			//获取项目列表
+			queryAccountingList() {
+				console.log("获取项目列表");
+				getAccountingList(this.headerInfo).then(response => {
+					response.data.list.map(item =>{
+						item.showDecutionInfoMore = false
+						item.showSubsidiesInfoMore = false
+						if (item.deductionSize == null) {
+							item.deductionSize = 0
+						}
+						if (item.subsidiesSize == null) {
+							item.subsidiesSize = 0
+						}
+					})
+					this.accountingData = response.data.list;
+					console.log(response.data.list)
+				})
+			},
 		},
 	};
 </script>
@@ -132,6 +169,16 @@
 		max-height: 20upx;
 		width: 12upx;
 		padding-left: 12upx;
+	}
+	
+	.line {
+		background-color: #EEEEEE;
+		border: none;
+		margin-left: 24upx;
+		margin-right: 24upx;
+		margin-top: 28upx;
+		margin-bottom: 10upx;
+		height: 1upx;
 	}
 
 	.detail {
@@ -183,6 +230,15 @@
 		align-items: center;
 		border: none;
 	}
+	
+	.setDefault {
+		display: flex;
+		margin: 0upx;
+		padding: 0upx;
+		flex-direction: row;
+		align-items: center;
+		border: none;
+	}
 
 	.platformTitleLeftDiv {
 		display: flex;
@@ -193,7 +249,7 @@
 	}
 
 	.platformTitle {
-		margin-left: 12upx;
+		margin-left: 25upx;
 		color: #333;
 		font-weight: bold;
 		margin-top: 12upx;
@@ -212,6 +268,16 @@
 	
 	.downArrow {
 		 margin-left: 24upx;
+		 width: 25upx;
+		 height: 25upx;
+		 padding-top: 3upx;
+	}
+	
+	.defaultIcon {
+		margin-left: 24upx;
+		width: 34upx;
+		height: 34upx;
+		padding-top: 3upx;
 	}
 	
 	.platformDeductionLayout {
@@ -222,13 +288,21 @@
 	}
 
 	.platformDeduction {
-		margin-left: 12upx;
+		margin-left: 25upx;
 		margin-top: 24upx;
+		margin-right: 20upx;
 		color: #333;
 		font-family: PingFang Bold;
-		width: calc(22vw);
+		 white-space:nowrap;
 		font-size: 28upx;
 		font-weight: bold;
+	}
+	
+	.deductionBgSmall {
+		width: 100upx;
+	}
+	
+	.deductionBgLarge {
 	}
 
 	.platformDeductionDetail {
@@ -260,7 +334,7 @@
 	.freight {
 		font-size: 24upx;
 		color: #878787;
-		margin-left: 12upx;
+		margin-left: 25upx;
 		margin-top: 13upx;
 		font-family: PingFang Bold;
 	}
@@ -315,20 +389,18 @@
 	}
 
 	.setUpDefault {
-		border-radius: 20upx;
-		color: #999;
+		color: #4478E4;
 		font-size: 28upx;
 		display: flex;
 		justify-content: space-between;
 		background-color: transparent;
-		//transform: scale(0.7);
+		margin-left: 11upx;
 	}
 
 	::v-deep.uni-checkbox-input.uni-checkbox-input-checked {
 		margin-right: 12upx;
 		border-radius: 24upx;
 		border-color: #999999;
-
 	}
 
 	::v-deep.uni-checkbox-input {
@@ -347,6 +419,6 @@
 		border: none;
 		font-size: 28upx;
 		color: white;
-		line-height: 43px;
+		padding-top: 8upx;
 	}
 </style>
