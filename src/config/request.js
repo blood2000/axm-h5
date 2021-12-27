@@ -17,11 +17,11 @@ uniRequest.interceptors.request.use(
 		//config.headers['Terminal-Type'] = headerInfo['Terminal-Type'];
 		// 请求携带token
 		//config.headers['Authorization'] = headerInfo['Authorization'];
-		if(config.data && config.data.isArrayQuery){
+		if (config.data && config.data.isArrayQuery) {
 			if (config.data.isArrayQuery) {
-				try{
+				try {
 					config.data = JSON.parse(config.data.isArrayQuery)
-				}catch(e){
+				} catch (e) {
 					//TODO handle the exception
 				}
 			}
@@ -47,13 +47,13 @@ uniRequest.interceptors.response.use(
 			});
 			return Promise.reject(new Error(msg));
 		} else if (code === 500) {
-			return
-			// uni.showToast({
-			// 	title: msg,
-			// 	icon: 'none',
-			// 	duration: 2000
-			// });
-			// return Promise.reject(new Error(msg));
+			// return
+			uni.showToast({
+				title: msg,
+				icon: 'none',
+				duration: 2000
+			});
+			return Promise.reject(new Error(msg));
 		} else if (code !== 200) {
 			uni.showToast({
 				title: msg,

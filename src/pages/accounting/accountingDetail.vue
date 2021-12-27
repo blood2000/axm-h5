@@ -409,7 +409,6 @@
 					}
 				}
 				this.detailList.push(tempSubsidies)
-				console.log(this.detailList)
 			},
 			// 选择了计算公式
 			onAccountingSelect(e) {
@@ -537,7 +536,6 @@
 						let result = response.data.list
 						//路耗的code
 						for (var i = 0; i < result.length; i++) {
-							console.log(result[i])
 							if (result[i].enName == "LOSS_RULE") {
 								//路耗规则的code
 								this.lossRegularCode = result[i].code
@@ -555,6 +553,14 @@
 			},
 			//表单提交
 			formSubmit(e) {
+				if (e.detail.value.name == null) {
+					this.toast("规则名称不能为空")
+					return
+				}else if (e.detail.value.name == null) {
+					this.toast("计算公式不能为空")
+					return
+				}
+				let validateRuleLoss
 				let saveParam = {}
 				let tempRuleRegular = {}
 				let tempRuleValue = {}
@@ -594,11 +600,28 @@
 				saveParam.ruleDictValue = this.categories[e.detail.value.ruleDictValue].dictValue
 				saveParam.platformType = 2
 				//const notNullSaveParam = removePropertyOfNull(Object.assign(), saveParam)
-				addAccounting(saveParam, this.headerInfo).then(response => {
-
+				uni.showLoading({
+					title:""
 				})
+				addAccounting(saveParam, this.headerInfo).then(response => {
+					uni.hideLoading()
+					if (response.code == 200) {
+						this.toast("新增成功")
+						uni.navigateBack({
+							delta: 1
+						})
+					}
+				})
+			},
+
+			toast(msg) {
+				uni.showToast({
+					title: msg,
+					icon: 'none',
+					duration: 2000
+				});
 			}
-		}
+		},
 	}
 </script>
 
