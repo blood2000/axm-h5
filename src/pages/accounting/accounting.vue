@@ -9,7 +9,7 @@
 				<view class="platformTitleView">
 					<view class="platformTitleItem">
 						<view class="platformTitle">{{sub.name}}</view>
-						<view v-if="sub.isDefault" class="platformStatus">默认</view>
+						<view v-if="sub.isDefault == 'Y'" class="platformStatus">默认</view>
 					</view>
 					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction(sub)" />
 				</view>
