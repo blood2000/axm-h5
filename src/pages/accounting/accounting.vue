@@ -106,7 +106,11 @@
 				    content: '确认删除这条规则吗？',
 				    success: function (res) {
 				        if (res.confirm) {
-				            console.log('用户点击确定');
+				            deleteAccounting(sub.code, this.headerInfo).then(response =>{
+								if (response.code == 200) {
+									this.accountingData.splice(this.accountingData.indexOf(sub),1);
+								}
+							})
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
 				        }
