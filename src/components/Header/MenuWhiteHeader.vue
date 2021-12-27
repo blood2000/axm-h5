@@ -1,5 +1,5 @@
 <template>
-	<view class="">
+	<view>
 		<view class="top-frame" :class="{showLine: showLine}">
 			<view class="status_bar" :style="{height: statusBarHeight*2 + 'upx'}">
 				<!-- 这里是状态栏 -->
@@ -37,7 +37,7 @@
 			isSecondaryPage: {
 				type: Boolean,
 				default: false
-			}
+			},
 		},
 		computed: {
 			...mapState({

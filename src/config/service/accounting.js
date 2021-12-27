@@ -27,37 +27,50 @@ export function getDict(dictType, config) {
 
 // 核算规则分页
 export function getAccountingList(config) {
-  return uniRequest({
-    url: '/transportation/ruleInfoShipment-app/list',
-    method: 'get',
-	headers: config
-  });
+	return uniRequest({
+		url: '/transportation/ruleInfoShipment-app/list',
+		method: 'get',
+		headers: config
+	});
 }
 
 // 删除规则
 export function deleteAccounting(code, config) {
-  return uniRequest({
-    url: '/transportation/ruleInfoShipment-app/delete',
-    method: 'delete',
-	data: {
-		code: code
-	},
-	headers: config
-  });
+	return uniRequest({
+		url: '/transportation/ruleInfoShipment-app/delete',
+		method: 'delete',
+		data: {
+			code: code
+		},
+		headers: config
+	});
 }
 
 // 修改默认规则选项
 export function updateAccountingIsDefault(code, isDefault, config) {
-  return uniRequest({
-    url: '/transportation/ruleInfoShipment-app/updateIsDefault',
-    method: 'put',
-	data: {
-		code: code,
-		isDefault: isDefault,
-	},
-	headers: {
-	...config,
-	'Content-Type': 'application/json'
-	}
-  });
+	return uniRequest({
+		url: '/transportation/ruleInfoShipment-app/updateIsDefault',
+		method: 'put',
+		data: {
+			code: code,
+			isDefault: isDefault,
+		},
+		headers: {
+			...config,
+			'Content-Type': 'application/json'
+		}
+	});
+}
+
+//新增核算规则
+export function addAccounting(param, config) {
+	return uniRequest({
+		url: '/transportation/ruleInfoShipment-app/add',
+		method: 'post',
+		data: {isArrayQuery: JSON.stringify(param)},
+		headers: {
+			...config,
+			'Content-Type': 'application/json'
+		}
+	});
 }
