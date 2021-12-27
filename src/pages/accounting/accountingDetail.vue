@@ -553,13 +553,14 @@
 			},
 			//表单提交
 			formSubmit(e) {
-				if (e.detail.value.name == null) {
+				if (e.detail.value.name == null || e.detail.value.name === "") {
 					this.toast("规则名称不能为空")
 					return
-				}else if (e.detail.value.name == null) {
-					this.toast("计算公式不能为空")
+				} else if (e.detail.value.ruleDictValue == null || e.detail.value.ruleDictValue === "") {
+					this.toast("请选择计算公式")
 					return
 				}
+				//临时变量
 				let validateRuleLoss
 				let saveParam = {}
 				let tempRuleRegular = {}
@@ -571,12 +572,26 @@
 					//赋值路耗规则
 					tempRuleRegular.ruleItemCode = this.lossRegularCode
 					tempRuleRegular.ruleValue = this.caleFormula[index].dictValue
-					//赋值路耗亏吨方案
+					//赋值路耗容忍值
 					tempRuleValue.ruleItemCode = this.lossValueCode
 					tempRuleValue.ruleValue = "[" + e.detail.value.ruleLossMin + "," + e.detail.value.ruleLossMax + "]"
-					//赋值路耗容忍值
+					//赋值路耗亏吨方案
 					tempRuleSelect.ruleItemCode = this.lossPlanCode
 					tempRuleSelect.ruleValue = e.detail.value.ruleLoseType
+					console.log(e.detail.value.ruleLoseRegular, ' - - - ', tempRuleRegular.ruleValue, ' - - - ',
+						tempRuleValue.ruleValue, ' - - - ', tempRuleSelect.ruleValue)
+					if (!this.formulaSelected) {
+						this.toast("请选择路耗规则")
+						return
+					}
+					if (e.detail.value.ruleLossMin == null || e.detail.value.ruleLossMin === "") {
+						this.toast("请完善路耗容忍值")
+						return
+					}
+					if (e.detail.value.ruleLossMax == null || e.detail.value.ruleLossMax === "") {
+						this.toast("请完善路耗容忍值")
+						return
+					}
 					//去重
 					for (var i = 0; i < this.detailList.length; i++) {
 						if (this.detailList[i].ruleItemCode == tempRuleRegular.ruleItemCode) {
@@ -599,9 +614,9 @@
 				saveParam.isDefault = e.detail.value.isDefault == "true" ? "Y" : "N"
 				saveParam.ruleDictValue = this.categories[e.detail.value.ruleDictValue].dictValue
 				saveParam.platformType = 2
-				//const notNullSaveParam = removePropertyOfNull(Object.assign(), saveParam)
+				// const notNullSaveParam = removePropertyOfNull(Object.assign(), saveParam)
 				uni.showLoading({
-					title:""
+					title: ""
 				})
 				addAccounting(saveParam, this.headerInfo).then(response => {
 					uni.hideLoading()
