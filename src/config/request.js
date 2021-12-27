@@ -17,6 +17,15 @@ uniRequest.interceptors.request.use(
 		//config.headers['Terminal-Type'] = headerInfo['Terminal-Type'];
 		// 请求携带token
 		//config.headers['Authorization'] = headerInfo['Authorization'];
+		if(config.data && config.data.isArrayQuery){
+			if (config.data.isArrayQuery) {
+				try{
+					config.data = JSON.parse(config.data.isArrayQuery)
+				}catch(e){
+					//TODO handle the exception
+				}
+			}
+		}
 		return config;
 	},
 	err => {
