@@ -214,14 +214,14 @@
 
 	.platformItemRoot {
 		background-color: white;
-		border-radius: 8upx;
+		border-radius: 16upx;
 		display: flex;
 		padding-bottom: 12upx;
 		flex-direction: column;
-		margin-right: 12upx;
-		margin-left: 12upx;
-		margin-bottom: 6upx;
-		margin-top: 6upx;
+		margin-right: 32upx;
+		margin-left: 32upx;
+		margin-bottom: 0upx;
+		margin-top: 24upx;
 		border: none;
 	}
 
