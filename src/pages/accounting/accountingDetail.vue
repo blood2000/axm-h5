@@ -772,11 +772,9 @@
 				saveParam.detailList = this.detailList
 				//其他参数
 				saveParam.name = e.detail.value.name
-				saveParam.isDefault = e.detail.value.isDefault === "true" ? "Y" : "N"
+				saveParam.isDefault =(e.detail.value.isDefault.length == 1) === true ? "Y" : "N"
 				saveParam.ruleDictValue = this.categories[e.detail.value.ruleDictValue].dictValue
 				saveParam.platformType = 2
-
-				//console.log(JSON.stringify(saveParam.detailList))
 				uni.showLoading({
 					title: ""
 				})
