@@ -18,9 +18,12 @@
 					<view class="platformDeduction">扣费项目</view>
 					<view :class="sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
-							<view style="color: #333; font-family: medium; margin-left: 8upx;"  @click="onDeductionClick(sub)">
+							<view style="color: #333; font-family: medium; margin-left: 8upx;"
+								@click="onDeductionClick(sub)">
 								{{ sub.deductionSize }}
-								<image :src="sub.showDecutionInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
+								<image
+									:src="sub.showDecutionInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'"
+									class="downArrow" mode="widthFix" />
 							</view>
 							<view v-if="sub.showDecutionInfoMore" class="freightDetail">{{ sub.deduction }}</view>
 						</view>
@@ -30,9 +33,12 @@
 					<view class="platformDeduction">补贴项目</view>
 					<view :class="sub.showSubsidiesInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
 						<view class="platformDeductionDetail">
-							<view style="color: #333; font-family: medium; margin-left: 8upx;" @click="onSubsidiesClick(sub)">
+							<view style="color: #333; font-family: medium; margin-left: 8upx;"
+								@click="onSubsidiesClick(sub)">
 								{{ sub.subsidiesSize }}
-								<image :src="sub.showSubsidiesInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'" class="downArrow" mode="widthFix" />
+								<image
+									:src="sub.showSubsidiesInfoMore ? '/static/icon_upArrow.png' : '/static/icon_downArrow.png'"
+									class="downArrow" mode="widthFix" />
 							</view>
 							<view v-if="sub.showSubsidiesInfoMore" class="freightDetail">{{ sub.subsidies }}</view>
 						</view>
@@ -40,8 +46,9 @@
 				</view>
 				<hr class="line">
 				<view class="bottom">
-					<view class="setDefault" @click="onSetupDefaultClick(sub)" >
-						<image :src="sub.isDefault == 'Y' ? '/static/icon_checked.png' : '/static/icon_unChecked.png'" class="defaultIcon" mode="widthFix" />
+					<view class="setDefault" @click="onSetupDefaultClick(sub)">
+						<image :src="sub.isDefault == 'Y' ? '/static/icon_checked.png' : '/static/icon_unChecked.png'"
+							class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
 					</view>
 					<view class="confirm" @click="onModifyClick(sub)">修改</view>
@@ -69,7 +76,7 @@
 		},
 		async mounted() {
 			await this.$onLaunched
-			this.queryAccountingList()
+			uni.startPullDownRefresh();
 		},
 		computed: {
 			...mapState({
@@ -87,6 +94,11 @@
 				accountingData: [],
 			};
 		},
+		onPullDownRefresh() {
+			this.accountingData = []
+			this.queryAccountingList()
+			uni.stopPullDownRefresh(); //停止下拉刷新动画			
+		},
 		methods: {
 			onDeductionClick(sub) {
 				sub.showDecutionInfoMore = !sub.showDecutionInfoMore;
@@ -102,23 +114,23 @@
 			},
 			onClickDeleteAction(sub) {
 				uni.showModal({
-				    title: '提示',
-				    content: '确认删除这条规则吗？',
-				    success: function (res) {
-				        if (res.confirm) {
-				            deleteAccounting(sub.code, this.headerInfo).then(response =>{
+					title: '提示',
+					content: '确认删除这条规则吗？',
+					success: function(res) {
+						if (res.confirm) {
+							deleteAccounting(sub.code, this.headerInfo).then(response => {
 								if (response.code == 200) {
-									this.accountingData.splice(this.accountingData.indexOf(sub),1);
+									this.accountingData.splice(this.accountingData.indexOf(sub), 1);
 								}
 							})
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }.bind(this)
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}.bind(this)
 				});
 			},
-			onSetupDefaultClick(sub) {//设置默认
-				updateAccountingIsDefault(sub.code, sub.isDefault == "Y" ? "N" : "Y", this.headerInfo).then(response =>{
+			onSetupDefaultClick(sub) { //设置默认
+				updateAccountingIsDefault(sub.code, sub.isDefault == "Y" ? "N" : "Y", this.headerInfo).then(response => {
 					if (response.code == 200) {
 						sub.isDefault = sub.isDefault == "Y" ? "N" : "Y";
 					}
@@ -131,7 +143,7 @@
 			queryAccountingList() {
 				console.log("获取项目列表");
 				getAccountingList(this.headerInfo).then(response => {
-					response.data.list.map(item =>{
+					response.data.list.map(item => {
 						item.showDecutionInfoMore = false
 						item.showSubsidiesInfoMore = false
 						if (item.deductionSize == null) {
@@ -170,7 +182,7 @@
 		width: 12upx;
 		padding-left: 12upx;
 	}
-	
+
 	.line {
 		background-color: #EEEEEE;
 		border: none;
@@ -230,7 +242,7 @@
 		align-items: center;
 		border: none;
 	}
-	
+
 	.setDefault {
 		display: flex;
 		margin: 0upx;
@@ -265,21 +277,21 @@
 		align-items: center;
 		margin-top: 12upx;
 	}
-	
+
 	.downArrow {
-		 margin-left: 24upx;
-		 width: 25upx;
-		 height: 25upx;
-		 padding-top: 3upx;
+		margin-left: 24upx;
+		width: 25upx;
+		height: 25upx;
+		padding-top: 3upx;
 	}
-	
+
 	.defaultIcon {
 		margin-left: 24upx;
 		width: 34upx;
 		height: 34upx;
 		padding-top: 3upx;
 	}
-	
+
 	.platformDeductionLayout {
 		display: flex;
 		flex-direction: row;
@@ -293,17 +305,16 @@
 		margin-right: 20upx;
 		color: #333;
 		font-family: PingFang Bold;
-		 white-space:nowrap;
+		white-space: nowrap;
 		font-size: 28upx;
 		font-weight: bold;
 	}
-	
+
 	.deductionBgSmall {
 		width: 100upx;
 	}
-	
-	.deductionBgLarge {
-	}
+
+	.deductionBgLarge {}
 
 	.platformDeductionDetail {
 		background-color: #f4f4f4;
