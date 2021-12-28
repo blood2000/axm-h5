@@ -111,6 +111,9 @@
 			},
 			onClickAddAction() {
 				console.log("点击了添加");
+				uni.navigateTo({
+					url: '/pages/accounting/accountingDetail'
+				});
 			},
 			onClickDeleteAction(sub) {
 				uni.showModal({
