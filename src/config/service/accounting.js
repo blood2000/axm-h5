@@ -67,7 +67,34 @@ export function addAccounting(param, config) {
 	return uniRequest({
 		url: '/transportation/ruleInfoShipment-app/add',
 		method: 'post',
-		data: {isArrayQuery: JSON.stringify(param)},
+		data: {
+			isArrayQuery: JSON.stringify(param)
+		},
+		headers: {
+			...config,
+			'Content-Type': 'application/json'
+		}
+	});
+}
+//核算详情
+export function accountingDetail(code, config) {
+	return uniRequest({
+		url: '/transportation/ruleInfoShipment-app/detail',
+		method: 'get',
+		data: {
+			code: code
+		},
+		headers: config
+	});
+}
+//编辑核算详情
+export function updateAccounting(param, config) {
+	return uniRequest({
+		url: '/transportation/ruleInfoShipment-app/update',
+		method: 'put',
+		data: {
+			isArrayQuery: JSON.stringify(param)
+		},
 		headers: {
 			...config,
 			'Content-Type': 'application/json'

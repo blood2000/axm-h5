@@ -13,7 +13,7 @@
 						src="@/static/ic_required.png" />
 				</view>
 				<input class="rowInput" name="name" placeholder-class="placeholderStyle" maxlength="12" type="text"
-					placeholder="请输入规则名称" />
+					placeholder="请输入规则名称" :value="defauleName" />
 			</view>
 			<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
 			<view class="cardRow" style="margin-top: 28upx;">
@@ -38,7 +38,7 @@
 				<view style="display: flex; justify-content: center;align-items: center;">
 					<text class="rowLabel">默认规则</text>
 					<checkbox-group class="checkBoxCircle" name="isDefault">
-						<checkbox style="transform:scale(0.7)" :checked="defaultRule" value="true"></checkbox>
+						<checkbox style="transform:scale(0.7)" :checked="isDefault" value="true"></checkbox>
 					</checkbox-group>
 				</view>
 			</view>
@@ -105,7 +105,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="calePathLoss == false"
+			<view v-if="calePathLoss === false"
 				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
 			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
 				<view class="cardRow">
@@ -120,23 +120,23 @@
 							<text style="width: 30%; text-align: start;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
 							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
-								<view v-if="item.showType == 1" class="showTypeInputView">
-									<input class="ruleInput" name="typpInput" type="digit"
-										@input="(e)=>onDeductionInput(e,item)" />
+								<view v-if="item.showType === 1" class="showTypeInputView">
+									<input class="ruleInput" name="typpInput" type="digit" :value="item.ruleValue"
+										@input="(e)=>onDeductionInput(e,item,false)" />
 									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
 										src="@/static/ic_accounting_delete.png"
 										@click="()=>deleteProject(currentDeductionProject,index)" />
 								</view>
-								<view v-if="item.showType == 2">
+								<view v-if="item.showType === 2">
 									<view class="projectItemArea">
 										<view class="ruleFomelaView" style="margin-right: 12upx;">-</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26upx;" name="typeAreaFont" />
+											<input type="digit" style="font-size: 26upx;" />
 										</view>
 										<view class="ruleFomelaView" style="margin-left: 12upx;margin-right: 12upx;">至
 										</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26upx;" name="typeAreaAfter" />
+											<input type="digit" style="font-size: 26upx;" />
 										</view>
 										<view class="ly-flex ly-flex-align-center">
 											<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
@@ -145,10 +145,10 @@
 										</view>
 									</view>
 								</view>
-								<view v-if="item.showType == 3">
+								<view v-if="item.showType === 3">
 									<view class="showTypeInputView">
-										<picker selector-type="selector" :value="index" :range="dictMap[item.dictCode]"
-											rangeKey="dictLabel" @change="(e)=>onM0Select(e,item,true)"
+										<picker selector-type="selector" :range="dictMap[item.dictCode]"
+											rangeKey="dictLabel" @change="(e)=>onProjectSpinnerSelect(e,item,true)"
 											name="typePicer">
 											<view class="ruleInput"
 												:style='{color:accountingM0Selected?"#333333":"#999999"}'>
@@ -160,7 +160,7 @@
 											@click="()=>deleteProject(currentDeductionProject,index)" />
 									</view>
 								</view>
-								<view v-if="item.showType == 4">
+								<view v-if="item.showType === 4">
 									<radio-group @change="onSchemeSelect" name="typeRadio"
 										class="radioGroup ly-flex ly-flex-align-center ly-flex-pack-end">
 										<label class="uni-list-cell uni-list-cell-pd radioButton"
@@ -178,7 +178,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="currentDeductionProject.length == 0"
+			<view v-if="currentDeductionProject.length === 0"
 				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
 			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
 				<view class="cardRow">
@@ -192,13 +192,14 @@
 							<text style="width: 30%; text-align: start;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
 							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
-								<view v-if="item.showType == 1" class="showTypeInputView">
-									<input class="ruleInput" @input="(e)=>onSubsidiesInput(e,item)" />
+								<view v-if="item.showType === 1" class="showTypeInputView">
+									<input class="ruleInput" @input="(e)=>onSubsidiesInput(e,item,false)"
+										:value="item.ruleValue" />
 									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
 										src="@/static/ic_accounting_delete.png"
 										@click="()=>deleteProject(currentSubsidiesProject,index)" />
 								</view>
-								<view v-if="item.showType == 2">
+								<view v-if="item.showType === 2">
 									<view class="projectItemArea">
 										<view class="ruleFomelaView" style="margin-right: 12upx;">-</view>
 										<view class="projectItemAreaInput">
@@ -216,10 +217,10 @@
 										</view>
 									</view>
 								</view>
-								<view v-if="item.showType == 3">
+								<view v-if="item.showType === 3">
 									<view class="showTypeInputView">
 										<picker selector-type="selector" :range="dictMap[item.dictCode]"
-											rangeKey="dictLabel" @change="(e)=>onM0Select(e, item,false)">
+											rangeKey="dictLabel" @change="(e)=>onProjectSpinnerSelect(e, item,false)">
 											<view class="ruleInput"
 												:style='{color:accountingM0Selected?"#333333":"#999999"}'>
 												{{accountingM0SelectName}}
@@ -230,7 +231,7 @@
 											@click="()=>deleteProject(currentSubsidiesProject,index)" />
 									</view>
 								</view>
-								<view v-if="item.showType == 4">
+								<view v-if="item.showType === 4">
 									<radio-group @change="onSchemeSelect"
 										class="radioGroup ly-flex ly-flex-align-center ly-flex-pack-end">
 										<label class="uni-list-cell uni-list-cell-pd radioButton"
@@ -259,8 +260,7 @@
 							<view>{{item.cnName}}</view>
 							<view>
 								<checkbox style="transform: scale(0.7)" :value="item.code"
-									:checked="popupTypeIsDeduction == 'true'?currentDeductionProject.includes(item):currentSubsidiesProject.includes(item)"
-									:disabled="popupTypeIsDeduction == 'true'?currentSubsidiesProject.includes(item):currentDeductionProject.includes(item) || item.dictCode == 'M0'" />
+									:checked="initProjectChecked(item)" :disabled="initProjectDisable(item)" />
 							</view>
 						</view>
 						<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 18upx;" />
@@ -287,7 +287,9 @@
 	import {
 		getAccountingProjectList,
 		getDict,
-		addAccounting
+		addAccounting,
+		updateAccounting,
+		accountingDetail
 	} from '@/config/service/accounting.js';
 
 	export default {
@@ -300,6 +302,12 @@
 				headerInfo: state => state.header.headerInfo
 			}),
 		},
+		props: {
+			editCode: {
+				type: String,
+				default: "d2356f30a2164a37b95dd56105848a28"
+			},
+		},
 		data() {
 			return {
 				title: "新增核算规则",
@@ -310,7 +318,6 @@
 				accountingM0SelectCode: "",
 				accountingM0Selected: false,
 				categories: [],
-				defaultRule: false,
 				calePathLoss: true,
 				calePathLossFlag: "cale",
 				formulaSelectName: "请选择路耗规则",
@@ -339,7 +346,7 @@
 				}],
 				deductionUI: [],
 				subsidiesUI: [],
-				popupTypeIsDeduction: "false",
+				popupTypeIsDeduction: "null",
 				simpleToggle: false,
 				M0Rule: [],
 				dictMap: {},
@@ -347,16 +354,19 @@
 				lossRegularCode: null,
 				lossPlanCode: null,
 				lossValueCode: null,
+
+				defauleName: null,
+				isDefault: null,
 			}
 		},
 
 		async mounted() {
 			await this.$onLaunched
-			this.queryProjectList(0)
-			this.queryProjectList(1)
 			this.queryDict("ruleFormula")
 			this.queryDict("lossRule")
 			this.queryDict("lossPlan")
+			this.queryProjectList(0)
+			this.queryProjectList(1)
 		},
 		methods: {
 			//获取字典数据
@@ -366,46 +376,177 @@
 						item.key = item.dictValue
 					})
 					this.dictMap[dictType] = response.data
-					if (dictType == "ruleFormula") {
+					if (dictType === "ruleFormula") {
 						//计算公式
 						this.categories = response.data
-					} else if (dictType == "lossRule") {
+					} else if (dictType === "lossRule") {
 						//路耗规则
 						this.caleFormula = response.data
 						this.caleFormula.map(item => {
 							item.key = item.dictValue
 						})
-					} else if (dictType == "lossPlan") {
+					} else if (dictType === "lossPlan") {
 						//定额定率
 						this.scheme = response.data
-					} else if (dictType == "M0") {
+					} else if (dictType === "M0") {
 						//抹零规则
 						this.M0Rule = response.data
 					}
 				})
 			},
-			//扣费项目单个输入项
-			onDeductionInput(input, item) {
+			//核算详情
+			queryAccountingDetail(code) {
+				accountingDetail(code, this.headerInfo).then(response => {
+					this.defauleName = response.data.ruleInfo.name //规则名称
+					this.isDefault = response.data.ruleInfo.isDefault === "Y" ? true : false //是否默认规则
+					this.defauleFormula = response.data.ruleInfo.ruleDictValue //计算公式
+					for (var i = 0; i < this.categories.length; i++) {
+						if (this.categories[i].dictValue === this.defauleFormula)
+							this.accountingSelectName = this.categories[i].dictLabel
+						this.accountingSelectCode = this.categories[i].dictValue
+						this.accountingSelected = true
+					}
+					let lossList = response.data.lossList
+					for (var i = 0; i < lossList.length; i++) {
+						//路耗规则
+						if (lossList[i].dictCode === "lossRule") {
+							let dictValue = lossList[i].ruleValue
+							for (var j = 0; j < this.caleFormula.length; j++) {
+								if (this.caleFormula[j].dictValue === dictValue) {
+									this.formulaSelectName = this.caleFormula[j].dictLabel
+									this.formulaSelectCode = this.caleFormula[j].dictValue
+									this.formulaSelected = true
+								}
+							}
+						} else if (lossList[i].dictCode === "lossPlan") {
+							//路耗 亏吨方案
+							let dictValue = lossList[i].ruleValue
+							for (var j = 0; j < this.scheme.length; j++) {
+								if (this.scheme[j].dictValue === dictValue) {
+									this.currentsSheme = j
+								}
+							}
+						} else if (lossList[i].enName === "LOSS_TOLERANCE") {
+							//路耗容忍值
+							let ruleValue = JSON.parse(lossList[i].ruleValue)
+							this.defaultSchemeMin = Math.abs(ruleValue[0])
+							this.defaultSchemeMax = ruleValue[1]
+						}
+					}
+					//扣费选项
+					let detail = response.data.detailList
+					for (var i = 0; i < detail.length; i++) {
+						if (detail[i].type !== null || detail[i].type !== "") {
+							if (detail[i].type === "2") {
+								this.tempDeductionProject.push(detail[i])
+								this.currentDeductionProject.push(detail[i])
+								if (detail[i].showType === 3) {
+									this.dictMap[detail[i].dictCode].dictValue = detail[i].ruleValue
+									let e = {
+										detail: {
+											value: null
+										}
+									}
+									e.detail.value = i
+									this.onProjectSpinnerSelect(e, detail[i], true)
+								} else if (detail[i].showType === 1) {
+									let e = {
+										detail: {
+											value: null
+										}
+									}
+									e.detail.value = detail[i].ruleValue
+									this.onDeductionInput(e, detail[i], true)
+								}
+							} else if (detail[i].type === "1") {
+								this.tempSubsidiesProject.push(detail[i])
+								this.currentSubsidiesProject.push(detail[i])
+								if (detail[i].showType === 3) {
+									this.dictMap[detail[i].dictCode].dictValue = detail[i].ruleValue
+									let e = {
+										detail: {
+											value: null
+										}
+									}
+									e.detail.value = i
+									this.onProjectSpinnerSelect(e, detail[i], false)
+								} else if (detail[i].showType === 1) {
+									let e = {
+										detail: {
+											value: null
+										}
+									}
+									e.detail.value = detail[i].ruleValue
+									this.onSubsidiesInput(e, detail[i], true)
+								}
+							}
+						}
+					}
+				})
+			},
+			/**
+			 * 选择了扣费/补贴下拉选择
+			 * e.detail.value = 选择了第几个
+			 * item = 项目实体
+			 * isDeduction = 是否为扣费
+			 * */
+			onProjectSpinnerSelect(e, item, isDeduction) {
+				const index = e.detail.value
+				this.accountingM0SelectName = this.dictMap[item.dictCode]. [index].dictLabel
+				this.accountingM0SelectCode = this.dictMap[item.dictCode]. [index].dictValue
+				this.accountingM0Selected = true
 				let tempDeduction = {}
-				tempDeduction.ruleItemCode = item.code
-				tempDeduction.ruleValue = input.detail.value
-				tempDeduction.type = 2
+				if (this.editCode === null) {
+					tempDeduction.ruleItemCode = item.code
+				} else {
+					tempDeduction.ruleItemCode = item.ruleItemCode
+				}
+				tempDeduction.ruleValue = this.accountingM0SelectCode
+				tempDeduction.type = isDeduction ? 2 : 1
+
+				let code = (this.editCode === null ? item.code : item.ruleItemCode)
+				console.log(this.editCode === null, ' - - - ', code)
 				for (var i = 0; i < this.detailList.length; i++) {
-					if (this.detailList[i].ruleItemCode == item.code) {
+					if (this.detailList[i].ruleItemCode === code) {
 						this.detailList.splice(i, 1)
 					}
 				}
 				this.detailList.push(tempDeduction)
-				console.log(this.detailList)
+			},
+			//扣费项目单个输入项
+			onDeductionInput(input, item, isEdit) {
+				let tempDeduction = {}
+
+				let code = null
+				if (this.editCode === null) {
+					code = item.code
+				} else {
+					code = item.ruleItemCode
+				}
+				tempDeduction.ruleItemCode = code
+				tempDeduction.ruleValue = input.detail.value
+				tempDeduction.type = 2
+				for (var i = 0; i < this.detailList.length; i++) {
+					if (this.detailList[i].ruleItemCode === code) {
+						this.detailList.splice(i, 1)
+					}
+				}
+				this.detailList.push(tempDeduction)
 			},
 			//补贴项目单个输入项
-			onSubsidiesInput(input, item) {
+			onSubsidiesInput(input, item, isEdit) {
 				let tempSubsidies = {}
-				tempSubsidies.ruleItemCode = item.code
+				let code = null
+				if (this.editCode === null) {
+					code = item.code
+				} else {
+					code = item.ruleItemCode
+				}
+				tempSubsidies.ruleItemCode = code
 				tempSubsidies.ruleValue = input.detail.value
 				tempSubsidies.type = 1
 				for (var i = 0; i < this.detailList.length; i++) {
-					if (this.detailList[i].ruleItemCode == item.code) {
+					if (this.detailList[i].ruleItemCode === code) {
 						this.detailList.splice(i, 1)
 					}
 				}
@@ -417,28 +558,6 @@
 				this.accountingSelectName = this.categories[index].dictLabel
 				this.accountingSelectCode = this.categories[index].dictValue
 				this.accountingSelected = true
-			},
-			/**
-			 * 选择了扣费/补贴下拉选择
-			 * e.detail.value = 选择了第几个
-			 * item = 项目实体
-			 * isDeduction = 是否为扣费
-			 * */
-			onM0Select(e, item, isDeduction) {
-				const index = e.detail.value
-				this.accountingM0SelectName = this.dictMap[item.dictCode]. [index].dictLabel
-				this.accountingM0SelectCode = this.dictMap[item.dictCode]. [index].dictValue
-				this.accountingM0Selected = true
-				let tempDeduction = {}
-				tempDeduction.ruleItemCode = item.code
-				tempDeduction.ruleValue = this.accountingM0SelectCode
-				tempDeduction.type = isDeduction ? 2 : 1
-				for (var i = 0; i < this.detailList.length; i++) {
-					if (this.detailList[i].ruleItemCode == item.code) {
-						this.detailList.splice(i, 1)
-					}
-				}
-				this.detailList.push(tempDeduction)
 			},
 			// 计算路耗开关
 			calePathLossToggle(e) {
@@ -455,11 +574,11 @@
 			onSchemeSelect(e) {
 				const dictValue = e.detail.value
 				for (var i = 0; i < this.scheme.length; i++) {
-					if (this.scheme[i].dictValue == dictValue) {
+					if (this.scheme[i].dictValue === dictValue) {
 						this.currentsUnitSheme = i
 					}
 				}
-				if (this.currentsUnitSheme == 0) {
+				if (this.currentsUnitSheme === 0) {
 					this.defaultSchemeMin = "5.00"
 				} else {
 					this.defaultSchemeMin = "0.3"
@@ -468,6 +587,7 @@
 			//点击添加扣费项目
 			onDeductionPlusClick() {
 				this.open("true")
+
 			},
 			//点击添加补贴项目
 			onSubsidiesPlusClick() {
@@ -495,7 +615,7 @@
 						tempSelectProject.push(this.projectList[i]);
 					}
 				}
-				if (this.popupTypeIsDeduction == "true") {
+				if (this.popupTypeIsDeduction === "true") {
 					this.tempDeductionProject = tempSelectProject
 				} else {
 					this.tempSubsidiesProject = tempSelectProject
@@ -507,7 +627,7 @@
 			},
 			//点击popup的确定按钮
 			onProjectSelected(e) {
-				if (this.popupTypeIsDeduction == "true") {
+				if (this.popupTypeIsDeduction === "true") {
 					//扣费项目
 					this.currentDeductionProject = this.tempDeductionProject
 				} else {
@@ -527,7 +647,7 @@
 			queryProjectList(param) {
 				getAccountingProjectList(param, this.headerInfo).then(response => {
 					// 项目
-					if (param == 0) {
+					if (param === 0) {
 						this.projectList = response.data.list
 						this.projectList.map(item => {
 							item.key = item.cnName
@@ -537,31 +657,68 @@
 								this.queryDict(this.projectList[i].dictCode)
 							}
 						}
-					} else if (param == 1) {
+						this.queryAccountingDetail(this.editCode)
+					} else if (param === 1) {
 						let result = response.data.list
 						//路耗的code
 						for (var i = 0; i < result.length; i++) {
-							if (result[i].enName == "LOSS_RULE") {
+							if (result[i].enName === "LOSS_RULE") {
 								//路耗规则的code
 								this.lossRegularCode = result[i].code
-							} else if (result[i].enName == "LOSS_PLAN") {
+							} else if (result[i].enName === "LOSS_PLAN") {
 								//路耗亏吨方案规则的code
 								this.lossPlanCode = result[i].code
-							} else if (result[i].enName == "LOSS_TOLERANCE") {
+							} else if (result[i].enName === "LOSS_TOLERANCE") {
 								//路耗容忍值的code
 								this.lossValueCode = result[i].code
 							}
-
 						}
 					}
 				})
 			},
+			//设置选中状态
+			initProjectChecked(item) {
+				if (this.popupTypeIsDeduction === "true") {
+					for (var i = 0; i < this.currentDeductionProject.length; i++) {
+						if (this.currentDeductionProject[i].enName === item.enName) {
+							return true
+						}
+					}
+				} else if (this.popupTypeIsDeduction === "false") {
+					for (var i = 0; i < this.currentSubsidiesProject.length; i++) {
+						if (this.currentSubsidiesProject[i].enName === item.enName) {
+							return true
+						}
+					}
+				}
+				return false
+			},
+			//设置可选不可选
+			initProjectDisable(item) {
+				if (this.popupTypeIsDeduction === "true") {
+					for (var i = 0; i < this.currentSubsidiesProject.length; i++) {
+						if (this.currentSubsidiesProject[i].enName === item.enName) {
+							return true
+						}
+					}
+				} else if (this.popupTypeIsDeduction === "false") {
+					if (item.enName === 'M0') {
+						return true
+					}
+					for (var i = 0; i < this.currentDeductionProject.length; i++) {
+						if (this.currentDeductionProject[i].enName === item.enName) {
+							return true
+						}
+					}
+				}
+				return false
+			},
 			//表单提交
 			formSubmit(e) {
-				if (e.detail.value.name == null || e.detail.value.name === "") {
+				if (e.detail.value.name === null || e.detail.value.name === "") {
 					this.toast("规则名称不能为空")
 					return
-				} else if (e.detail.value.ruleDictValue == null || e.detail.value.ruleDictValue === "") {
+				} else if (e.detail.value.ruleDictValue === null || e.detail.value.ruleDictValue === "") {
 					this.toast("请选择计算公式")
 					return
 				}
@@ -579,33 +736,32 @@
 					tempRuleRegular.ruleValue = this.caleFormula[index].dictValue
 					//赋值路耗容忍值
 					tempRuleValue.ruleItemCode = this.lossValueCode
-					tempRuleValue.ruleValue = "[-" + e.detail.value.ruleLossMin + "," + e.detail.value.ruleLossMax + "]"
+					tempRuleValue.ruleValue = "[-" + e.detail.value.ruleLossMin + "," + e.detail.value.ruleLossMax +
+						"]"
 					//赋值路耗亏吨方案
 					tempRuleSelect.ruleItemCode = this.lossPlanCode
 					tempRuleSelect.ruleValue = e.detail.value.ruleLoseType
-					console.log(e.detail.value.ruleLoseRegular, ' - - - ', tempRuleRegular.ruleValue, ' - - - ',
-						tempRuleValue.ruleValue, ' - - - ', tempRuleSelect.ruleValue)
 					if (!this.formulaSelected) {
 						this.toast("请选择路耗规则")
 						return
 					}
-					if (e.detail.value.ruleLossMin == null || e.detail.value.ruleLossMin === "") {
+					if (e.detail.value.ruleLossMin === null || e.detail.value.ruleLossMin === "") {
 						this.toast("请完善路耗容忍值")
 						return
 					}
-					if (e.detail.value.ruleLossMax == null || e.detail.value.ruleLossMax === "") {
+					if (e.detail.value.ruleLossMax === null || e.detail.value.ruleLossMax === "") {
 						this.toast("请完善路耗容忍值")
 						return
 					}
 					//去重
 					for (var i = 0; i < this.detailList.length; i++) {
-						if (this.detailList[i].ruleItemCode == tempRuleRegular.ruleItemCode) {
+						if (this.detailList[i].ruleItemCode === tempRuleRegular.ruleItemCode) {
 							this.detailList.splice(i, 1)
 						}
-						if (this.detailList[i].ruleItemCode == tempRuleValue.ruleItemCode) {
+						if (this.detailList[i].ruleItemCode === tempRuleValue.ruleItemCode) {
 							this.detailList.splice(i, 1)
 						}
-						if (this.detailList[i].ruleItemCode == tempRuleSelect.ruleItemCode) {
+						if (this.detailList[i].ruleItemCode === tempRuleSelect.ruleItemCode) {
 							this.detailList.splice(i, 1)
 						}
 					}
@@ -616,22 +772,36 @@
 				saveParam.detailList = this.detailList
 				//其他参数
 				saveParam.name = e.detail.value.name
-				saveParam.isDefault = e.detail.value.isDefault == "true" ? "Y" : "N"
+				saveParam.isDefault = e.detail.value.isDefault === "true" ? "Y" : "N"
 				saveParam.ruleDictValue = this.categories[e.detail.value.ruleDictValue].dictValue
 				saveParam.platformType = 2
-				// const notNullSaveParam = removePropertyOfNull(Object.assign(), saveParam)
+
+				//console.log(JSON.stringify(saveParam.detailList))
 				uni.showLoading({
 					title: ""
 				})
-				addAccounting(saveParam, this.headerInfo).then(response => {
-					uni.hideLoading()
-					if (response.code == 200) {
-						this.toast("新增成功")
-						// uni.navigateBack({
-						// 	delta: 1
-						// })
-					}
-				})
+				if (this.editCode === null) {
+					addAccounting(saveParam, this.headerInfo).then(response => {
+						uni.hideLoading()
+						if (response.code === 200) {
+							this.toast("新增成功")
+							// uni.navigateBack({
+							// 	delta: 1
+							// })
+						}
+					})
+				} else {
+					saveParam.code = this.editCode
+					updateAccounting(saveParam, this.headerInfo).then(response => {
+						uni.hideLoading()
+						if (response.code === 200) {
+							this.toast("编辑成功")
+							// uni.navigateBack({
+							// 	delta: 1
+							// })
+						}
+					})
+				}
 			},
 
 			toast(msg) {
