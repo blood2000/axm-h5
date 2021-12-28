@@ -302,14 +302,9 @@
 				headerInfo: state => state.header.headerInfo
 			}),
 		},
-		props: {
-			editCode: {
-				type: String,
-				default: null
-			},
-		},
 		data() {
 			return {
+				editCode:null,
 				title: "新增核算规则",
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
@@ -444,6 +439,7 @@
 							if (detail[i].type === "2") {
 								this.tempDeductionProject.push(detail[i])
 								this.currentDeductionProject.push(detail[i])
+								//dictValue用来存放输入(选中)的值
 								if (detail[i].showType === 3) {
 									this.dictMap[detail[i].dictCode].dictValue = detail[i].ruleValue
 									let e = {
@@ -465,6 +461,7 @@
 							} else if (detail[i].type === "1") {
 								this.tempSubsidiesProject.push(detail[i])
 								this.currentSubsidiesProject.push(detail[i])
+								//dictValue用来存放输入(选中)的值
 								if (detail[i].showType === 3) {
 									this.dictMap[detail[i].dictCode].dictValue = detail[i].ruleValue
 									let e = {
@@ -522,11 +519,12 @@
 				let tempDeduction = {}
 
 				let code = null
-				if (this.editCode === null) {
-					code = item.code
+				if (this.editCode !== null) {
+					code = item.ruleItemCode === undefined ? item.code : item.ruleItemCode
 				} else {
-					code = item.ruleItemCode
+					code = item.code
 				}
+				console.log(code)
 				tempDeduction.ruleItemCode = code
 				tempDeduction.ruleValue = input.detail.value
 				tempDeduction.type = 2
@@ -541,10 +539,10 @@
 			onSubsidiesInput(input, item, isEdit) {
 				let tempSubsidies = {}
 				let code = null
-				if (this.editCode === null) {
-					code = item.code
+				if (this.editCode !== null) {
+					code = item.ruleItemCode === undefined ? item.code : item.ruleItemCode
 				} else {
-					code = item.ruleItemCode
+					code = item.code
 				}
 				tempSubsidies.ruleItemCode = code
 				tempSubsidies.ruleValue = input.detail.value
@@ -625,10 +623,6 @@
 					this.tempSubsidiesProject = tempSelectProject
 				}
 			},
-			//查询项目选项的子选项
-			queryProjectItemSelect(dictCode) {
-
-			},
 			//点击popup的确定按钮
 			onProjectSelected(e) {
 				if (this.popupTypeIsDeduction === "true") {
@@ -661,7 +655,9 @@
 								this.queryDict(this.projectList[i].dictCode)
 							}
 						}
-						this.queryAccountingDetail(this.editCode)
+						if (this.editCode !== undefined) {
+							this.queryAccountingDetail(this.editCode)
+						}
 					} else if (param === 1) {
 						let result = response.data.list
 						//路耗的code
@@ -776,7 +772,7 @@
 				saveParam.detailList = this.detailList
 				//其他参数
 				saveParam.name = e.detail.value.name
-				saveParam.isDefault = (e.detail.value.isDefault.length == 1) === true ? "Y" : "N"
+				saveParam.isDefault = (e.detail.value.isDefault.length === 1) === true ? "Y" : "N"
 				saveParam.ruleDictValue = this.categories[e.detail.value.ruleDictValue].dictValue
 				saveParam.platformType = 2
 				uni.showLoading({
