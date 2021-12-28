@@ -396,6 +396,7 @@
 					}
 				}
 				this.detailList.push(tempDeduction)
+				console.log(this.detailList)
 			},
 			//补贴项目单个输入项
 			onSubsidiesInput(input, item) {
@@ -417,16 +418,20 @@
 				this.accountingSelectCode = this.categories[index].dictValue
 				this.accountingSelected = true
 			},
-			// 选择了扣费/补贴下拉选择
+			/**
+			 * 选择了扣费/补贴下拉选择
+			 * e.detail.value = 选择了第几个
+			 * item = 项目实体
+			 * isDeduction = 是否为扣费
+			 * */
 			onM0Select(e, item, isDeduction) {
 				const index = e.detail.value
-				this.accountingM0SelectName = this.dictMap[item]. [index].dictLabel
-				this.accountingM0SelectCode = this.dictMap[item]. [index].dictValue
+				this.accountingM0SelectName = this.dictMap[item.dictCode]. [index].dictLabel
+				this.accountingM0SelectCode = this.dictMap[item.dictCode]. [index].dictValue
 				this.accountingM0Selected = true
-
 				let tempDeduction = {}
 				tempDeduction.ruleItemCode = item.code
-				tempDeduction.ruleValue = this.dictMap[item]. [index].dictValue
+				tempDeduction.ruleValue = this.accountingM0SelectCode
 				tempDeduction.type = isDeduction ? 2 : 1
 				for (var i = 0; i < this.detailList.length; i++) {
 					if (this.detailList[i].ruleItemCode == item.code) {
@@ -574,7 +579,7 @@
 					tempRuleRegular.ruleValue = this.caleFormula[index].dictValue
 					//赋值路耗容忍值
 					tempRuleValue.ruleItemCode = this.lossValueCode
-					tempRuleValue.ruleValue = "[" + e.detail.value.ruleLossMin + "," + e.detail.value.ruleLossMax + "]"
+					tempRuleValue.ruleValue = "[-" + e.detail.value.ruleLossMin + "," + e.detail.value.ruleLossMax + "]"
 					//赋值路耗亏吨方案
 					tempRuleSelect.ruleItemCode = this.lossPlanCode
 					tempRuleSelect.ruleValue = e.detail.value.ruleLoseType
@@ -622,9 +627,9 @@
 					uni.hideLoading()
 					if (response.code == 200) {
 						this.toast("新增成功")
-						uni.navigateBack({
-							delta: 1
-						})
+						// uni.navigateBack({
+						// 	delta: 1
+						// })
 					}
 				})
 			},
