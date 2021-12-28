@@ -275,7 +275,7 @@
             {
                 "navigationBarTitleText": "至简至一",
 				"navigationStyle": "custom",
-                "enablePullDownRefresh": false,
+                "enablePullDownRefresh": true,
 				"navigationBarTextStyle": "black"
             }
             
