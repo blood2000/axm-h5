@@ -141,6 +141,9 @@
 			},
 			onModifyClick(sub) {
 				console.log("点击了修改");
+				uni.navigateTo({
+					url: '/pages/accounting/accountingDetail?editCode='+sub.code
+				});
 			},
 			//获取项目列表
 			queryAccountingList() {

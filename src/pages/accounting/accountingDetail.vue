@@ -305,7 +305,7 @@
 		props: {
 			editCode: {
 				type: String,
-				default: "d2356f30a2164a37b95dd56105848a28"
+				default: null
 			},
 		},
 		data() {
@@ -367,6 +367,10 @@
 			this.queryDict("lossPlan")
 			this.queryProjectList(0)
 			this.queryProjectList(1)
+		},
+		async onLoad(option) {
+			await this.$onLaunched;
+			this.editCode = option.editCode;
 		},
 		methods: {
 			//获取字典数据
@@ -772,7 +776,7 @@
 				saveParam.detailList = this.detailList
 				//其他参数
 				saveParam.name = e.detail.value.name
-				saveParam.isDefault =(e.detail.value.isDefault.length == 1) === true ? "Y" : "N"
+				saveParam.isDefault = (e.detail.value.isDefault.length == 1) === true ? "Y" : "N"
 				saveParam.ruleDictValue = this.categories[e.detail.value.ruleDictValue].dictValue
 				saveParam.platformType = 2
 				uni.showLoading({
