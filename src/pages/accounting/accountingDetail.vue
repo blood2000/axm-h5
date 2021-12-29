@@ -38,7 +38,8 @@
 				<view style="display: flex; justify-content: center;align-items: center;">
 					<text class="rowLabel">默认规则</text>
 					<checkbox-group class="checkBoxCircle" name="isDefault">
-						<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4" :checked="isDefault" value="true"></checkbox>
+						<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4" :checked="isDefault"
+							value="true"></checkbox>
 					</checkbox-group>
 				</view>
 			</view>
@@ -47,7 +48,8 @@
 				<view style="display: flex; justify-content: center;align-items: center;">
 					<text class="rowLabel">计算路耗</text>
 					<checkbox-group class="checkBoxCircle" @change="calePathLossToggle" name="ruleLoseToggle">
-						<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4" :value="calePathLossFlag" :checked="calePathLoss">
+						<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4"
+							:value="calePathLossFlag" :checked="calePathLoss">
 						</checkbox>
 					</checkbox-group>
 				</view>
@@ -82,7 +84,8 @@
 								<label class="uni-list-cell uni-list-cell-pd radioButton"
 									v-for="(item, index) in scheme" :key="item.dictLabel">
 									<view style="display: flex;">
-										<radio :value="item.dictValue" color="#4478E4" :checked="index === currentsSheme" />
+										<radio :value="item.dictValue" color="#4478E4"
+											:checked="index === currentsSheme" />
 										<view style="margin-left: 24rpx; text-align: center;">{{item.dictLabel}}</view>
 									</view>
 								</label>
@@ -410,6 +413,7 @@
 						this.accountingSelected = true
 					}
 					let lossList = response.data.lossList
+					this.calePathLoss = lossList.length > 0 ? true : false
 					for (var i = 0; i < lossList.length; i++) {
 						//路耗规则
 						if (lossList[i].dictCode === "lossRule") {
@@ -816,7 +820,10 @@
 						uni.hideLoading()
 						if (response.code === 200) {
 							this.toast("新增成功")
-							window.parent.postMessage({msg: 'reload', key: 'reload'}, '*');
+							window.parent.postMessage({
+								msg: 'reload',
+								key: 'reload'
+							}, '*');
 							uni.navigateBack({
 								delta: 1
 							})
@@ -828,7 +835,10 @@
 						uni.hideLoading()
 						if (response.code === 200) {
 							this.toast("编辑成功")
-							window.parent.postMessage({msg: 'reload', key: 'reload'}, '*');
+							window.parent.postMessage({
+								msg: 'reload',
+								key: 'reload'
+							}, '*');
 							uni.navigateBack({
 								delta: 1
 							})
@@ -894,6 +904,7 @@
 		font-weight: bold;
 		color: #333333;
 	}
+
 	.roadLossLabel {
 		font-size: 28rpx;
 		font-weight: bold;

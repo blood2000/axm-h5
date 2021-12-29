@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<WhiteHeader :showBack="true" :isSecondaryPage="true">
+		<WhiteHeader :showBack="true" :isSecondaryPage="false">
 			<text slot="title" style="font-weight: 600;">核算规则详情</text>
 		</WhiteHeader>
 
@@ -20,7 +20,7 @@
 			</view>
 			<view v-if="response.ruleInfo.isDefault === 'Y'"
 				style="background-color: #EDEDED; height: 2rpx; width: 100%;" />
-			<view v-if="true">
+			<view v-if="calePathLoss">
 				<view class="item ly-flex ly-flex-align-center">
 					<text class="label">计算路耗</text>
 				</view>
@@ -33,8 +33,8 @@
 						<text class="secondLabel">路耗亏吨方案</text>
 						<text class="secondValue">{{ruleLossPlan}}</text>
 					</view>
-					<view class="secondItem ly-flex ly-flex-align-center ly-flex-pack-end" 
-					style="width: 100%; justify-content: flex-end;">
+					<view class="secondItem ly-flex ly-flex-align-center ly-flex-pack-end"
+						style="width: 100%; justify-content: flex-end;">
 						<text class="ruleLossValueFont">{{defaultSchemeMin}}</text>
 						<text style="font-size: 26rpx;">至</text>
 						<text class="ruleLossValueAfter">{{defaultSchemeMax}}</text>
@@ -42,7 +42,7 @@
 				</view>
 			</view>
 			<view v-if="deductionProject.length > 0" class="projectRoot ly-flex ly-flex-v">
-				<text class="label" style="margin-bottom: 24rpx;">扣费项目</text>
+				<text class="label" style="margin-bottom: 24rpx; margin-left: 16rpx;">扣费项目</text>
 				<view class="ly-flex ly-flex-v ly-flex-pack-star projectItem">
 					<view v-for="(item, index) in deductionProject">
 						<view class="ly-flex ly-flex-pack-justify ly-flex-align-center"
@@ -104,6 +104,7 @@
 				defaultSchemeMax: null,
 				roadLossRule: null,
 				ruleLossPlan: null,
+				calePathLoss: true
 			}
 		},
 		async mounted() {
@@ -127,7 +128,9 @@
 					this.defauleName = response.data.ruleInfo.name //规则名称
 					this.isDefault = response.data.ruleInfo.isDefault === "Y" ? true : false //是否默认规则
 					this.defauleFormula = response.data.ruleInfo.ruleDictValue //计算公式
-
+					
+					let lossList = response.data.lossList
+					this.calePathLoss = lossList.length > 0 ? true : false
 					for (var i = 0; i < this.response.detailList.length; i++) {
 						let item = this.response.detailList[i]
 						if (item.type === "1") {
