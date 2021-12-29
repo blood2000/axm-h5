@@ -165,7 +165,7 @@
 			onViewDetailClick(sub) {
 				console.log("点击了查看详情");
 				uni.navigateTo({
-					url: '/pages/accounting/accountingDetail?viewCode=' + sub.code
+					url: '/pages/accounting/accountingView?viewCode=' + sub.code
 				});
 			},
 			//获取项目列表
