@@ -80,6 +80,15 @@
 		async mounted() {
 			await this.$onLaunched
 			uni.startPullDownRefresh();
+
+			window.addEventListener('message', () => {
+				this.accountingData = []
+				this.queryAccountingList()
+				uni.stopPullDownRefresh(); //停止下拉刷新动画
+			})
+			this.$once('hook:beforeDestroy', () => {
+				window.removeEventListener('message', this.$_handleReload)
+			})
 		},
 		computed: {
 			...mapState({
@@ -127,6 +136,7 @@
 							deleteAccounting(sub.code, this.headerInfo).then(response => {
 								if (response.code == 200) {
 									this.accountingData.splice(this.accountingData.indexOf(sub), 1);
+									this.toast("删除成功")
 								}
 							})
 						} else if (res.cancel) {
@@ -145,13 +155,13 @@
 			onModifyClick(sub) {
 				console.log("点击了修改");
 				uni.navigateTo({
-					url: '/pages/accounting/accountingDetail?editCode='+sub.code
+					url: '/pages/accounting/accountingDetail?editCode=' + sub.code
 				});
 			},
 			onViewDetailClick(sub) {
 				console.log("点击了查看详情");
 				uni.navigateTo({
-					url: '/pages/accounting/accountingDetail?editCode='+sub.code
+					url: '/pages/accounting/accountingDetail?editCode=' + sub.code
 				});
 			},
 			//获取项目列表
@@ -171,6 +181,18 @@
 					this.accountingData = response.data.list;
 					console.log(response.data.list)
 				})
+			},
+			$_handleReload() {
+				let that = this;
+				console.log("不刷新吗")
+				that.onPullDownRefresh()
+			},
+			toast(msg) {
+				uni.showToast({
+					title: msg,
+					icon: 'none',
+					duration: 2000
+				});
 			},
 		},
 	};
@@ -256,7 +278,7 @@
 		align-items: center;
 		border: none;
 	}
-	
+
 	.detailAndModify {
 		display: flex;
 		flex-direction: row;
@@ -446,7 +468,7 @@
 		color: white;
 		padding-top: 8upx;
 	}
-	
+
 	.confirm {
 		background-color: #4478e4;
 		border-radius: 5upx;
@@ -459,7 +481,7 @@
 		color: white;
 		padding-top: 8upx;
 	}
-	
+
 	.detail {
 		background-color: #4478e4;
 		border-radius: 5upx;

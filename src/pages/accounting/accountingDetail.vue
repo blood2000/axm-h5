@@ -816,6 +816,7 @@
 						uni.hideLoading()
 						if (response.code === 200) {
 							this.toast("新增成功")
+							window.parent.postMessage({msg: 'reload', key: 'reload'}, '*');
 							uni.navigateBack({
 								delta: 1
 							})
@@ -827,6 +828,7 @@
 						uni.hideLoading()
 						if (response.code === 200) {
 							this.toast("编辑成功")
+							window.parent.postMessage({msg: 'reload', key: 'reload'}, '*');
 							uni.navigateBack({
 								delta: 1
 							})
