@@ -263,6 +263,7 @@
 		align-items: center;
 		border: none;
 		justify-content: space-between;
+		margin-bottom: 10upx;
 	}
 
 	.platformTitleLeftDiv {
