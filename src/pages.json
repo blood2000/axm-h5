@@ -10,68 +10,59 @@
 			}
 		}
 		//统计页入口 - 渣土
-		,{
+		, {
 			"path": "pages/finance/index/index",
 			"style": {
 				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": true
 			}
+		}, {
+			"path": "pages/finance/statistic/index",
+			"style": {
+				"navigationBarTitleText": "统计",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/finance/itemChange/index",
+			"style": {
+				"navigationBarTitleText": "更改项目",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/finance/carDetail/index",
+			"style": {
+				"navigationBarTitleText": "车辆明细",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/finance/statistic/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "统计",
-				"navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/finance/itemChange/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "更改项目",
-				"navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/finance/carDetail/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "车辆明细",
-				"navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }   
-        }
 		//统计页入口 - 货主
-		,{
+		, {
 			"path": "pages/shipment/index/index",
 			"style": {
 				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
-		}
-		,{
+		}, {
 			"path": "pages/shipment/projectReport/index",
 			"style": {
 				"navigationBarTitleText": "项目报表",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
-		}
-		,{
+		}, {
 			"path": "pages/shipment/orderReport/index",
 			"style": {
 				"navigationBarTitleText": "货源报表",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
-		}
-		,{
+		}, {
 			"path": "pages/shipment/billReport/index",
 			"style": {
 				"navigationBarTitleText": "运输报表",
@@ -80,218 +71,201 @@
 			}
 		}
 		//统计页入口 - 司机
-        ,{
-            "path" : "pages/driver/index/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "统计",
+		, {
+			"path": "pages/driver/index/index",
+			"style": {
+				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }
-        },{
-		    "path" : "pages/driver/billReport/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "运输报表",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/driver/billReport/index",
+			"style": {
+				"navigationBarTitleText": "运输报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
-		},{
-		    "path" : "pages/driver/vehicleReport/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "车辆报表",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/driver/vehicleReport/index",
+			"style": {
+				"navigationBarTitleText": "车辆报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+		 }
 		}
 		//统计页入口 - 车队
-		,{
-		    "path" : "pages/team/index/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "统计",
+		, {
+			"path": "pages/team/index/index",
+		 "style": {
+				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		},{
-		    "path" : "pages/team/billReport/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "运输报表",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/team/billReport/index",
+			"style": {
+				"navigationBarTitleText": "运输报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
-		},{
-		    "path" : "pages/team/driverReport/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "司机报表",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/team/driverReport/index",
+			"style": {
+				"navigationBarTitleText": "司机报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": true
-		    }
-		},{
-		    "path" : "pages/team/vehicleReport/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "车辆报表",
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/team/vehicleReport/index",
+			"style": {
+				"navigationBarTitleText": "车辆报表",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": true
-		    }
+				"enablePullDownRefresh": true
+			}
 		}
 		//代收协议入口
-		,{
-		    "path" : "pages/protocol/collection",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "代收协议",
+		, {
+			"path": "pages/protocol/collection",
+			"style": {
+				"navigationBarTitleText": "代收协议",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		}
 		//电子合同入口 - 货主
-		,{
-		    "path" : "pages/protocol/contractShipment",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "电子合同",
+		, {
+			"path": "pages/protocol/contractShipment",
+			"style": {
+				"navigationBarTitleText": "电子合同",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		}
 		//电子合同入口 - 司机
-		,{
-		    "path" : "pages/protocol/contractDriver",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "电子合同",
+		, {
+			"path": "pages/protocol/contractDriver",
+			"style": {
+				"navigationBarTitleText": "电子合同",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		}
 		//服务协议入口
-		,{
-		    "path" : "pages/protocol/service",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "服务协议",
+		, {
+			"path": "pages/protocol/service",
+			"style": {
+				"navigationBarTitleText": "服务协议",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		},
 		//移动认证服务协议
 		{
-		    "path" : "pages/protocol/mobileService",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "移动认证服务协议",
+			"path": "pages/protocol/mobileService",
+			"style": {
+				"navigationBarTitleText": "移动认证服务协议",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		},
 		//天翼帐号服务协议
 		{
-		    "path" : "pages/protocol/tyService",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "天翼帐号服务协议",
+			"path": "pages/protocol/tyService",
+			"style": {
+				"navigationBarTitleText": "天翼帐号服务协议",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+		 }
 		},
 		//天翼帐号隐私政策
 		{
-		    "path" : "pages/protocol/tyPrivacy",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "天翼帐号隐私政策",
+			"path": "pages/protocol/tyPrivacy",
+			"style": {
+				"navigationBarTitleText": "天翼帐号隐私政策",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		}
 		//隐私政策入口
-		,{
-		    "path" : "pages/protocol/user",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "超好运平台隐私政策",
+		, {
+			"path": "pages/protocol/user",
+			"style": {
+				"navigationBarTitleText": "超好运平台隐私政策",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		}
 		//中国联通服务条款和隐私政策
-		,{
-		    "path" : "pages/protocol/ltService",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "中国联通服务条款和隐私政策",
+		, {
+			"path": "pages/protocol/ltService",
+			"style": {
+				"navigationBarTitleText": "中国联通服务条款和隐私政策",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		}
 		// 充值说明
-		,{
-		    "path" : "pages/protocol/rechargeDescription",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "充值说明",
+		, {
+		 "path": "pages/protocol/rechargeDescription",
+		 "style": {
+				"navigationBarTitleText": "充值说明",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+				"enablePullDownRefresh": false
+			}
 		},
 		// 加油入口
 		{
-		    "path" : "pages/refuel/index/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "加油",
+			"path": "pages/refuel/index/index",
+			"style": {
+				"navigationBarTitleText": "加油",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
-		},{
-		    "path" : "pages/refuel/oiling/index",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "费用支付",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/refuel/oiling/index",
+			"style": {
+				"navigationBarTitleText": "费用支付",
 				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false,
+				"enablePullDownRefresh": false,
 				"navigationBarTextStyle": "black"
-		    }
+			}
+		}, {
+			"path": "pages/download/index",
+			"style": {
+				"navigationBarTitleText": "至简至一",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
+			}
+
+		}, {
+			"path": "pages/accounting/accounting",
+			"style": {
+				"navigationBarTitleText": "至简至一",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true,
+				"navigationBarTextStyle": "black"
+			}
+
+		}, {
+			"path": "pages/accounting/accountingDetail",
+			"style": {
+				"navigationBarTitleText": "新增核算规则",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/accounting/accountingView",
+			"style": {
+				"navigationBarTitleText": "核算规则详情",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
+			}
 		}
-        ,{
-            "path" : "pages/download/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "至简至一",
-        		"navigationStyle": "custom",
-                "enablePullDownRefresh": false,
-        		"navigationBarTextStyle": "black"
-            }
-            
-        },{
-            "path" : "pages/accounting/accounting",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "至简至一",
-				"navigationStyle": "custom",
-                "enablePullDownRefresh": true,
-				"navigationBarTextStyle": "black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/accounting/accountingDetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "至简至一",
-				"navigationStyle": "custom",
-                "enablePullDownRefresh": false,
-				"navigationBarTextStyle": "black"
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "统计",

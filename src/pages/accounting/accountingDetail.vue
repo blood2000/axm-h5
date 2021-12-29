@@ -1,6 +1,6 @@
 <template>
 	<form class="container" @submit="formSubmit">
-		<MenuWhiteHeader :showBack="true">
+		<MenuWhiteHeader :showBack="true" :isSecondaryPage="false">
 			<text slot="title" style="font-weight: bold;">{{title}}</text>
 			<button class="submit" slot="menu" form-type="submit">保存</button>
 		</MenuWhiteHeader>
@@ -858,7 +858,6 @@
 		background-color: #FFFFFF;
 		font-size: 26upx;
 		display: flex;
-		font-weight: bold;
 		color: #4478E4;
 		outline-style: none;
 		outline-width: 0upx;
