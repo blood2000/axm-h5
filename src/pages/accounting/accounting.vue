@@ -122,9 +122,6 @@
 			onSubsidiesClick(sub) {
 				sub.showSubsidiesInfoMore = !sub.showSubsidiesInfoMore;
 			},
-			onDefaultStateChange(index, e) {
-				console.log(e.detail);
-			},
 			onClickAddAction() {
 				console.log("点击了添加");
 				uni.navigateTo({
