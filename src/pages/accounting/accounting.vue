@@ -1,7 +1,7 @@
 <template>
 	<view class="register">
 		<view class="root">
-			<MenuWhiteHeader :showBack="true">
+			<MenuWhiteHeader :showBack="true" :isSecondaryPage="true">
 				<text slot="title">核算规则</text>
 				<text slot="menu" @click="onClickAddAction()">新增</text>
 			</MenuWhiteHeader>
@@ -73,6 +73,14 @@
 	} from '@/config/service/accounting.js';
 	export default {
 		props: {},
+		
+		computed: {
+			...mapState({
+			  headerInfo: state => state.header.headerInfo,
+			  isAndroid: state => state.header.isAndroid,
+			  isiOS: state => state.header.isiOS
+			})
+		},
 
 		components: {
 			MenuWhiteHeader,
