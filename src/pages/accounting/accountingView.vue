@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<WhiteHeader :showBack="true" :isSecondaryPage="false">
-			<text slot="title" style="font-weight: 600;">核算规则详情</text>
+			<text slot="title" style="font-weight: bold;">核算规则详情</text>
 		</WhiteHeader>
 
 		<view class="root ly-flex ly-flex-v">
