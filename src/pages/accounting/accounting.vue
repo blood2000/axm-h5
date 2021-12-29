@@ -81,13 +81,9 @@
 			await this.$onLaunched
 			uni.startPullDownRefresh();
 
-			window.addEventListener('message', () => {
-				this.accountingData = []
-				this.queryAccountingList()
-				uni.stopPullDownRefresh(); //停止下拉刷新动画
-			})
+			window.addEventListener('message', this.handleReload)
 			this.$once('hook:beforeDestroy', () => {
-				window.removeEventListener('message', this.$_handleReload)
+				window.removeEventListener('message', this.handleReload)
 			})
 		},
 		computed: {
@@ -161,7 +157,7 @@
 			onViewDetailClick(sub) {
 				console.log("点击了查看详情");
 				uni.navigateTo({
-					url: '/pages/accounting/accountingDetail?editCode=' + sub.code
+					url: '/pages/accounting/accountingDetail?viewCode=' + sub.code
 				});
 			},
 			//获取项目列表
@@ -182,10 +178,10 @@
 					console.log(response.data.list)
 				})
 			},
-			$_handleReload() {
-				let that = this;
-				console.log("不刷新吗")
-				that.onPullDownRefresh()
+			handleReload() {
+				this.accountingData = []
+				this.queryAccountingList()
+				uni.stopPullDownRefresh(); //停止下拉刷新动画
 			},
 			toast(msg) {
 				uni.showToast({
