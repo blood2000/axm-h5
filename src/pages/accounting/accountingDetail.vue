@@ -395,7 +395,11 @@
 			},
 			//核算详情
 			queryAccountingDetail(code) {
+				uni.showLoading({
+					title: ""
+				})
 				accountingDetail(code, this.headerInfo).then(response => {
+					uni.hideLoading()
 					this.defauleName = response.data.ruleInfo.name //规则名称
 					this.isDefault = response.data.ruleInfo.isDefault === "Y" ? true : false //是否默认规则
 					this.defauleFormula = response.data.ruleInfo.ruleDictValue //计算公式
