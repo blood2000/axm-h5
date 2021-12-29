@@ -263,7 +263,6 @@
 		align-items: center;
 		border: none;
 		justify-content: space-between;
-		margin-bottom: 10upx;
 	}
 
 	.platformTitleLeftDiv {
@@ -303,7 +302,7 @@
 		margin-left: 24upx;
 		width: 34upx;
 		height: 34upx;
-		padding-top: 3upx;
+		padding-top: 0upx;
 	}
 
 	.platformDeductionLayout {
@@ -408,6 +407,7 @@
 	.bottom {
 		display: flex;
 		padding-top: 12upx;
+		padding-bottom: 12upx;
 		align-items: center;
 		flex-direction: row;
 		justify-content: space-between;
