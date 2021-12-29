@@ -302,6 +302,7 @@
 		font-weight: bold;
 		margin-top: 12upx;
 		font-size: 32upx;
+		font-family: PingFang Bold;
 	}
 
 	.closeButton {
