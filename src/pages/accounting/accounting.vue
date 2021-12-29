@@ -51,7 +51,10 @@
 							class="defaultIcon" mode="widthFix" />
 						<view class="setUpDefault">设为默认</view>
 					</view>
-					<view class="confirm" @click="onModifyClick(sub)">修改</view>
+					<view class="detailAndModify">
+						<view class="detail" @click="onViewDetailClick(sub)">详情</view>
+						<view class="confirm" @click="onModifyClick(sub)">修改</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -145,6 +148,12 @@
 					url: '/pages/accounting/accountingDetail?editCode='+sub.code
 				});
 			},
+			onViewDetailClick(sub) {
+				console.log("点击了查看详情");
+				uni.navigateTo({
+					url: '/pages/accounting/accountingDetail?editCode='+sub.code
+				});
+			},
 			//获取项目列表
 			queryAccountingList() {
 				console.log("获取项目列表");
@@ -199,16 +208,6 @@
 		height: 1upx;
 	}
 
-	.detail {
-		color: #4478e4;
-		height: 100%;
-		display: flex;
-		margin-right: 12upx;
-		justify-content: center;
-		align-items: center;
-		font-size: 14upx;
-	}
-
 	.back {
 		color: #4478e4;
 		height: 100%;
@@ -256,6 +255,15 @@
 		flex-direction: row;
 		align-items: center;
 		border: none;
+	}
+	
+	.detailAndModify {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		border: none;
+		justify-content: space-between;
+		margin-bottom: 10upx;
 	}
 
 	.platformTitleLeftDiv {
@@ -426,7 +434,33 @@
 		border-color: #4478e4;
 	}
 
+	.detail {
+		background-color: #4478e4;
+		border-radius: 5upx;
+		height: 56upx;
+		width: 110upx;
+		margin-right: 23upx;
+		text-align: center;
+		border: none;
+		font-size: 28upx;
+		color: white;
+		padding-top: 8upx;
+	}
+	
 	.confirm {
+		background-color: #4478e4;
+		border-radius: 5upx;
+		height: 56upx;
+		width: 110upx;
+		margin-right: 23upx;
+		text-align: center;
+		border: none;
+		font-size: 28upx;
+		color: white;
+		padding-top: 8upx;
+	}
+	
+	.detail {
 		background-color: #4478e4;
 		border-radius: 5upx;
 		height: 56upx;
