@@ -304,8 +304,8 @@
 		},
 		data() {
 			return {
-				editCode:null,
-				title: "新增核算规则",
+				editCode: null,
+				title: "核算规则",
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
 				accountingSelected: false,
@@ -395,7 +395,11 @@
 			},
 			//核算详情
 			queryAccountingDetail(code) {
+				uni.showLoading({
+					title: ""
+				})
 				accountingDetail(code, this.headerInfo).then(response => {
+					uni.hideLoading()
 					this.defauleName = response.data.ruleInfo.name //规则名称
 					this.isDefault = response.data.ruleInfo.isDefault === "Y" ? true : false //是否默认规则
 					this.defauleFormula = response.data.ruleInfo.ruleDictValue //计算公式
@@ -447,7 +451,12 @@
 											value: null
 										}
 									}
-									e.detail.value = i
+									let dict = this.dictMap[detail[i].dictCode]
+									for (var j = 0; j < dict.length; j++) {
+										if (detail[i].ruleValue === dict[j].dictValue) {
+											e.detail.value = j
+										}
+									}
 									this.onProjectSpinnerSelect(e, detail[i], true)
 								} else if (detail[i].showType === 1) {
 									let e = {
@@ -469,7 +478,12 @@
 											value: null
 										}
 									}
-									e.detail.value = i
+									let dict = this.dictMap[detail[i].dictCode]
+									for (var j = 0; j < dict.length; j++) {
+										if (detail[i].ruleValue === dict[j].dictValue) {
+											e.detail.value = j
+										}
+									}
 									this.onProjectSpinnerSelect(e, detail[i], false)
 								} else if (detail[i].showType === 1) {
 									let e = {
@@ -493,20 +507,21 @@
 			 * */
 			onProjectSpinnerSelect(e, item, isDeduction) {
 				const index = e.detail.value
+				console.log('index --->', index)
 				this.accountingM0SelectName = this.dictMap[item.dictCode]. [index].dictLabel
 				this.accountingM0SelectCode = this.dictMap[item.dictCode]. [index].dictValue
 				this.accountingM0Selected = true
 				let tempDeduction = {}
-				if (this.editCode === null) {
-					tempDeduction.ruleItemCode = item.code
+				let code = null
+				if (this.editCode !== undefined) {
+					code = item.ruleItemCode === undefined ? item.code : item.ruleItemCode
 				} else {
-					tempDeduction.ruleItemCode = item.ruleItemCode
+					code = item.code
 				}
+				tempDeduction.ruleItemCode = code
 				tempDeduction.ruleValue = this.accountingM0SelectCode
 				tempDeduction.type = isDeduction ? 2 : 1
 
-				let code = (this.editCode === null ? item.code : item.ruleItemCode)
-				console.log(this.editCode === null, ' - - - ', code)
 				for (var i = 0; i < this.detailList.length; i++) {
 					if (this.detailList[i].ruleItemCode === code) {
 						this.detailList.splice(i, 1)
@@ -524,7 +539,6 @@
 				} else {
 					code = item.code
 				}
-				console.log(code)
 				tempDeduction.ruleItemCode = code
 				tempDeduction.ruleValue = input.detail.value
 				tempDeduction.type = 2
@@ -618,8 +632,24 @@
 					}
 				}
 				if (this.popupTypeIsDeduction === "true") {
+					for (var j = 0; j < this.tempDeductionProject.length; j++) {
+						for (var i = 0; i < tempSelectProject.length; i++) {
+							if ((tempSelectProject[i].cnName === this.tempDeductionProject[j].cnName) && this
+								.tempDeductionProject[j].showType !== 3) {
+								tempSelectProject[i].ruleValue = this.tempDeductionProject[j].ruleValue
+							}
+						}
+					}
 					this.tempDeductionProject = tempSelectProject
 				} else {
+					for (var j = 0; j < this.tempSubsidiesProject.length; j++) {
+						for (var i = 0; i < tempSelectProject.length; i++) {
+							if ((tempSelectProject[i].cnName === this.tempSubsidiesProject[j].cnName) && this
+								.tempSubsidiesProject[j].showType !== 3) {
+								tempSelectProject[i].ruleValue = this.tempSubsidiesProject[j].ruleValue
+							}
+						}
+					}
 					this.tempSubsidiesProject = tempSelectProject
 				}
 			},
@@ -656,7 +686,10 @@
 							}
 						}
 						if (this.editCode !== undefined) {
+							this.title = "编辑核算规则"
 							this.queryAccountingDetail(this.editCode)
+						}else{
+							this.title = "新增核算规则"
 						}
 					} else if (param === 1) {
 						let result = response.data.list
@@ -778,14 +811,14 @@
 				uni.showLoading({
 					title: ""
 				})
-				if (this.editCode === null) {
+				if (this.editCode === null || this.editCode === undefined) {
 					addAccounting(saveParam, this.headerInfo).then(response => {
 						uni.hideLoading()
 						if (response.code === 200) {
 							this.toast("新增成功")
-							// uni.navigateBack({
-							// 	delta: 1
-							// })
+							uni.navigateBack({
+								delta: 1
+							})
 						}
 					})
 				} else {
@@ -794,9 +827,9 @@
 						uni.hideLoading()
 						if (response.code === 200) {
 							this.toast("编辑成功")
-							// uni.navigateBack({
-							// 	delta: 1
-							// })
+							uni.navigateBack({
+								delta: 1
+							})
 						}
 					})
 				}
