@@ -9,17 +9,17 @@
 			<view class="cardRow">
 				<view>
 					<text class="rowLabel">规则名称</text>
-					<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+					<image type="icon" class="required" style="width: 32rpx; height: 32rpx; "
 						src="@/static/ic_required.png" />
 				</view>
 				<input class="rowInput" name="name" placeholder-class="placeholderStyle" maxlength="12" type="text"
 					placeholder="请输入规则名称" :value="defauleName" />
 			</view>
-			<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view class="cardRow" style="margin-top: 28upx;">
+			<view style="width: 100%; height: 1rpx; background-color: #EBEBEB;margin-top: 28rpx;" />
+			<view class="cardRow" style="margin-top: 28rpx;">
 				<view>
 					<text class="rowLabel">计算公式</text>
-					<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+					<image type="icon" class="required" style="width: 32rpx; height: 32rpx; "
 						src="@/static/ic_required.png" />
 				</view>
 				<view class="flex justify-center" style="align-items: center;">
@@ -29,25 +29,25 @@
 							{{accountingSelectName}}
 						</view>
 					</picker>
-					<image style="margin-left:12upx;width: 18upx; height: 10upx;"
+					<image style="margin-left:12rpx;width: 18rpx; height: 10rpx;"
 						src="@/static/ic_weighing_arrow_down.png" />
 				</view>
 			</view>
-			<view style="width: 100%; height: 2upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view class="cardRow" style="margin-top: 28upx;">
+			<view style="width: 100%; height: 2rpx; background-color: #EBEBEB;margin-top: 28rpx;" />
+			<view class="cardRow" style="margin-top: 28rpx;">
 				<view style="display: flex; justify-content: center;align-items: center;">
 					<text class="rowLabel">默认规则</text>
 					<checkbox-group class="checkBoxCircle" name="isDefault">
-						<checkbox style="transform:scale(0.7)" :checked="isDefault" value="true"></checkbox>
+						<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4" :checked="isDefault" value="true"></checkbox>
 					</checkbox-group>
 				</view>
 			</view>
-			<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view class="cardRow" style="margin-top: 28upx;">
+			<view style="width: 100%; height: 1rpx; background-color: #EBEBEB;margin-top: 28rpx;" />
+			<view class="cardRow" style="margin-top: 28rpx;">
 				<view style="display: flex; justify-content: center;align-items: center;">
 					<text class="rowLabel">计算路耗</text>
 					<checkbox-group class="checkBoxCircle" @change="calePathLossToggle" name="ruleLoseToggle">
-						<checkbox style="transform:scale(0.7)" :value="calePathLossFlag" :checked="calePathLoss">
+						<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4" :value="calePathLossFlag" :checked="calePathLoss">
 						</checkbox>
 					</checkbox-group>
 				</view>
@@ -55,8 +55,8 @@
 			<view class="roleLossView" v-if="calePathLoss">
 				<view class="roleLossItem">
 					<view style="display: flex; flex-direction: row; ">
-						<text class="rowLabel">路耗规则</text>
-						<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+						<text class="roadLossLabel">路耗规则</text>
+						<image type="icon" class="required" style="width: 32rpx; height: 32rpx; "
 							src="@/static/ic_required.png" />
 					</view>
 					<view class="roleLoss">
@@ -64,17 +64,17 @@
 							rangeKey="dictLabel" @change="onFormulaSelect" name="ruleLoseRegular">
 							<view class="ruleFomelaView" :style='{color:formulaSelected?"#333333":"#999999"}'>
 								<text>{{formulaSelectName}}</text>
-								<image style="margin-left:12upx;width: 18upx; height: 10upx;"
+								<image style="margin-left:12rpx;width: 18rpx; height: 10rpx;"
 									src="@/static/ic_weighing_arrow_down.png" />
 							</view>
 						</picker>
 					</view>
 				</view>
-				<view class="roleLossItem" style="margin-top: 28upx;">
+				<view class="roleLossItem" style="margin-top: 28rpx;">
 					<view class="shemeItem">
 						<view style="display: flex; flex-direction: row;">
-							<text class="rowLabel">路耗亏吨方案</text>
-							<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+							<text class="roadLossLabel">路耗亏吨方案</text>
+							<image type="icon" class="required" style="width: 32rpx; height: 32rpx; "
 								src="@/static/ic_required.png" />
 						</view>
 						<view style="display: flex; flex-direction: column;">
@@ -82,8 +82,8 @@
 								<label class="uni-list-cell uni-list-cell-pd radioButton"
 									v-for="(item, index) in scheme" :key="item.dictLabel">
 									<view style="display: flex;">
-										<radio :value="item.dictValue" :checked="index === currentsSheme" />
-										<view style="margin-left: 24upx; text-align: center;">{{item.dictLabel}}</view>
+										<radio :value="item.dictValue" color="#4478E4" :checked="index === currentsSheme" />
+										<view style="margin-left: 24rpx; text-align: center;">{{item.dictLabel}}</view>
 									</view>
 								</label>
 							</radio-group>
@@ -91,31 +91,31 @@
 					</view>
 				</view>
 				<view class="shemeItem">
-					<view class="ruleFomelaView" style="margin-right: 24upx;">-</view>
+					<view class="ruleFomelaView" style="margin-right: 24rpx;">-</view>
 					<view class="shemeInput">
-						<input type="digit" :value="defaultSchemeMin" style="font-size: 26upx;" placeholder="最小值"
+						<input type="digit" :value="defaultSchemeMin" style="font-size: 26rpx;" placeholder="最小值"
 							name="ruleLossMin" />
 						<text style="color: #666666;">{{schemeUnit[currentsUnitSheme].schemeUnitName}}</text>
 					</view>
-					<view class="ruleFomelaView" style="margin-left: 24upx;margin-right: 24upx;">至</view>
+					<view class="ruleFomelaView" style="margin-left: 24rpx;margin-right: 24rpx;">至</view>
 					<view class="shemeInput">
-						<input type="digit" :value="defaultSchemeMax" style="font-size: 26upx;" placeholder="最大值"
+						<input type="digit" :value="defaultSchemeMax" style="font-size: 26rpx;" placeholder="最大值"
 							name="ruleLossMax" />
 						<text style="color: #666666;">{{schemeUnit[currentsUnitSheme].schemeUnitName}}</text>
 					</view>
 				</view>
 			</view>
 			<view v-if="calePathLoss === false"
-				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
+				style="width: 100%; height: 1rpx; background-color: #EBEBEB;margin-top: 28rpx;" />
+			<view style="display: flex; flex-direction: column; margin-top: 28rpx;">
 				<view class="cardRow">
 					<text class="rowLabel">扣费项目</text>
-					<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+					<image type="icon" class="required" style="width: 39rpx; height: 39rpx; "
 						src="@/static/ic_accounting_plus.png" @click="onDeductionPlusClick" />
 				</view>
 				<view v-if="currentDeductionProject.length > 0" class="projectRoot">
 					<view v-for="(item,index) in currentDeductionProject" class="projectItem" name="deduction"
-						style="margin-top: 28upx;">
+						style="margin-top: 28rpx;">
 						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
 							<text style="width: 30%; text-align: start; font-weight: bold;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
@@ -123,23 +123,23 @@
 								<view v-if="item.showType === 1" class="showTypeInputView">
 									<input class="ruleInput" name="typpInput" type="digit" :value="item.ruleValue"
 										@input="(e)=>onDeductionInput(e,item,false)" />
-									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+									<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 										src="@/static/ic_accounting_delete.png"
 										@click="()=>deleteProject(currentDeductionProject,index)" />
 								</view>
 								<view v-if="item.showType === 2">
 									<view class="projectItemArea">
-										<view class="ruleFomelaView" style="margin-right: 12upx;">-</view>
+										<view class="ruleFomelaView" style="margin-right: 12rpx;">-</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26upx;" />
+											<input type="digit" style="font-size: 26rpx;" />
 										</view>
-										<view class="ruleFomelaView" style="margin-left: 12upx;margin-right: 12upx;">至
+										<view class="ruleFomelaView" style="margin-left: 12rpx;margin-right: 12rpx;">至
 										</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26upx;" />
+											<input type="digit" style="font-size: 26rpx;" />
 										</view>
 										<view class="ly-flex ly-flex-align-center">
-											<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+											<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 												src="@/static/ic_accounting_delete.png"
 												@click="()=>deleteProject(currentDeductionProject,index)" />
 										</view>
@@ -155,7 +155,7 @@
 												{{accountingM0SelectName}}
 											</view>
 										</picker>
-										<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+										<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 											src="@/static/ic_accounting_delete.png"
 											@click="()=>deleteProject(currentDeductionProject,index)" />
 									</view>
@@ -167,7 +167,7 @@
 											v-for="(item, index) in dictMap[item.dictCode]" :key="item.dictLabel">
 											<view class="ly-flex ly-flex-align-center">
 												<radio :value="item.dictValue" :checked="index === currentsSheme" />
-												<view style="margin-left: 12upx; text-align: center;">{{item.dictLabel}}
+												<view style="margin-left: 12rpx; text-align: center;">{{item.dictLabel}}
 												</view>
 											</view>
 										</label>
@@ -179,15 +179,15 @@
 				</view>
 			</view>
 			<view v-if="currentDeductionProject.length === 0"
-				style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 28upx;" />
-			<view style="display: flex; flex-direction: column; margin-top: 28upx;">
+				style="width: 100%; height: 1rpx; background-color: #EBEBEB;margin-top: 28rpx;" />
+			<view style="display: flex; flex-direction: column; margin-top: 28rpx;">
 				<view class="cardRow">
 					<text class="rowLabel">补贴项目</text>
-					<image type="icon" class="required" style="width: 32upx; height: 32upx; "
+					<image type="icon" class="required" style="width: 39rpx; height: 39rpx; "
 						src="@/static/ic_accounting_plus.png" @click="onSubsidiesPlusClick" />
 				</view>
 				<view v-if="currentSubsidiesProject.length > 0" class="projectRoot" name="project">
-					<view v-for="(item,index) in currentSubsidiesProject" style="margin-top: 28upx;" name="subsidies">
+					<view v-for="(item,index) in currentSubsidiesProject" style="margin-top: 28rpx;" name="subsidies">
 						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
 							<text style="width: 30%; text-align: start; font-weight: bold;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
@@ -195,23 +195,23 @@
 								<view v-if="item.showType === 1" class="showTypeInputView">
 									<input class="ruleInput" @input="(e)=>onSubsidiesInput(e,item,false)"
 										:value="item.ruleValue" />
-									<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+									<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 										src="@/static/ic_accounting_delete.png"
 										@click="()=>deleteProject(currentSubsidiesProject,index)" />
 								</view>
 								<view v-if="item.showType === 2">
 									<view class="projectItemArea">
-										<view class="ruleFomelaView" style="margin-right: 12upx;">-</view>
+										<view class="ruleFomelaView" style="margin-right: 12rpx;">-</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26upx;" />
+											<input type="digit" style="font-size: 26rpx;" />
 										</view>
-										<view class="ruleFomelaView" style="margin-left: 12upx;margin-right: 12upx;">至
+										<view class="ruleFomelaView" style="margin-left: 12rpx;margin-right: 12rpx;">至
 										</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26upx;" />
+											<input type="digit" style="font-size: 26rpx;" />
 										</view>
 										<view class="ly-flex ly-flex-align-center">
-											<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+											<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 												src="@/static/ic_accounting_delete.png"
 												@click="()=>deleteProject(currentSubsidiesProject,index)" />
 										</view>
@@ -226,7 +226,7 @@
 												{{accountingM0SelectName}}
 											</view>
 										</picker>
-										<image type="icon" style="width: 39upx; height: 39upx; margin-left: 24upx;"
+										<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 											src="@/static/ic_accounting_delete.png"
 											@click="()=>deleteProject(currentSubsidiesProject,index)" />
 									</view>
@@ -238,7 +238,7 @@
 											v-for="(item, index) in dictMap[item.dictCode]" :key="item.dictLabel">
 											<view class="ly-flex ly-flex-align-center">
 												<radio :value="item.dictValue" :checked="index === currentsSheme" />
-												<view style="margin-left: 12upx; text-align: center;">{{item.dictLabel}}
+												<view style="margin-left: 12rpx; text-align: center;">{{item.dictLabel}}
 												</view>
 											</view>
 										</label>
@@ -253,7 +253,7 @@
 
 		<uni-popup ref="popup">
 			<view class="projectDialog">
-				<checkbox-group style="width: 100%; padding-top: 4upx; padding-bottom: 4upx;" @change="projectChange">
+				<checkbox-group style="width: 100%; padding-top: 4rpx; padding-bottom: 4rpx;" @change="projectChange">
 					<label style="width: 100%;" v-for="(item, index) in projectList" :key="item.cnName"
 						:value="item.code">
 						<view class="popupProjectItem">
@@ -263,10 +263,10 @@
 									:checked="initProjectChecked(item)" :disabled="initProjectDisable(item)" />
 							</view>
 						</view>
-						<view style="width: 100%; height: 1upx; background-color: #EBEBEB;margin-top: 18upx;" />
+						<view style="width: 100%; height: 1rpx; background-color: #EBEBEB;margin-top: 18rpx;" />
 					</label>
 				</checkbox-group>
-				<view style="display: flex; margin-top: 18upx;">
+				<view style="display: flex; margin-top: 18rpx;">
 					<button class="projectCancel" @click="close">取消</button>
 					<button class="projectConfirm" @click="onProjectSelected">确定</button>
 				</view>
@@ -854,18 +854,18 @@
 	}
 
 	.submit {
-		border-radius: 0upx;
+		border-radius: 0rpx;
 		background-color: #FFFFFF;
-		font-size: 26upx;
+		font-size: 26rpx;
 		display: flex;
 		color: #4478E4;
 		outline-style: none;
-		outline-width: 0upx;
+		outline-width: 0rpx;
 		outline: none;
 		border: none;
-		border-radius: 0upx;
+		border-radius: 0rpx;
 		border-color: #00000000;
-		min-width: 110upx;
+		min-width: 110rpx;
 	}
 
 	button::after {
@@ -874,8 +874,8 @@
 
 	.cardView {
 		background-color: #FFFFFF;
-		border-radius: 10upx;
-		margin: 16upx;
+		border-radius: 10rpx;
+		margin: 16rpx;
 		padding: 12px;
 		display: flex;
 		justify-content: center;
@@ -890,34 +890,39 @@
 	}
 
 	.rowLabel {
-		font-size: 26upx;
+		font-size: 32rpx;
 		font-weight: bold;
-		font-style: bold;
+		color: #333333;
+	}
+	.roadLossLabel {
+		font-size: 28rpx;
+		font-weight: bold;
 		color: #333333;
 	}
 
 	.rowValue {
-		font-size: 26upx;
+		font-size: 26rpx;
 		align-items: center;
 		display: flex;
+		color: #333333;
 		justify-content: flex-end;
-		min-width: 150upx;
-		min-height: 50upx;
+		min-width: 150rpx;
+		min-height: 50rpx;
 	}
 
 	.rowInput {
-		font-size: 26upx;
+		font-size: 26rpx;
 		color: #333333;
 		align-items: center;
 		display: flex;
-		min-height: 0upx;
-		min-width: 0upx;
+		min-height: 0rpx;
+		min-width: 0rpx;
 		text-align: end;
 	}
 
 	.placeholderStyle {
 		color: #999999;
-		font-size: 26upx;
+		font-size: 26rpx;
 	}
 
 	.required {
@@ -925,17 +930,18 @@
 	}
 
 	.checkBoxCircle {
-		margin-left: 12upx;
+		margin-left: 12rpx;
+		color: #4478E4;
 	}
 
 	.roleLossView {
-		margin-top: 24upx;
-		padding: 24upx;
+		margin-top: 24rpx;
+		padding: 24rpx;
 		background-color: #F2F7FF;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		border-radius: 14upx;
+		border-radius: 14rpx;
 	}
 
 	.roleLossItem {
@@ -961,17 +967,17 @@
 	}
 
 	.ruleInput {
-		font-size: 26upx;
+		font-size: 26rpx;
 		color: #333333;
 		align-items: center;
 		display: flex;
 		background-color: #FFFFFF;
-		padding-right: 12upx;
+		padding-right: 12rpx;
 		justify-content: flex-end;
-		min-width: 356upx;
-		width: 356upx;
-		padding-left: 12upx;
-		min-height: 60upx;
+		min-width: 356rpx;
+		width: 356rpx;
+		padding-left: 12rpx;
+		min-height: 60rpx;
 		text-align: right;
 	}
 
@@ -987,25 +993,25 @@
 
 	.shemeItem {
 		display: flex;
-		margin-top: 28upx;
+		margin-top: 28rpx;
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-end;
 	}
 
 	.shemeInput {
-		font-size: 24upx;
+		font-size: 24rpx;
 		color: #333333;
 		background-color: #FFFFFF;
-		padding-right: 12upx;
-		min-width: 200upx;
+		padding-right: 12rpx;
+		min-width: 200rpx;
 		align-items: center;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		width: 200upx;
-		padding-left: 12upx;
-		min-height: 60upx;
+		width: 200rpx;
+		padding-left: 12rpx;
+		min-height: 60rpx;
 	}
 
 	.radioGroup {
@@ -1016,20 +1022,20 @@
 	}
 
 	.radioButton {
-		margin-left: 36upx;
+		margin-left: 36rpx;
 		display: flex;
 		text-align: center;
 		align-items: center;
 		justify-content: center;
-		font-size: 36upx;
+		font-size: 36rpx;
 
 	}
 
 	.projectDialog {
-		padding-bottom: 24upx;
+		padding-bottom: 24rpx;
 		background-color: #FFFFFF;
 		width: calc(80vw);
-		border-radius: 20upx;
+		border-radius: 20rpx;
 		text-align: center;
 	}
 
@@ -1037,43 +1043,43 @@
 		display: flex;
 		width: 100%;
 		flex-direction: row;
-		font-size: 36upx;
+		font-size: 36rpx;
 		transform: scale(0.7);
-		margin-top: 28upx;
-		margin-bottom: 28upx;
+		margin-top: 28rpx;
+		margin-bottom: 28rpx;
 		justify-content: space-between;
 		align-items: center;
 	}
 
 	.projectCancel {
-		border-radius: 10upx;
-		border-width: 2upx;
+		border-radius: 10rpx;
+		border-width: 2rpx;
 		color: #999999;
 		background-color: #FFFFFF;
-		min-width: 245upx;
-		max-height: 78upx;
-		font-size: 26upx;
+		min-width: 245rpx;
+		max-height: 78rpx;
+		font-size: 26rpx;
 	}
 
 	.projectConfirm {
-		border-radius: 10upx;
-		border-width: 3upx;
+		border-radius: 10rpx;
+		border-width: 3rpx;
 		color: #FFFFFF;
 		background-color: #4478E4;
-		min-width: 245upx;
-		max-height: 78upx;
-		font-size: 26upx;
+		min-width: 245rpx;
+		max-height: 78rpx;
+		font-size: 26rpx;
 	}
 
 	.projectRoot {
 		background-color: #F2F7FF;
 		display: flex;
 		flex-direction: column;
-		margin-top: 24upx;
-		padding-left: 24upx;
-		padding-right: 24upx;
-		padding-bottom: 28upx;
-		border-radius: 14upx;
+		margin-top: 24rpx;
+		padding-left: 24rpx;
+		padding-right: 24rpx;
+		padding-bottom: 28rpx;
+		border-radius: 14rpx;
 	}
 
 	.projectItem {
@@ -1109,17 +1115,17 @@
 	}
 
 	.projectItemAreaInput {
-		font-size: 24upx;
+		font-size: 24rpx;
 		color: #333333;
 		background-color: #FFFFFF;
-		padding-right: 12upx;
-		min-width: 140upx;
+		padding-right: 12rpx;
+		min-width: 140rpx;
 		align-items: center;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		width: 200upx;
-		padding-left: 12upx;
-		min-height: 60upx;
+		width: 200rpx;
+		padding-left: 12rpx;
+		min-height: 60rpx;
 	}
 </style>
