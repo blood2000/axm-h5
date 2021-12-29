@@ -305,7 +305,7 @@
 		data() {
 			return {
 				editCode: null,
-				title: "新增核算规则",
+				title: "核算规则",
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
 				accountingSelected: false,
@@ -686,7 +686,10 @@
 							}
 						}
 						if (this.editCode !== undefined) {
+							this.title = "编辑核算规则"
 							this.queryAccountingDetail(this.editCode)
+						}else{
+							this.title = "新增核算规则"
 						}
 					} else if (param === 1) {
 						let result = response.data.list
