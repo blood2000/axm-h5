@@ -49,8 +49,8 @@
 
     uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked {
         color: #fff;
-        border-color: #4478E4;
-        background: #4478E4;
+        border-color: rgb(0, 122, 255);
+        background: rgb(0, 122, 255);
     }
 
     uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked:after {

@@ -7,20 +7,14 @@ var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
 // 这是必须要写的，用来初始化一些设置
 function setupWebViewJavascriptBridge(callback) {
-	if (window.WebViewJavascriptBridge) {
-		return callback(WebViewJavascriptBridge);
-	}
-	if (window.WVJBCallbacks) {
-		return window.WVJBCallbacks.push(callback);
-	}
+	if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+	if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
 	window.WVJBCallbacks = [callback];
 	var WVJBIframe = document.createElement('iframe');
 	WVJBIframe.style.display = 'none';
 	WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
 	document.documentElement.appendChild(WVJBIframe);
-	setTimeout(function() {
-		document.documentElement.removeChild(WVJBIframe)
-	}, 0)
+	setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
 }
 
 function iosPromise() {
@@ -38,12 +32,10 @@ function iosPromise() {
 // ios
 if (isiOS) {
 	setDevice('isiOS');
-	let params = {
-		a: 123
-	};
+	let params = {a: 123};
 	iosPromise().then(() => {
 		Vue.prototype.$WebViewJavascriptBridge = WebViewJavascriptBridge;
-		WebViewJavascriptBridge.callHandler('getLoginUserInfo', params, function(response) {
+		WebViewJavascriptBridge.callHandler('getLoginUserInfo',params,function(response) {
 			saveAppParams(response);
 		});
 	})
@@ -52,7 +44,7 @@ if (isiOS) {
 // Android
 if (isAndroid) {
 	setDevice('isAndroid');
-	if (window.Android !== null && typeof(window.Android) !== 'undefined') {
+	if(window.Android !== null && typeof(window.Android) !== 'undefined') {
 		const test = window.Android.callAndroid('hello!');
 		saveAppParams(JSON.parse(test));
 	}
@@ -71,24 +63,23 @@ function saveAppParams(response) {
 	});
 	store.dispatch('getStatusBarHeightAction', response['statusBarHeight']);
 }
-
 function setDevice(val) {
 	store.dispatch('getDeviceAction', val);
 }
 
 // 前端开发测试使用 - 货主
-setTimeout(() => {
-	saveAppParams({
-		"Authorization": "1452a1d4-3eb0-4722-bfc7-1931f17a1dda",
-		"App-Type": "1",
-		"App-Code": "9d3017728cb34eac947ba350c4e997be",
-		"Terminal-Type": "app",
-		"App-Version": "2.0",
-		"Produce-Code": "776ca8e240574192b6e0f69b417163df",
-		"statusBarHeight": 25,
-		"role-type": 3
-	})
-}, 0)
+// setTimeout(() => {
+// 	saveAppParams({
+// 		"Authorization":"4e37352a-5108-4d42-853e-cf4e8865ee07",
+// 		"App-Type":"1",
+// 		"App-Code":"3f78fbfc13b14fa4b3d78665124ef4bb",
+// 		"Terminal-Type":"app",
+// 		"App-Version":"2.0",
+// 		"Produce-Code":"776ca8e240574192b6e0f69b417163df",
+// 		"statusBarHeight": 0,
+// 		"role-type":3
+// 	})
+// }, 0)
 
 // 前端开发测试使用 - 司机
 // setTimeout(() => {

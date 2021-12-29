@@ -33,8 +33,7 @@
 						<text class="secondLabel">路耗亏吨方案</text>
 						<text class="secondValue">{{ruleLossPlan}}</text>
 					</view>
-					<view class="secondItem ly-flex ly-flex-align-center ly-flex-pack-end" 
-					style="width: 100%; justify-content: flex-end;">
+					<view class="secondItem ly-flex ly-flex-align-center ly-flex-pack-end">
 						<text class="ruleLossValueFont">{{defaultSchemeMin}}</text>
 						<text style="font-size: 26rpx;">至</text>
 						<text class="ruleLossValueAfter">{{defaultSchemeMax}}</text>
@@ -110,11 +109,6 @@
 			await this.$onLaunched
 			this.queryAccountingDetail(this.viewCode)
 		},
-
-		async onLoad(option) {
-			await this.$onLaunched;
-			this.viewCode = option.viewCode;
-		},
 		methods: {
 			//核算详情
 			queryAccountingDetail(code) {
@@ -153,6 +147,7 @@
 									}
 								}
 							}
+							console.log(item)
 							this.deductionProject.push(item)
 						} else if (item.dictCode === "lossPlan") {
 							//路耗 亏吨方案
@@ -191,7 +186,7 @@
 		background-color: #FFFFFF;
 		border-radius: 20rpx;
 		margin: 24rpx;
-		padding-bottom: 24rpx;
+		padding-bottom: 8rpx;
 	}
 
 	.item {
@@ -263,7 +258,7 @@
 		justify-content: flex-end;
 		display: flex;
 		flex-direction: row;
-		min-width: 160rpx;
+		min-width: 100rpx;
 		min-height: 60rpx;
 	}
 
@@ -279,7 +274,7 @@
 		justify-content: flex-end;
 		display: flex;
 		flex-direction: row;
-		min-width: 160rpx;
+		min-width: 100rpx;
 		min-height: 60rpx;
 	}
 

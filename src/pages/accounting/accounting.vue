@@ -160,7 +160,7 @@
 				});
 			},
 			onViewDetailClick(sub) {
-				console.log("点击了查看详情",);
+				console.log("点击了查看详情");
 				uni.navigateTo({
 					url: '/pages/accounting/accountingView?viewCode=' + sub.code
 				});
