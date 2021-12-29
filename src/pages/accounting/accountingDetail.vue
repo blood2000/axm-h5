@@ -1,7 +1,7 @@
 <template>
 	<form class="container" @submit="formSubmit">
 		<MenuWhiteHeader :showBack="true">
-			<text slot="title">{{title}}</text>
+			<text slot="title" style="font-weight: bold;">{{title}}</text>
 			<button class="submit" slot="menu" form-type="submit">保存</button>
 		</MenuWhiteHeader>
 		<SimplePopup ref="simple" :list="dictMap.ruleFormula" :toggle="simpleToggle" />
@@ -117,7 +117,7 @@
 					<view v-for="(item,index) in currentDeductionProject" class="projectItem" name="deduction"
 						style="margin-top: 28upx;">
 						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
-							<text style="width: 30%; text-align: start;">{{item.cnName}}</text>
+							<text style="width: 30%; text-align: start; font-weight: bold;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
 							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
 								<view v-if="item.showType === 1" class="showTypeInputView">
@@ -189,7 +189,7 @@
 				<view v-if="currentSubsidiesProject.length > 0" class="projectRoot" name="project">
 					<view v-for="(item,index) in currentSubsidiesProject" style="margin-top: 28upx;" name="subsidies">
 						<view class="showTypeInput ly-flex-align-center  ly-flex-pack-justify">
-							<text style="width: 30%; text-align: start;">{{item.cnName}}</text>
+							<text style="width: 30%; text-align: start; font-weight: bold;">{{item.cnName}}</text>
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
 							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
 								<view v-if="item.showType === 1" class="showTypeInputView">
@@ -688,7 +688,7 @@
 						if (this.editCode !== undefined) {
 							this.title = "编辑核算规则"
 							this.queryAccountingDetail(this.editCode)
-						}else{
+						} else {
 							this.title = "新增核算规则"
 						}
 					} else if (param === 1) {
@@ -847,16 +847,28 @@
 </script>
 
 <style scoped>
+	.uni-botton:after {
+		border: none;
+	}
+
 	.submit {
 		border-radius: 0upx;
 		background-color: #FFFFFF;
 		font-size: 26upx;
 		display: flex;
+		font-weight: bold;
+		color: #4478E4;
 		outline-style: none;
 		outline-width: 0upx;
 		outline: none;
-		border: 0px;
+		border: none;
+		border-radius: 0upx;
+		border-color: #00000000;
 		min-width: 110upx;
+	}
+
+	button::after {
+		border: none
 	}
 
 	.cardView {
@@ -878,7 +890,7 @@
 
 	.rowLabel {
 		font-size: 26upx;
-		font-family: bold;
+		font-weight: bold;
 		font-style: bold;
 		color: #333333;
 	}
