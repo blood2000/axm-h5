@@ -13,7 +13,7 @@
 					</view>
 					<img class="closeButton" src="/static/icon_close.png" @click="onClickDeleteAction(sub)" />
 				</view>
-				<view class="freight">运费=装卸货最小数量*运费单价+增项-减项</view>
+				<view class="freight">{{sub.ruleFormula}}</view>
 				<view class="platformDeductionLayout">
 					<view class="platformDeduction">扣费项目</view>
 					<view :class="sub.showDecutionInfoMore ? 'deductionBgLarge' : 'deductionBgSmall'">
