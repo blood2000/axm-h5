@@ -26,6 +26,18 @@ Vue.config.productionTip = false;
 
 App.mpType = 'app'
 
+
+// 高德地图vue组件库
+import VueAMap from 'vue-amap';
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+  key: '2066cb0dafaa492aee47fa1090227a38', // 高德企业key
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.Driving', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor', 'AMap.Geocoder', 'AMap.Marker','AMap.CitySearch','AMap.Geocoder'],
+  v: '1.4.4',
+  uiVersion: '1.1.1'
+});
+
+
 const app = new Vue({
     ...App,
 	store

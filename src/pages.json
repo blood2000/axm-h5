@@ -264,6 +264,14 @@
 				"enablePullDownRefresh": false,
 				"navigationBarTextStyle": "black"
 			}
+		}, {
+			"path": "pages/address/electronicFence",
+			"style": {
+				"navigationBarTitleText": "电子围栏",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
