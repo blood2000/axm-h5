@@ -60,44 +60,7 @@
 			events: {}
 		},
 		onShow() {},
-		onLoad(options) {
-			const _this = this
-			if (options.data) {
-				this.form = JSON.parse(options.data)
-				this.title = '编辑电子围栏'
-			}
-			if (this.form.geomText === null) {
-				return
-			}
-			let temp = this.form.geomText.split(',')
-			if (this.form.geomType === 3) {
-				//多边形
-				for (var i = 0; i < temp.length; i = i + 2) {
-					this.polygon.path.push([temp[i], temp[i + 1]])
-				}
-				this.reDraw()
-				this.drawPolygon()
-				//不设置延时 编辑的点点出不来. hmp
-				this.delayEdit(_this.polygon.edit)
-			} else if (this.form.geomType === 2) {
-				//矩形
-				for (var i = 0; i < temp.length; i = i + 2) {
-					this.rectanglelnglat.push([temp[i], temp[i + 1]])
-				}
-				this.reDraw()
-				this.drawRectangle()
-				this.rectangle.edit = true
-			} else if (this.form.geomType === 1) {
-				//圆形
-				this.circleCenter = [this.form.centerLng, this.form.centerLat]
-				this.circleRadius = temp[2]
-				this.reDraw()
-				this.drawCircle()
-				//不设置延时 编辑的点点出不来. hmp
-				this.delayEdit(_this.circleEdit)
-			}
 
-		},
 		computed: {
 			...mapState({
 				statusBarHeight: (state) => state.header.statusBarHeight,
@@ -470,12 +433,13 @@
 				this.rectanglelnglat[1] = [southWest.getLng(), southWest.getLat()]
 			},
 			fetchFenceInfo() {
+				let param = {}
 				// ios
 				if (this.isiOS) {
 					iosPromise().then(() => {
 						Vue.prototype.$WebViewJavascriptBridge = WebViewJavascriptBridge;
 						WebViewJavascriptBridge.callHandler('fetchFenceInfo', function(response) {
-							this.makeToast(response)
+							param = response
 						});
 					})
 				}
@@ -483,10 +447,10 @@
 				if (this.isAndroid) {
 					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
 						const fenceInfo = window.Android.fetchFenceInfo();
-						//this.makeToast(fenceInfo)
-						this.form = JSON.parse(fenceInfo.data)
+						param = fenceInfo
 					}
 				}
+				this.onParamFetch(param)
 			},
 			iosPromise() {
 				return new Promise((resolve, reject) => {
@@ -498,6 +462,44 @@
 						resolve();
 					})
 				})
+			},
+			onParamFetch(options) {
+				const _this = this
+				if (options.data) {
+					this.form = JSON.parse(options.data)
+					this.title = '编辑电子围栏'
+				}
+				if (this.form.geomText === null) {
+					return
+				}
+				let temp = this.form.geomText.split(',')
+				if (this.form.geomType === 3) {
+					//多边形
+					for (var i = 0; i < temp.length; i = i + 2) {
+						this.polygon.path.push([temp[i], temp[i + 1]])
+					}
+					this.reDraw()
+					this.drawPolygon()
+					//不设置延时 编辑的点点出不来. hmp
+					this.delayEdit(_this.polygon.edit)
+				} else if (this.form.geomType === 2) {
+					//矩形
+					for (var i = 0; i < temp.length; i = i + 2) {
+						this.rectanglelnglat.push([temp[i], temp[i + 1]])
+					}
+					this.reDraw()
+					this.drawRectangle()
+					this.rectangle.edit = true
+				} else if (this.form.geomType === 1) {
+					//圆形
+					this.circleCenter = [this.form.centerLng, this.form.centerLat]
+					this.circleRadius = temp[2]
+					this.reDraw()
+					this.drawCircle()
+					//不设置延时 编辑的点点出不来. hmp
+					this.delayEdit(_this.circleEdit)
+				}
+
 			},
 		}
 
