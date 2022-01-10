@@ -5,7 +5,10 @@
 				<text slot="title" style="font-weight: bold;">{{title}}</text>
 			</WhiteHeader>
 			<el-amap ref="amapref" vid="amaps" @init="initMap" @touchend="touchend" @click="clickMap" :center="center"
-				:zoom="15" viewMode="3D" :dragEnable="mapDragEnable" @touchmove="touchmove" @touchstart="touchstart">
+				:plugin="plugins" :zoom="15" viewMode="3D" :dragEnable="mapDragEnable" @touchmove="touchmove"
+				@touchstart="touchstart">
+
+				<el-amap-control-tool-bar :visible="false"></el-amap-control-tool-bar>
 
 				<el-amap-marker :position="marker.position" :icon="marker.icon" :offset="[-11, -30]" />
 
@@ -56,10 +59,9 @@
 			WhiteHeader
 		},
 		plugin: {
-			pName: 'Geolocation',
-			events: {}
+
 		},
-		onShow() {},
+		onLoad() {},
 
 		computed: {
 			...mapState({
@@ -72,6 +74,9 @@
 			const _this = this
 			return {
 				form: {
+					locationLat: null,
+					locationLng: null,
+					position: null,
 					geomType: null,
 					geomText: null,
 					centerLat: null,
@@ -120,11 +125,11 @@
 					icon: '/static/icon_location.png',
 					position: [116.397497, 39.906888]
 				},
-
 			}
 		},
 
 		mounted() {
+			let _this = this
 			this.fetchFenceInfo()
 		},
 		methods: {
@@ -278,6 +283,9 @@
 					success: function(res) {
 						if (res.confirm) {
 							this.onFenceFinishSucceed()
+							uni.navigateBack({
+								delta: 1
+							})
 						}
 					}.bind(this)
 				});
@@ -464,12 +472,12 @@
 				})
 			},
 			onParamFetch(options) {
-				const _this = this
-				if (options.data) {
-					this.form = JSON.parse(options.data)
+				if (options) {
+					this.makeToast(options.locationLat)
+					this.form = JSON.parse(options)
 					this.title = '编辑电子围栏'
 				}
-				if (this.form.geomText === null) {
+				if (!this.form.geomText) {
 					return
 				}
 				let temp = this.form.geomText.split(',')
@@ -481,7 +489,7 @@
 					this.reDraw()
 					this.drawPolygon()
 					//不设置延时 编辑的点点出不来. hmp
-					this.delayEdit(_this.polygon.edit)
+					this.delayEdit(this.polygon.edit)
 				} else if (this.form.geomType === 2) {
 					//矩形
 					for (var i = 0; i < temp.length; i = i + 2) {
@@ -499,7 +507,6 @@
 					//不设置延时 编辑的点点出不来. hmp
 					this.delayEdit(_this.circleEdit)
 				}
-
 			},
 		}
 
