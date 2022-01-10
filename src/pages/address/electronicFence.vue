@@ -1,21 +1,17 @@
 <template>
 	<view class="">
 		<view class="map-content">
-			<view class="name flex">
-				<input type="text" v-model.trim="form.name" placeholder="请输入电子围栏名称" />
-			</view>
-			<MenuWhiteHeader :showBack="true" :isSecondaryPage="false">
+			<WhiteHeader :showBack="true" :isSecondaryPage="true">
 				<text slot="title" style="font-weight: bold;">{{title}}</text>
-				<text class="submit" slot="menu">保存</text>
-			</MenuWhiteHeader>
+			</WhiteHeader>
 			<el-amap ref="amapref" vid="amaps" @init="initMap" @touchend="touchend" @click="clickMap" :center="center"
 				:zoom="15" viewMode="3D" :dragEnable="mapDragEnable" @touchmove="touchmove" @touchstart="touchstart">
 
 				<el-amap-marker :position="marker.position" :icon="marker.icon" :offset="[-11, -30]" />
 
-				<el-amap-polygon v-if="form.geomType === 3" :path="polygon.path" :visible="polygon.visible"
-					@adjust="adjust" @addnode="addnode" :editable="polygon.edit" :draggable="polygon.draggable"
-					@init="initPolygon"></el-amap-polygon>
+				<el-amap-polygon v-if="form.geomType === 3 && polygon.path.length > 0" :path="polygon.path"
+					:visible="polygon.visible" @adjust="adjust" @addnode="addnode" :editable="polygon.edit"
+					:draggable="polygon.draggable" @init="initPolygon"></el-amap-polygon>
 
 				<el-amap-rectangle v-if="form.geomType === 2 &&  rectanglelnglat.length > 1" @init="initRectangle"
 					:bounds="rectanglelnglat" :editable="rectangle.edit" :draggable="rectangle.draggable"
@@ -23,7 +19,8 @@
 				</el-amap-rectangle>
 
 				<el-amap-circle v-if="form.geomType === 1 && circleCenter !== null" :center="circleCenter"
-					:radius="circleRadius" :editable="circleEdit" @init="initCircle"></el-amap-circle>
+					:radius="circleRadius" :editable="circleEdit" @init="initCircle">
+				</el-amap-circle>
 
 			</el-amap>
 			<view class="input-card">
@@ -33,12 +30,14 @@
 					<button type="primary" class="drawButton" @click="drawCircle">绘制圆形</button>
 				</view>
 				<view v-else>
-					</button>
 					<view v-if='isEdit' class="flex">
 						<button type="primary" class="drawButton" @click="close">确定</button>
 						<button type="primary" class="drawButton" @click="clearFence">重绘</button>
 					</view>
-					<button v-else type="primary" class="drawButton" @click="reDraw">绘制围栏 </button>
+					<view class="flex flex--direction" v-else>
+						<button type="primary" class="drawButton" @click="reDraw">绘制围栏 </button>
+						<button type="primary" class="drawButton" @click="viewFence">信息查看</button>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -46,14 +45,15 @@
 </template>
 
 <script>
-	import MenuWhiteHeader from '@/components/Header/MenuWhiteHeader.vue';
+	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
+	import store from '@/store/index.js';
 	import {
 		mapState
 	} from "vuex";
 
 	export default {
 		components: {
-			MenuWhiteHeader
+			WhiteHeader
 		},
 		plugin: {
 			pName: 'Geolocation',
@@ -61,35 +61,60 @@
 		},
 		onShow() {},
 		onLoad(options) {
+			const _this = this
 			if (options.data) {
 				this.form = JSON.parse(options.data)
 				this.title = '编辑电子围栏'
 			}
-			// this.center = options.center.split(',')
-			// this.marker.position = options.center.split(',')
+			if (this.form.geomText === null) {
+				return
+			}
+			let temp = this.form.geomText.split(',')
+			if (this.form.geomType === 3) {
+				//多边形
+				for (var i = 0; i < temp.length; i = i + 2) {
+					this.polygon.path.push([temp[i], temp[i + 1]])
+				}
+				this.reDraw()
+				this.drawPolygon()
+				//不设置延时 编辑的点点出不来. hmp
+				this.delayEdit(_this.polygon.edit)
+			} else if (this.form.geomType === 2) {
+				//矩形
+				for (var i = 0; i < temp.length; i = i + 2) {
+					this.rectanglelnglat.push([temp[i], temp[i + 1]])
+				}
+				this.reDraw()
+				this.drawRectangle()
+				this.rectangle.edit = true
+			} else if (this.form.geomType === 1) {
+				//圆形
+				this.circleCenter = [this.form.centerLng, this.form.centerLat]
+				this.circleRadius = temp[2]
+				this.reDraw()
+				this.drawCircle()
+				//不设置延时 编辑的点点出不来. hmp
+				this.delayEdit(_this.circleEdit)
+			}
+
 		},
 		computed: {
 			...mapState({
 				statusBarHeight: (state) => state.header.statusBarHeight,
+				isAndroid: state => state.header.isAndroid,
+				isiOS: state => state.header.isiOS
 			}),
 		},
-		mounted() {},
 		data() {
 			const _this = this
 			return {
 				form: {
-					geomText: undefined,
-					geomType: undefined,
-					functionType: 'collision',
-					centerLat: undefined,
-					centerLng: undefined,
-					name: undefined,
-					status: 0,
-					delFlag: 0,
+					geomType: null,
+					geomText: null,
+					centerLat: null,
+					centerLng: null,
 				},
-				path: [],
-
-				title: '新增电子围栏',
+				title: '电子围栏',
 				map: null, // 地图实例
 				mapDragEnable: true, //地图是否可通过鼠标拖拽平移
 				circleInstance: null, // 圆形实例
@@ -113,7 +138,7 @@
 				polygon: {
 					draggable: false,
 					visible: true,
-					edit: false,
+					edit: true,
 					path: [],
 					polygonMarker: []
 				},
@@ -135,7 +160,26 @@
 
 			}
 		},
+
+		mounted() {
+			this.fetchFenceInfo()
+		},
 		methods: {
+			delayEdit(edit) {
+				setTimeout(function() {
+					edit = false
+				}, 200)
+				setTimeout(function() {
+					edit = true
+				}, 800)
+			},
+			makeToast(title) {
+				uni.showToast({
+					title: title,
+					icon: 'none',
+					duration: 2000
+				})
+			},
 			clickMap(e) {
 				const _this = this
 				_this.typeClick = true; // 点击才赋值
@@ -144,30 +188,32 @@
 				} else if (_this.form.geomType == 3) {
 					//添加多边形围栏时鼠标左击事件
 					_this.polygon.path.push([e.lnglat.getLng(), e.lnglat.getLat()])
-					_this.polygonInstance.setPath(_this.polygon.path)
-					if (_this.polygon.path.length < 2) {
-						for (var i = 0; i < _this.polygon.path.length; i++) {
-							let temp = _this.polygon.path[i]
-							let marker = new AMap.Marker({
-								icon: "/static/ic_fence_polygon_poing.png",
-								position: [temp[0], temp[1]],
-								offset: [-15, -15],
-							})
-							marker.setMap(_this.map)
-							_this.polygon.polygonMarker.push(marker)
-						}
-					} else {
-						for (var i = 0; i < _this.polygon.polygonMarker.length; i++) {
-							//移除多边形第一个和第二个点的marker
-							_this.polygon.polygonMarker[i].setMap(null)
-						}
-					}
-					_this.polygon.edit = false
-					//延时
 					setTimeout(function() {
-						_this.polygon.edit = true
-						_this.polygon.visible = true
-					}, 100);
+						_this.polygonInstance.setPath(_this.polygon.path)
+						if (_this.polygon.path.length < 2) {
+							for (var i = 0; i < _this.polygon.path.length; i++) {
+								let temp = _this.polygon.path[i]
+								let marker = new AMap.Marker({
+									icon: "/static/ic_fence_polygon_poing.png",
+									position: [temp[0], temp[1]],
+									offset: [-15, -15],
+								})
+								marker.setMap(_this.map)
+								_this.polygon.polygonMarker.push(marker)
+							}
+						} else {
+							for (var i = 0; i < _this.polygon.polygonMarker.length; i++) {
+								//移除多边形第一个和第二个点的marker
+								_this.polygon.polygonMarker[i].setMap(null)
+							}
+						}
+						_this.polygon.edit = false
+						//延时
+						setTimeout(function() {
+							_this.polygon.edit = true
+							_this.polygon.visible = true
+						}, 100);
+					}, 200)
 				} else if (_this.form.geomType == 2) {
 					//矩形
 					_this.rectanglelnglat[0] = [e.lnglat.getLng(), e.lnglat.getLat()]
@@ -190,48 +236,6 @@
 			initCircle(e) {
 				this.circleInstance = e
 			},
-			submit() {
-				let pages = getCurrentPages()
-				let prePage = pages[pages.length - 2]
-				// 圆形
-				if (this.form.geomType === 1) {
-					this.form.geomText = [...this.circleCenter, Math.floor(this.circleRadius)].join()
-					this.form.centerLng = this.circleCenter[0]
-					this.form.centerLat = this.circleCenter[1]
-				}
-				// 矩形
-				if (this.form.geomType === 2) {
-					this.form.geomText = [...this.rectanglelnglat, ...this._rectanglelnglat].join()
-					const {
-						lng,
-						lat
-					} = this.rectangleInstance.getBounds().getCenter()
-					this.form.centerLng = lng
-					this.form.centerLat = lat
-				}
-				// 多边形
-				if (this.form.geomType === 3) {
-					this.form.geomText = this.polygonPath.join()
-					const {
-						lng,
-						lat
-					} = this.polygon.getBounds().getCenter()
-					this.form.centerLng = lng
-					this.form.centerLat = lat
-				}
-				if (this.form.name) {
-					prePage.addList(this.form)
-					uni.navigateBack({
-						delta: 1
-					})
-				} else {
-					uni.showToast({
-						title: '请输入名称',
-						icon: 'none',
-						duration: 1000
-					})
-				}
-			},
 			navigateBack() {
 				uni.navigateBack({
 					delta: 1
@@ -239,39 +243,114 @@
 			},
 			// 画多边形
 			drawPolygon() {
-				this.form.geomType = 3
-				this.isDraw = false
-				this.mapDragEnable = true
+				let _this = this
+				_this.form.geomType = 3
+				_this.isDraw = false
+				_this.drawStatus = true
+				_this.polygon.edit = false
+				setTimeout(function() {
+					_this.polygon.edit = true
+				}, 100)
+				_this.mapDragEnable = true
 			},
 			// 画圆形
 			drawCircle() {
 				let _this = this
 				_this.form.geomType = 1
+				_this.drawStatus = true
 				_this.isDraw = false
 				_this.mapDragEnable = true
 			},
 			// 画矩形
 			drawRectangle() {
-				this.form.geomType = 2
-				this.isDraw = false
-				this.mapDragEnable = false
+				let _this = this
+				_this.form.geomType = 2
+				_this.drawStatus = true
+				_this.isDraw = false
+				_this.mapDragEnable = false
 			},
 			// 结束绘制
 			close() {
-				const _this = this
-				if (_this.form.geomType === 3) {
-					//多边形
-					console.log("多边形点坐标 -> ", _this.polygon.path)
-				} else if (_this.form.geomType === 2) {
+				if (this.form.geomType === 1) {
+					//圆形 
+					if (!this.validateCircle()) {
+						return
+					}
+					const {
+						lng,
+						lat
+					} = this.circleInstance.getCenter()
+					this.form.geomText = [lng, lat, Math.floor(this.circleRadius)].join()
+					this.form.centerLng = lng
+					this.form.centerLat = lat
+				} else if (this.form.geomType === 2) {
 					//矩形
-				} else if (_this.form.geomType === 1) {
-					//圆形
-
+					if (!this.validateRectangle()) {
+						return
+					}
+					this.form.geomText = [...this.rectanglelnglat[0], ...this.rectanglelnglat[1]].join()
+					const {
+						lng,
+						lat
+					} = this.rectangleInstance.getBounds().getCenter()
+					this.form.centerLng = lng
+					this.form.centerLat = lat
+				} else if (this.form.geomType === 3) {
+					//多边形
+					if (!this.validatePolygon()) {
+						return
+					}
+					let temp = this.polygonInstance.getPath()
+					this.form.geomText = temp.join()
+					const {
+						lng,
+						lat
+					} = this.polygonInstance.getBounds().getCenter()
+					this.form.centerLng = lng
+					this.form.centerLat = lat
 				}
-				this.isDraw = true
-				this.isEdit = false
-				this.drawStatus = false
-				this.mapDragEnable = true
+				uni.showModal({
+					title: '确认',
+					content: '围栏已操作完，确认提交',
+					success: function(res) {
+						if (res.confirm) {
+							this.onFenceFinishSucceed()
+						}
+					}.bind(this)
+				});
+			},
+			//判断圆形围栏
+			validateCircle() {
+				if (this.circleInstance !== null && this.circleInstance.getCenter() !== null) {
+					if (this.circleInstance.getRadius() < 200) {
+						this.makeToast("圆形围栏半径最小值为200")
+						return false
+					}
+					return true
+				} else {
+					this.makeToast("请完善圆形围栏后提交")
+					return false
+				}
+			},
+			//判断矩形围栏
+			validateRectangle() {
+				let temp = this.rectangleInstance
+				if (temp !== null && this.rectanglelnglat !== null && this.rectanglelnglat.length === 2) {
+					return true
+				} else {
+					this.makeToast("请完善矩形围栏后提交")
+					return false
+				}
+			},
+			//判断多边形围栏
+			validatePolygon() {
+				let temp = this.polygonInstance
+				if (temp !== null && temp.getPath() !== null && temp.getPath().length > 2) {
+					return true
+				} else {
+					this.makeToast("请完善多变形围栏后提交")
+					return false
+				}
 			},
 			//重绘
 			clearFence() {
@@ -302,8 +381,27 @@
 			reDraw() {
 				this.isDraw = true
 				this.isEdit = true
-				this.drawStatus = true
 				this.mapDragEnable = true
+			},
+			onFenceFinishSucceed() {
+				let _this = this
+				console.log(JSON.stringify(_this.form))
+				if (this.isAndroid) {
+					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
+						window.Android.onFenceFinishSucceed(JSON.stringify(_this.form));
+					}
+				} else if (this.isiOS) {
+					this.$WebViewJavascriptBridge.callHandler('onFenceFinishSucceed', JSON.stringify(_this.form));
+				}
+			},
+			viewFence() {
+				if (this.isAndroid) {
+					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
+						window.Android.viewFence();
+					}
+				} else if (this.isiOS) {
+					this.$WebViewJavascriptBridge.callHandler('viewFence');
+				}
 			},
 			// 结束
 			circleEvent(e) {
@@ -349,7 +447,6 @@
 					_this.polygon.edit = true
 					_this.polygon.visible = true
 				}, 100);
-				console.log(_this.polygon.path)
 			},
 			addnode(e) {
 				let _this = this
@@ -371,6 +468,36 @@
 				let southWest = this.rectangleInstance.getBounds().getSouthWest()
 				this.rectanglelnglat[0] = [northEast.getLng(), northEast.getLat()]
 				this.rectanglelnglat[1] = [southWest.getLng(), southWest.getLat()]
+			},
+			fetchFenceInfo() {
+				// ios
+				if (this.isiOS) {
+					iosPromise().then(() => {
+						Vue.prototype.$WebViewJavascriptBridge = WebViewJavascriptBridge;
+						WebViewJavascriptBridge.callHandler('fetchFenceInfo', function(response) {
+							this.makeToast(response)
+						});
+					})
+				}
+				// Android
+				if (this.isAndroid) {
+					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
+						const fenceInfo = window.Android.fetchFenceInfo();
+						//this.makeToast(fenceInfo)
+						this.form = JSON.parse(fenceInfo.data)
+					}
+				}
+			},
+			iosPromise() {
+				return new Promise((resolve, reject) => {
+					// OC调JS，需要给OC调用的函数必须写在这个函数里面
+					setupWebViewJavascriptBridge(function(bridge) {
+						bridge.registerHandler('fetchFenceInfo', function(data, responseCallback) {
+							responseCallback('js执行过了');
+						})
+						resolve();
+					})
+				})
 			},
 		}
 
