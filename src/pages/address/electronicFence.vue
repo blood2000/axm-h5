@@ -26,6 +26,7 @@
 				</el-amap-circle>
 
 			</el-amap>
+			<image class="positionBtn" src="/static/ic_geo_fence_position.png" mode="" @click="position"></image>
 			<view class="input-card">
 				<view v-if='isDraw&&isEdit' class="flex">
 					<button type="primary" class="drawButton" @click="drawPolygon">绘制多边形 </button>
@@ -50,6 +51,7 @@
 <script>
 	import WhiteHeader from '@/components/Header/WhiteHeader.vue';
 	import store from '@/store/index.js';
+	import Vue from 'vue'
 	import {
 		mapState
 	} from "vuex";
@@ -73,10 +75,15 @@
 		data() {
 			const _this = this
 			return {
-				form: {
+				addressInfo: {
 					locationLat: null,
-					locationLng: null,
+					locationLon: null,
+					addressLat: null,
+					addressLon: null,
 					position: null,
+					data: {}
+				},
+				form: {
 					geomType: null,
 					geomText: null,
 					centerLat: null,
@@ -283,16 +290,15 @@
 					success: function(res) {
 						if (res.confirm) {
 							this.onFenceFinishSucceed()
-							uni.navigateBack({
-								delta: 1
-							})
 						}
 					}.bind(this)
 				});
 			},
 			//判断圆形围栏
 			validateCircle() {
-				if (this.circleInstance !== null && this.circleInstance.getCenter() !== null) {
+
+				if (this.circleInstance !== null && this.circleInstance !== undefined && this.circleInstance
+					.getCenter() !== null) {
 					if (this.circleInstance.getRadius() < 200) {
 						this.makeToast("圆形围栏半径最小值为200")
 						return false
@@ -356,7 +362,6 @@
 			},
 			onFenceFinishSucceed() {
 				let _this = this
-				console.log(JSON.stringify(_this.form))
 				if (this.isAndroid) {
 					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
 						window.Android.onFenceFinishSucceed(JSON.stringify(_this.form));
@@ -440,14 +445,15 @@
 				this.rectanglelnglat[0] = [northEast.getLng(), northEast.getLat()]
 				this.rectanglelnglat[1] = [southWest.getLng(), southWest.getLat()]
 			},
+			//获取应用端的围栏和定位等信息
 			fetchFenceInfo() {
-				let param = {}
+				let _this = this
 				// ios
 				if (this.isiOS) {
-					iosPromise().then(() => {
+					this.iosPromise().then(() => {
 						Vue.prototype.$WebViewJavascriptBridge = WebViewJavascriptBridge;
 						WebViewJavascriptBridge.callHandler('fetchFenceInfo', function(response) {
-							param = response
+							_this.onParamFetch(response)
 						});
 					})
 				}
@@ -455,15 +461,14 @@
 				if (this.isAndroid) {
 					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
 						const fenceInfo = window.Android.fetchFenceInfo();
-						param = fenceInfo
+						_this.onParamFetch(fenceInfo)
 					}
 				}
-				this.onParamFetch(param)
 			},
 			iosPromise() {
 				return new Promise((resolve, reject) => {
 					// OC调JS，需要给OC调用的函数必须写在这个函数里面
-					setupWebViewJavascriptBridge(function(bridge) {
+					this.setupWebViewJavascriptBridge(function(bridge) {
 						bridge.registerHandler('fetchFenceInfo', function(data, responseCallback) {
 							responseCallback('js执行过了');
 						})
@@ -471,10 +476,29 @@
 					})
 				})
 			},
+			// 这是必须要写的，用来初始化一些设置
+			setupWebViewJavascriptBridge(callback) {
+				if (window.WebViewJavascriptBridge) {
+					return callback(WebViewJavascriptBridge);
+				}
+				if (window.WVJBCallbacks) {
+					return window.WVJBCallbacks.push(callback);
+				}
+				window.WVJBCallbacks = [callback];
+				var WVJBIframe = document.createElement('iframe');
+				WVJBIframe.style.display = 'none';
+				WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+				document.documentElement.appendChild(WVJBIframe);
+				setTimeout(function() {
+					document.documentElement.removeChild(WVJBIframe)
+				}, 0)
+			},
+			//处理应用端的围栏和定位等信息
 			onParamFetch(options) {
-				if (options) {
-					this.makeToast(options.locationLat)
-					this.form = JSON.parse(options)
+				this.addressInfo = JSON.parse(options)
+				this.moveCamera(false)
+				if (this.addressInfo.data) {
+					this.form = tempOpt.data
 					this.title = '编辑电子围栏'
 				}
 				if (!this.form.geomText) {
@@ -508,6 +532,24 @@
 					this.delayEdit(_this.circleEdit)
 				}
 			},
+			//当前位置点击事件
+			position() {
+				this.moveCamera(true)
+			},
+			//移动视图
+			moveCamera(isPosition) {
+				if (isPosition) {
+					let centerLat = this.addressInfo.locationLat
+					let centerLng = this.addressInfo.locationLon
+					this.center = [centerLng, centerLat]
+					this.marker.position = [centerLng, centerLat]
+				} else {
+					let centerLat = this.addressInfo.addressLat
+					let centerLng = this.addressInfo.addressLon
+					this.center = [centerLng, centerLat]
+					this.marker.position = [centerLng, centerLat]
+				}
+			}
 		}
 
 	}
@@ -557,6 +599,17 @@
 		width: 200rpx;
 		margin: auto;
 		font-size: 26rpx;
+	}
+
+	.positionBtn {
+		position: fixed;
+		height: 50rpx;
+		width: 200rpx;
+		right: 20rpx;
+		bottom: 160rpx;
+		margin: auto;
+		font-size: 26rpx;
+		z-index: 501;
 	}
 
 	.submit {
