@@ -26,7 +26,7 @@
 				</el-amap-circle>
 
 			</el-amap>
-			<image class="positionBtn" src="/static/ic_geo_fence_position.png" mode="" @click="position"></image>
+			<!-- <image class="positionBtn" src="/static/ic_geo_fence_position.png" mode="" @click="position"></image> -->
 			<view class="input-card">
 				<view v-if='isDraw&&isEdit' class="flex">
 					<button type="primary" class="drawButton" @click="drawPolygon">绘制多边形 </button>
@@ -40,6 +40,7 @@
 					</view>
 					<view class="flex flex--direction" v-else>
 						<button type="primary" class="drawButton" @click="reDraw">绘制围栏 </button>
+						<button type="primary" class="drawButton" @click="position">定位位置</button>
 						<button type="primary" class="drawButton" @click="viewFence">信息查看</button>
 					</view>
 				</view>
@@ -129,7 +130,7 @@
 					events: {}
 				}],
 				marker: {
-					icon: '/static/icon_location.png',
+					icon: '/static/ic_fence_position.png',
 					position: [116.397497, 39.906888]
 				},
 			}
