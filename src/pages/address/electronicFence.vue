@@ -6,7 +6,7 @@
 			</WhiteHeader>
 			<el-amap ref="amapref" vid="amaps" @init="initMap" @touchend="touchend" @click="clickMap" :center="center"
 				:plugin="plugins" :zoom="15" viewMode="3D" :dragEnable="mapDragEnable" @touchmove="touchmove"
-				@touchstart="touchstart">
+				@touchstart="touchstart" @complete="mapComplete">
 
 				<el-amap-control-tool-bar :visible="false"></el-amap-control-tool-bar>
 
@@ -14,7 +14,7 @@
 
 				<el-amap-polygon v-if="form.geomType === 3 && polygon.path.length > 0" :path="polygon.path"
 					:visible="polygon.visible" @adjust="adjust" @addnode="addnode" :editable="polygon.edit"
-					:draggable="polygon.draggable" @init="initPolygon"></el-amap-polygon>
+					@init="initPolygon"></el-amap-polygon>
 
 				<el-amap-rectangle v-if="form.geomType === 2 &&  rectanglelnglat.length > 1" @init="initRectangle"
 					:bounds="rectanglelnglat" :editable="rectangle.edit" :draggable="rectangle.draggable"
@@ -26,7 +26,6 @@
 				</el-amap-circle>
 
 			</el-amap>
-			<!-- <image class="positionBtn" src="/static/ic_geo_fence_position.png" mode="" @click="position"></image> -->
 			<view class="input-card">
 				<view v-if='isDraw&&isEdit' class="flex">
 					<button type="primary" class="drawButton" @click="drawPolygon">绘制多边形 </button>
@@ -37,10 +36,11 @@
 					<view v-if='isEdit' class="flex">
 						<button type="primary" class="drawButton" @click="close">确定</button>
 						<button type="primary" class="drawButton" @click="clearFence">重绘</button>
+						<button type="primary" class="drawButton" @click="cancelDraw">返回</button>
 					</view>
 					<view class="flex flex--direction" v-else>
 						<button type="primary" class="drawButton" @click="reDraw">绘制围栏 </button>
-						<button type="primary" class="drawButton" @click="position">定位位置</button>
+						<button type="primary" class="drawButton" @click="moveToPosition">定位位置</button>
 						<button type="primary" class="drawButton" @click="viewFence">信息查看</button>
 					</view>
 				</view>
@@ -82,7 +82,7 @@
 					addressLat: null,
 					addressLon: null,
 					position: null,
-					data: {}
+					data: null
 				},
 				form: {
 					geomType: null,
@@ -141,14 +141,6 @@
 			this.fetchFenceInfo()
 		},
 		methods: {
-			delayEdit(edit) {
-				setTimeout(function() {
-					edit = false
-				}, 200)
-				setTimeout(function() {
-					edit = true
-				}, 800)
-			},
 			makeToast(title) {
 				uni.showToast({
 					title: title,
@@ -164,32 +156,30 @@
 				} else if (_this.form.geomType == 3) {
 					//添加多边形围栏时鼠标左击事件
 					_this.polygon.path.push([e.lnglat.getLng(), e.lnglat.getLat()])
-					setTimeout(function() {
-						_this.polygonInstance.setPath(_this.polygon.path)
-						if (_this.polygon.path.length < 2) {
-							for (var i = 0; i < _this.polygon.path.length; i++) {
-								let temp = _this.polygon.path[i]
-								let marker = new AMap.Marker({
-									icon: "/static/ic_fence_polygon_poing.png",
-									position: [temp[0], temp[1]],
-									offset: [-15, -15],
-								})
-								marker.setMap(_this.map)
-								_this.polygon.polygonMarker.push(marker)
-							}
-						} else {
-							for (var i = 0; i < _this.polygon.polygonMarker.length; i++) {
-								//移除多边形第一个和第二个点的marker
-								_this.polygon.polygonMarker[i].setMap(null)
-							}
+					_this.polygonInstance.setPath(_this.polygon.path)
+					if (_this.polygon.path.length < 2) {
+						for (var i = 0; i < _this.polygon.path.length; i++) {
+							let temp = _this.polygon.path[i]
+							let marker = new AMap.Marker({
+								icon: "/static/ic_fence_polygon_poing.png",
+								position: [temp[0], temp[1]],
+								offset: [-15, -15],
+							})
+							marker.setMap(_this.map)
+							_this.polygon.polygonMarker.push(marker)
 						}
-						_this.polygon.edit = false
-						//延时
-						setTimeout(function() {
-							_this.polygon.edit = true
-							_this.polygon.visible = true
-						}, 100);
-					}, 200)
+					} else {
+						for (var i = 0; i < _this.polygon.polygonMarker.length; i++) {
+							//移除多边形第一个和第二个点的marker
+							_this.polygon.polygonMarker[i].setMap(null)
+						}
+					}
+					_this.polygon.edit = false
+					//延时
+					setTimeout(function() {
+						_this.polygon.edit = true
+						_this.polygon.visible = true
+					}, 100);
 				} else if (_this.form.geomType == 2) {
 					//矩形
 					_this.rectanglelnglat[0] = [e.lnglat.getLng(), e.lnglat.getLat()]
@@ -202,6 +192,7 @@
 			initMap(e) {
 				this.map = e
 			},
+			mapComplete() {},
 			initPolygon(e) {
 				this.polygonInstance = e
 				this.polygonInstance.editor.editable = true
@@ -221,12 +212,8 @@
 			drawPolygon() {
 				let _this = this
 				_this.form.geomType = 3
-				_this.isDraw = false
 				_this.drawStatus = true
-				_this.polygon.edit = false
-				setTimeout(function() {
-					_this.polygon.edit = true
-				}, 100)
+				_this.isDraw = false
 				_this.mapDragEnable = true
 			},
 			// 画圆形
@@ -245,6 +232,20 @@
 				_this.isDraw = false
 				_this.mapDragEnable = false
 			},
+			cancelDraw() {
+				uni.showModal({
+					title: '提醒',
+					content: '返回将重置已画围栏，是否继续？',
+					success: function(res) {
+						if (res.confirm) {
+							this.drawStatus = false
+							this.isDraw = true
+							this.isEdit = false
+							this.clearFence()
+						}
+					}.bind(this)
+				});
+			},
 			// 结束绘制
 			close() {
 				if (this.form.geomType === 1) {
@@ -256,9 +257,9 @@
 						lng,
 						lat
 					} = this.circleInstance.getCenter()
-					this.form.geomText = [lng, lat, Math.floor(this.circleRadius)].join()
-					this.form.centerLng = lng
-					this.form.centerLat = lat
+					this.form.geomText = [lng, lat, Math.floor(this.circleInstance.getRadius())].join()
+					this.form.centerLng = lng.toString()
+					this.form.centerLat = lat.toString()
 				} else if (this.form.geomType === 2) {
 					//矩形
 					if (!this.validateRectangle()) {
@@ -269,8 +270,8 @@
 						lng,
 						lat
 					} = this.rectangleInstance.getBounds().getCenter()
-					this.form.centerLng = lng
-					this.form.centerLat = lat
+					this.form.centerLng = lng.toString()
+					this.form.centerLat = lat.toString()
 				} else if (this.form.geomType === 3) {
 					//多边形
 					if (!this.validatePolygon()) {
@@ -282,8 +283,8 @@
 						lng,
 						lat
 					} = this.polygonInstance.getBounds().getCenter()
-					this.form.centerLng = lng
-					this.form.centerLat = lat
+					this.form.centerLng = lng.toString()
+					this.form.centerLat = lat.toString()
 				}
 				uni.showModal({
 					title: '确认',
@@ -297,7 +298,6 @@
 			},
 			//判断圆形围栏
 			validateCircle() {
-
 				if (this.circleInstance !== null && this.circleInstance !== undefined && this.circleInstance
 					.getCenter() !== null) {
 					if (this.circleInstance.getRadius() < 200) {
@@ -344,15 +344,19 @@
 					_this.rectanglelnglat = []
 					_this.rectangle.disabled = false
 					_this.rectangle.edit = false
-					_this.rectangleInstance.setMap(null)
-					_this.initRectangle()
+					if (!_this.rectangleInstance) {
+						_this.rectangleInstance.setMap(null)
+						_this.initRectangle()
+					}
 				} else if (_this.form.geomType === 1) {
 					//圆形
 					_this.circleEdit = false
 					_this.circleRadius = 200
 					_this.circleCenter = null
-					_this.circleInstance.setMap(null)
-					_this.initCircle()
+					if (!_this.circleInstance) {
+						_this.circleInstance.setMap(null)
+						_this.initCircle()
+					}
 				}
 			},
 			// 重新绘制
@@ -470,9 +474,7 @@
 				return new Promise((resolve, reject) => {
 					// OC调JS，需要给OC调用的函数必须写在这个函数里面
 					this.setupWebViewJavascriptBridge(function(bridge) {
-						bridge.registerHandler('fetchFenceInfo', function(data, responseCallback) {
-							responseCallback('js执行过了');
-						})
+						bridge.registerHandler('fetchFenceInfo', function(data, responseCallback) {})
 						resolve();
 					})
 				})
@@ -496,14 +498,16 @@
 			},
 			//处理应用端的围栏和定位等信息
 			onParamFetch(options) {
+				let _this = this
 				this.addressInfo = JSON.parse(options)
-				this.moveCamera(false)
-				if (this.addressInfo.data) {
-					this.form = tempOpt.data
+
+				if (this.addressInfo.data !== null && this.addressInfo.data !== undefined) {
+					this.form = this.addressInfo.data
+					this.moveCamera("2")
 					this.title = '编辑电子围栏'
-				}
-				if (!this.form.geomText) {
-					return
+				} else {
+					this.moveCamera("3")
+					return false
 				}
 				let temp = this.form.geomText.split(',')
 				if (this.form.geomType === 3) {
@@ -513,8 +517,13 @@
 					}
 					this.reDraw()
 					this.drawPolygon()
-					//不设置延时 编辑的点点出不来. hmp
-					this.delayEdit(this.polygon.edit)
+					setTimeout(function() {
+						_this.polygon.edit = false
+					}, 500);
+					//延时
+					setTimeout(function() {
+						_this.polygon.edit = true
+					}, 1000);
 				} else if (this.form.geomType === 2) {
 					//矩形
 					for (var i = 0; i < temp.length; i = i + 2) {
@@ -529,19 +538,29 @@
 					this.circleRadius = temp[2]
 					this.reDraw()
 					this.drawCircle()
-					//不设置延时 编辑的点点出不来. hmp
-					this.delayEdit(_this.circleEdit)
+					setTimeout(function() {
+						_this.circleEdit = false
+					}, 200);
+					//延时
+					setTimeout(function() {
+						_this.circleEdit = true
+					}, 400);
 				}
 			},
 			//当前位置点击事件
-			position() {
-				this.moveCamera(true)
+			moveToPosition() {
+				this.moveCamera("1")
 			},
 			//移动视图
 			moveCamera(isPosition) {
-				if (isPosition) {
+				if (isPosition === "1") {
 					let centerLat = this.addressInfo.locationLat
 					let centerLng = this.addressInfo.locationLon
+					this.center = [centerLng, centerLat]
+					this.marker.position = [centerLng, centerLat]
+				} else if (isPosition === "2") {
+					let centerLat = this.addressInfo.data.centerLat
+					let centerLng = this.addressInfo.data.centerLng
 					this.center = [centerLng, centerLat]
 					this.marker.position = [centerLng, centerLat]
 				} else {
