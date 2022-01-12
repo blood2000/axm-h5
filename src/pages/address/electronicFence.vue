@@ -41,7 +41,8 @@
 					<view class="flex flex--direction" v-else>
 						<button type="primary" class="drawButton" @click="reDraw">绘制围栏 </button>
 						<button type="primary" class="drawButton" @click="moveToPosition">定位位置</button>
-						<button type="primary" class="drawButton" @click="viewFence">信息查看</button>
+						<button v-if="addressInfo.isEditing === 1 " type="primary" class="drawButton"
+							@click="viewFence">信息查看</button>
 					</view>
 				</view>
 			</view>
@@ -82,6 +83,7 @@
 					addressLat: null,
 					addressLon: null,
 					position: null,
+					isEditing: null,
 					data: null
 				},
 				form: {
@@ -90,7 +92,7 @@
 					centerLat: null,
 					centerLng: null,
 				},
-				title: '电子围栏',
+				title: '新增电子围栏',
 				map: null, // 地图实例
 				mapDragEnable: true, //地图是否可通过鼠标拖拽平移
 				circleInstance: null, // 圆形实例
@@ -500,13 +502,12 @@
 			onParamFetch(options) {
 				let _this = this
 				this.addressInfo = JSON.parse(options)
-
+				this.moveCamera("3")
+				//this.makeToast("??? -->> " + (JSON.stringify(this.addressInfo.data)))
 				if (this.addressInfo.data !== null && this.addressInfo.data !== undefined) {
 					this.form = this.addressInfo.data
-					this.moveCamera("2")
 					this.title = '编辑电子围栏'
 				} else {
-					this.moveCamera("3")
 					return false
 				}
 				let temp = this.form.geomText.split(',')
