@@ -44,7 +44,7 @@
 					</view>
 					<view class="flex flex--direction" v-else>
 						<button type="primary" class="drawButton" @click="reDraw">新建围栏 </button>
-						<button v-if="addressInfo.isEditing === 1 " type="primary" class="drawButton"
+						<button v-if="this.addressInfo.data !== null && this.addressInfo.data !== undefined" type="primary" class="drawButton"
 							@click="changeFence">修改围栏</button>
 						<button v-if="addressInfo.isEditing === 1 " type="primary" class="drawButton"
 							@click="viewFence">信息查看</button>
