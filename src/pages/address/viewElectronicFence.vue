@@ -24,9 +24,9 @@
 			</el-amap>
 			<view class="input-card">
 				<view class="positionView">
-					<image src="../../static/icon_location_my_current.png" class="drawButton" @click="moveToPosition">
+					<image :src="myLocation" class="drawButton" @click="moveToPosition">
 					</image>
-					<image style="margin-top: 24rpx;" src="../../static/icon_location_fence_current.png"
+					<image style="margin-top: 24rpx;" :src="fenceLocation"
 						class="drawButton" @click="moveFencePosition">
 					</image>
 				</view>
@@ -117,6 +117,8 @@
 					icon: '/static/ic_fence_position.png',
 					position: [116.397497, 39.906888]
 				},
+				myLocation:'/static/icon_location_my_current.png',
+				fenceLocation:'/static/icon_location_fence_current.png',
 			}
 		},
 
