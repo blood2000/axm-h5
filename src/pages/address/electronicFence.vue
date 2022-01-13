@@ -10,22 +10,26 @@
 
 				<el-amap-control-tool-bar :visible="false"></el-amap-control-tool-bar>
 
-				<el-amap-marker :position="marker.position" :icon="marker.icon" :offset="[-11, -30]" />
+				<el-amap-marker :bubble="true" :position="marker.position" :icon="marker.icon" :offset="[-11, -30]" />
 
-				<el-amap-polygon v-if="form.geomType === 3 && polygon.path.length > 0" :path="polygon.path"
-					:visible="polygon.visible" @adjust="adjust" @addnode="addnode" :editable="polygon.edit"
-					@init="initPolygon"></el-amap-polygon>
+				<el-amap-polygon v-if="form.geomType === 3 && polygon.path.length > 0" :bubble="true"
+					:path="polygon.path" :visible="polygon.visible" @adjust="adjust" @addnode="addnode"
+					:editable="polygon.edit" @init="initPolygon"></el-amap-polygon>
 
 				<el-amap-rectangle v-if="form.geomType === 2 &&  rectanglelnglat.length > 1" @init="initRectangle"
-					:bounds="rectanglelnglat" :editable="rectangle.edit" :draggable="rectangle.draggable"
+					:bubble="true" :bounds="rectanglelnglat" :editable="rectangle.edit" :draggable="rectangle.draggable"
 					@move="moveRectangle">
 				</el-amap-rectangle>
 
 				<el-amap-circle v-if="form.geomType === 1 && circleCenter !== null" :center="circleCenter"
-					:radius="circleRadius" :editable="circleEdit" @init="initCircle">
+					:bubble="true" :radius="circleRadius" :editable="circleEdit" @init="initCircle">
 				</el-amap-circle>
 
 			</el-amap>
+			<view>
+				<image class="positionIcon" src="../../static/ic_fence_current_position.png" @click="moveToPosition">
+				</image>
+			</view>
 			<view class="input-card">
 				<view v-if='isDraw&&isEdit' class="flex">
 					<button type="primary" class="drawButton" @click="drawPolygon">绘制多边形 </button>
@@ -39,8 +43,9 @@
 						<button type="primary" class="drawButton" @click="cancelDraw">返回</button>
 					</view>
 					<view class="flex flex--direction" v-else>
-						<button type="primary" class="drawButton" @click="reDraw">绘制围栏 </button>
-						<button type="primary" class="drawButton" @click="moveToPosition">定位位置</button>
+						<button type="primary" class="drawButton" @click="reDraw">新建围栏 </button>
+						<button v-if="addressInfo.isEditing === 1 " type="primary" class="drawButton"
+							@click="changeFence">修改围栏</button>
 						<button v-if="addressInfo.isEditing === 1 " type="primary" class="drawButton"
 							@click="viewFence">信息查看</button>
 					</view>
@@ -92,6 +97,7 @@
 					centerLat: null,
 					centerLng: null,
 				},
+				options: null,
 				title: '新增电子围栏',
 				map: null, // 地图实例
 				mapDragEnable: true, //地图是否可通过鼠标拖拽平移
@@ -113,6 +119,7 @@
 				polygonEdit: true,
 				polygonInstance: null, // 多边形实例
 				polygonPath: [], // 多边形路径
+				polygonLimit: 20, // 多边形坐标点个数限制
 				polygon: {
 					draggable: false,
 					visible: true,
@@ -135,6 +142,7 @@
 					icon: '/static/ic_fence_position.png',
 					position: [116.397497, 39.906888]
 				},
+
 			}
 		},
 
@@ -156,6 +164,10 @@
 				if (!_this.drawStatus) {
 					_this.marker.position = [e.lnglat.getLng(), e.lnglat.getLat()]
 				} else if (_this.form.geomType == 3) {
+					if (_this.polygon.path.length >= _this.polygonLimit) {
+						_this.makeToast("多边形围栏限制" + _this.polygonLimit + "个坐标点")
+						return
+					}
 					//添加多边形围栏时鼠标左击事件
 					_this.polygon.path.push([e.lnglat.getLng(), e.lnglat.getLat()])
 					_this.polygonInstance.setPath(_this.polygon.path)
@@ -300,8 +312,8 @@
 			},
 			//判断圆形围栏
 			validateCircle() {
-				if (this.circleInstance !== null && this.circleInstance !== undefined && this.circleInstance
-					.getCenter() !== null) {
+				this.makeToast("???" + this.circleCenter)
+				if (this.circleInstance !== null && this.circleInstance !== undefined && this.circleCenter !== null) {
 					if (this.circleInstance.getRadius() < 200) {
 						this.makeToast("圆形围栏半径最小值为200")
 						return false
@@ -434,7 +446,14 @@
 			addnode(e) {
 				let _this = this
 				_this.polygon.edit = false
+				_this.polygon.visible = false
+				let temp = JSON.parse(JSON.stringify(_this.polygon.path))
 				_this.polygon.path = _this.polygonInstance.getPath()
+				if (_this.polygon.path.length >= _this.polygonLimit) {
+					_this.makeToast("多边形围栏限制" + _this.polygonLimit + "个坐标点")
+					_this.polygon.path = temp
+					_this.polygonInstance.setPath(_this.polygon.path)
+				}
 				//延时
 				setTimeout(function() {
 					_this.polygon.edit = true
@@ -460,7 +479,10 @@
 					this.iosPromise().then(() => {
 						Vue.prototype.$WebViewJavascriptBridge = WebViewJavascriptBridge;
 						WebViewJavascriptBridge.callHandler('fetchFenceInfo', function(response) {
-							_this.onParamFetch(response)
+							_this.options = response
+							_this.addressInfo = JSON.parse(response)
+							_this.moveCamera("3")
+							_this.onParamFetch(_this.options)
 						});
 					})
 				}
@@ -468,7 +490,10 @@
 				if (this.isAndroid) {
 					if (window.Android !== null && typeof(window.Android) !== 'undefined') {
 						const fenceInfo = window.Android.fetchFenceInfo();
-						_this.onParamFetch(fenceInfo)
+						_this.options = fenceInfo
+						_this.addressInfo = JSON.parse(fenceInfo)
+						_this.moveCamera("3")
+						_this.onParamFetch(_this.options)
 					}
 				}
 			},
@@ -501,9 +526,6 @@
 			//处理应用端的围栏和定位等信息
 			onParamFetch(options) {
 				let _this = this
-				this.addressInfo = JSON.parse(options)
-				this.moveCamera("3")
-				//this.makeToast("??? -->> " + (JSON.stringify(this.addressInfo.data)))
 				if (this.addressInfo.data !== null && this.addressInfo.data !== undefined) {
 					this.form = this.addressInfo.data
 					this.title = '编辑电子围栏'
@@ -516,8 +538,6 @@
 					for (var i = 0; i < temp.length; i = i + 2) {
 						this.polygon.path.push([temp[i], temp[i + 1]])
 					}
-					this.reDraw()
-					this.drawPolygon()
 					setTimeout(function() {
 						_this.polygon.edit = false
 					}, 500);
@@ -530,15 +550,11 @@
 					for (var i = 0; i < temp.length; i = i + 2) {
 						this.rectanglelnglat.push([temp[i], temp[i + 1]])
 					}
-					this.reDraw()
-					this.drawRectangle()
 					this.rectangle.edit = true
 				} else if (this.form.geomType === 1) {
 					//圆形
 					this.circleCenter = [this.form.centerLng, this.form.centerLat]
 					this.circleRadius = temp[2]
-					this.reDraw()
-					this.drawCircle()
 					setTimeout(function() {
 						_this.circleEdit = false
 					}, 200);
@@ -551,6 +567,21 @@
 			//当前位置点击事件
 			moveToPosition() {
 				this.moveCamera("1")
+			},
+			changeFence() {
+				if (this.form.geomType === 3) {
+					//多边形
+					this.reDraw()
+					this.drawPolygon()
+				} else if (this.form.geomType === 2) {
+					//矩形
+					this.reDraw()
+					this.drawRectangle()
+				} else if (this.form.geomType === 1) {
+					//圆形
+					this.reDraw()
+					this.drawCircle()
+				}
 			},
 			//移动视图
 			moveCamera(isPosition) {
@@ -646,5 +677,13 @@
 		border: none;
 		border-radius: 0rpx;
 		border-color: #00000000;
+	}
+
+	.positionIcon {
+		position: absolute;
+		right: 40rpx;
+		bottom: 100rpx;
+		width: 60rpx;
+		height: 60rpx;
 	}
 </style>

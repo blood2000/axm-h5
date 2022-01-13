@@ -91,12 +91,12 @@
 				"navigationBarTitleText": "车辆报表",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
-		 }
+			}
 		}
 		//统计页入口 - 车队
 		, {
 			"path": "pages/team/index/index",
-		 "style": {
+			"style": {
 				"navigationBarTitleText": "统计",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
@@ -176,7 +176,7 @@
 				"navigationBarTitleText": "天翼帐号服务协议",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
-		 }
+			}
 		},
 		//天翼帐号隐私政策
 		{
@@ -207,8 +207,8 @@
 		}
 		// 充值说明
 		, {
-		 "path": "pages/protocol/rechargeDescription",
-		 "style": {
+			"path": "pages/protocol/rechargeDescription",
+			"style": {
 				"navigationBarTitleText": "充值说明",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
@@ -268,6 +268,14 @@
 			"path": "pages/address/electronicFence",
 			"style": {
 				"navigationBarTitleText": "电子围栏",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/address/viewElectronicFence",
+			"style": {
+				"navigationBarTitleText": "查看电子围栏信息",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
 				"navigationBarTextStyle": "black"
