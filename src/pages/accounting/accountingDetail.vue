@@ -13,7 +13,7 @@
 						src="@/static/ic_required.png" />
 				</view>
 				<input class="rowInput" name="name" placeholder-class="placeholderStyle" maxlength="12" type="text"
-					placeholder="请输入规则名称" :value="defauleName" />
+					placeholder="请输入规则名称" :value="defauleName" adjust-position="true" />
 			</view>
 			<view style="width: 100%; height: 1rpx; background-color: #EBEBEB;margin-top: 28rpx;" />
 			<view class="cardRow" style="margin-top: 28rpx;">
@@ -97,13 +97,13 @@
 					<view class="ruleFomelaView" style="margin-right: 24rpx;">-</view>
 					<view class="shemeInput">
 						<input type="digit" :value="defaultSchemeMin" style="font-size: 26rpx;" placeholder="最小值"
-							name="ruleLossMin" />
+							name="ruleLossMin" adjust-position="true" />
 						<text style="color: #666666;">{{schemeUnit[currentsUnitSheme].schemeUnitName}}</text>
 					</view>
 					<view class="ruleFomelaView" style="margin-left: 24rpx;margin-right: 24rpx;">至</view>
 					<view class="shemeInput">
 						<input type="digit" :value="defaultSchemeMax" style="font-size: 26rpx;" placeholder="最大值"
-							name="ruleLossMax" />
+							name="ruleLossMax" adjust-position="true" />
 						<text style="color: #666666;">{{schemeUnit[currentsUnitSheme].schemeUnitName}}</text>
 					</view>
 				</view>
@@ -125,7 +125,7 @@
 							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
 								<view v-if="item.showType === 1" class="showTypeInputView">
 									<input class="ruleInput" name="typpInput" type="digit" :value="item.ruleValue"
-										@input="(e)=>onDeductionInput(e,item,false)" />
+										@input="(e)=>onDeductionInput(e,item,false)" adjust-position="true" />
 									<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 										src="@/static/ic_accounting_delete.png"
 										@click="()=>deleteProject(currentDeductionProject,index)" />
@@ -134,12 +134,12 @@
 									<view class="projectItemArea">
 										<view class="ruleFomelaView" style="margin-right: 12rpx;">-</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26rpx;" />
+											<input type="digit" style="font-size: 26rpx;" adjust-position="true" />
 										</view>
 										<view class="ruleFomelaView" style="margin-left: 12rpx;margin-right: 12rpx;">至
 										</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26rpx;" />
+											<input type="digit" style="font-size: 26rpx;" adjust-position="true" />
 										</view>
 										<view class="ly-flex ly-flex-align-center">
 											<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
@@ -196,8 +196,8 @@
 							<!-- 1.文本框 2.区域 3.下拉框 4.radio -->
 							<view class="ly-flex ly-flex-v ly-flex-pack-justify" style="width: 70%;">
 								<view v-if="item.showType === 1" class="showTypeInputView">
-									<input class="ruleInput" @input="(e)=>onSubsidiesInput(e,item,false)"
-										:value="item.ruleValue" />
+									<input class="ruleInput" adjust-position="true"
+										@input="(e)=>onSubsidiesInput(e,item,false)" :value="item.ruleValue" />
 									<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
 										src="@/static/ic_accounting_delete.png"
 										@click="()=>deleteProject(currentSubsidiesProject,index)" />
@@ -206,12 +206,12 @@
 									<view class="projectItemArea">
 										<view class="ruleFomelaView" style="margin-right: 12rpx;">-</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26rpx;" />
+											<input adjust-position="true" type="digit" style="font-size: 26rpx;" />
 										</view>
 										<view class="ruleFomelaView" style="margin-left: 12rpx;margin-right: 12rpx;">至
 										</view>
 										<view class="projectItemAreaInput">
-											<input type="digit" style="font-size: 26rpx;" />
+											<input adjust-position="true" type="digit" style="font-size: 26rpx;" />
 										</view>
 										<view class="ly-flex ly-flex-align-center">
 											<image type="icon" style="width: 39rpx; height: 39rpx; margin-left: 24rpx;"
@@ -360,6 +360,7 @@
 
 		async mounted() {
 			await this.$onLaunched
+			console.log("mounted run ~");
 			this.queryDict("ruleFormula")
 			this.queryDict("lossRule")
 			this.queryDict("lossPlan")
@@ -381,6 +382,11 @@
 					if (dictType === "ruleFormula") {
 						//计算公式
 						this.categories = response.data
+						if(this.categories !== null && this.categories.length > 0){
+							this.accountingSelectName = this.categories[0].dictLabel
+							this.accountingSelectCode = this.categories[0].dictValue
+							this.accountingSelected = true
+						}
 					} else if (dictType === "lossRule") {
 						//路耗规则
 						this.caleFormula = response.data
@@ -752,6 +758,10 @@
 			},
 			//表单提交
 			formSubmit(e) {
+				uni.showModal({
+					title: "提示",
+					content: JSON.stringify(e.detail.value.ruleDictValue)
+				})
 				if (e.detail.value.name === null || e.detail.value.name === "") {
 					this.toast("规则名称不能为空")
 					return
@@ -853,7 +863,7 @@
 					icon: 'none',
 					duration: 2000
 				});
-			}
+			},
 		},
 	}
 </script>
@@ -867,7 +877,6 @@
 		border-radius: 0rpx;
 		background-color: #FFFFFF;
 		font-size: 26rpx;
-		display: flex;
 		color: #4478E4;
 		outline-style: none;
 		outline-width: 0rpx;
@@ -875,11 +884,10 @@
 		border: none;
 		border-radius: 0rpx;
 		border-color: #00000000;
-		min-width: 110rpx;
 	}
 
 	button::after {
-		border: none
+		border: none;
 	}
 
 	.cardView {
@@ -1066,7 +1074,7 @@
 		border-radius: 10rpx;
 		border-width: 2rpx;
 		color: #999999;
-		background-color: #FFFFFF;
+		background-color: #F2F2F2;
 		min-width: 245rpx;
 		max-height: 78rpx;
 		font-size: 26rpx;
