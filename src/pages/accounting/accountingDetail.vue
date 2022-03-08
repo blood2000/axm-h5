@@ -620,7 +620,7 @@
 				if (this.currentsUnitSheme === 0) {
 					this.defaultSchemeMin = "5"
 				} else {
-					this.defaultSchemeMin = "0.3"
+					this.defaultSchemeMin = "5"
 				}
 			},
 			schemeMax(e) {
