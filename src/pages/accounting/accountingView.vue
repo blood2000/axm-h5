@@ -17,6 +17,11 @@
 			<view style="background-color: #EDEDED; height: 2rpx; width: 100%;" />
 			<view v-if="response.ruleInfo.isDefault === 'Y'" class="item ly-flex ly-flex-align-center">
 				<text class="label">默认规则</text>
+				<checkbox-group class="checkBoxCircle" name="isDefault">
+					<checkbox style="transform:scale(0.7); color: #4478E4;" color="#4478E4" :checked="isDefault"
+						:disabled="true" :value="true">
+					</checkbox>
+				</checkbox-group>
 			</view>
 			<view v-if="response.ruleInfo.isDefault === 'Y'"
 				style="background-color: #EDEDED; height: 2rpx; width: 100%;" />
@@ -128,7 +133,7 @@
 					this.defauleName = response.data.ruleInfo.name //规则名称
 					this.isDefault = response.data.ruleInfo.isDefault === "Y" ? true : false //是否默认规则
 					this.defauleFormula = response.data.ruleInfo.ruleDictValue //计算公式
-					
+
 					let lossList = response.data.lossList
 					this.calePathLoss = lossList.length > 0 ? true : false
 					for (var i = 0; i < this.response.detailList.length; i++) {

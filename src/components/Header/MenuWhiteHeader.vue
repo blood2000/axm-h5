@@ -130,9 +130,9 @@
 				font-size: 28upx;
 				justify-content: right;
 				align-items: center;
-				width: 100upx;
+				width: 120rpx;
 				display: flex;
-				height: 50upx;
+				height: 50rpx;
 			}
 		}
 	}

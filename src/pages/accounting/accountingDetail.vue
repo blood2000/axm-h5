@@ -24,7 +24,7 @@
 				</view>
 				<view class="flex justify-center" style="align-items: center;">
 					<picker class="rowValue " selector-type="selector" :range="categories" rangeKey="dictLabel"
-						@change="onAccountingSelect" name="ruleDictValue">
+						@change="onAccountingSelect" name="ruleDictValue" :value="accountingSelectIndex">
 						<view class="uni-input flex row" :style='{color:accountingSelected?"#333333":"#999999"}'>
 							{{accountingSelectName}}
 						</view>
@@ -63,7 +63,8 @@
 					</view>
 					<view class="roleLoss">
 						<picker class="ruleInput " selector-type="selector" :range="dictMap.lossRule"
-							rangeKey="dictLabel" @change="onFormulaSelect" name="ruleLoseRegular">
+							rangeKey="dictLabel" @change="onFormulaSelect" name="ruleLoseRegular"
+							:value="formulaSelectIndex">
 							<view class="ruleFomelaView" :style='{color:formulaSelected?"#333333":"#999999"}'>
 								<text>{{formulaSelectName}}</text>
 								<image style="margin-left:12rpx;width: 18rpx; height: 10rpx;"
@@ -103,7 +104,7 @@
 					<view class="ruleFomelaView" style="margin-left: 24rpx;margin-right: 24rpx;">至</view>
 					<view class="shemeInput">
 						<input type="digit" :value="defaultSchemeMax" style="font-size: 26rpx;" placeholder="最大值"
-							name="ruleLossMax" adjust-position="true" />
+							name="ruleLossMax" adjust-position="true" @input="schemeMax($event)" />
 						<text style="color: #666666;">{{schemeUnit[currentsUnitSheme].schemeUnitName}}</text>
 					</view>
 				</view>
@@ -311,6 +312,7 @@
 				title: "核算规则",
 				accountingSelectName: "请选择计算公式",
 				accountingSelectCode: "",
+				accountingSelectIndex: 0,
 				accountingSelected: false,
 				accountingM0SelectName: "请选择抹零规则",
 				accountingM0SelectCode: "",
@@ -320,6 +322,7 @@
 				calePathLossFlag: "cale",
 				formulaSelectName: "请选择路耗规则",
 				formulaSelectCode: "",
+				formulaSelectIndex: 0,
 				formulaSelected: false,
 				caleFormula: [],
 				scheme: [],
@@ -328,8 +331,8 @@
 				}, {
 					schemeUnitName: "%",
 				}],
-				defaultSchemeMin: "5.00",
-				defaultSchemeMax: "5.00",
+				defaultSchemeMin: "5",
+				defaultSchemeMax: "5",
 				currentsUnitSheme: 0,
 				currentsSheme: 0,
 				projectList: [],
@@ -360,7 +363,6 @@
 
 		async mounted() {
 			await this.$onLaunched
-			console.log("mounted run ~");
 			this.queryDict("ruleFormula")
 			this.queryDict("lossRule")
 			this.queryDict("lossPlan")
@@ -382,7 +384,7 @@
 					if (dictType === "ruleFormula") {
 						//计算公式
 						this.categories = response.data
-						if(this.categories !== null && this.categories.length > 0){
+						if (this.categories !== null && this.categories.length > 0) {
 							this.accountingSelectName = this.categories[0].dictLabel
 							this.accountingSelectCode = this.categories[0].dictValue
 							this.accountingSelected = true
@@ -390,7 +392,7 @@
 					} else if (dictType === "lossRule") {
 						//路耗规则
 						this.caleFormula = response.data
-						this.caleFormula.map(item => {
+						this.caleFormula.map((item, index) => {
 							item.key = item.dictValue
 						})
 					} else if (dictType === "lossPlan") {
@@ -413,10 +415,16 @@
 					this.isDefault = response.data.ruleInfo.isDefault === "Y" ? true : false //是否默认规则
 					this.defauleFormula = response.data.ruleInfo.ruleDictValue //计算公式
 					for (var i = 0; i < this.categories.length; i++) {
-						if (this.categories[i].dictValue === this.defauleFormula)
+						if (this.categories[i].dictValue === this.defauleFormula) {
 							this.accountingSelectName = this.categories[i].dictLabel
-						this.accountingSelectCode = this.categories[i].dictValue
-						this.accountingSelected = true
+							this.accountingSelectCode = this.categories[i].dictValue
+							this.accountingSelected = true
+							this.categories.map((item, index) => {
+								if (item.dictValue === this.accountingSelectCode) {
+									this.accountingSelectIndex = index
+								}
+							});
+						}
 					}
 					let lossList = response.data.lossList
 					this.calePathLoss = lossList.length > 0 ? true : false
@@ -429,6 +437,11 @@
 									this.formulaSelectName = this.caleFormula[j].dictLabel
 									this.formulaSelectCode = this.caleFormula[j].dictValue
 									this.formulaSelected = true
+									this.caleFormula.map((item, index) => {
+										if (item.dictValue === this.formulaSelectCode) {
+											this.formulaSelectIndex = index
+										}
+									});
 								}
 							}
 						} else if (lossList[i].dictCode === "lossPlan") {
@@ -517,7 +530,6 @@
 			 * */
 			onProjectSpinnerSelect(e, item, isDeduction) {
 				const index = e.detail.value
-				console.log('index --->', index)
 				this.accountingM0SelectName = this.dictMap[item.dictCode]. [index].dictLabel
 				this.accountingM0SelectCode = this.dictMap[item.dictCode]. [index].dictValue
 				this.accountingM0Selected = true
@@ -604,11 +616,15 @@
 						this.currentsUnitSheme = i
 					}
 				}
+				this.defaultSchemeMax = "5"
 				if (this.currentsUnitSheme === 0) {
-					this.defaultSchemeMin = "5.00"
+					this.defaultSchemeMin = "5"
 				} else {
 					this.defaultSchemeMin = "0.3"
 				}
+			},
+			schemeMax(e) {
+				this.defaultSchemeMax = e.detail.value
 			},
 			//点击添加扣费项目
 			onDeductionPlusClick() {
@@ -630,7 +646,19 @@
 			},
 			//删除单个已选项目
 			deleteProject(list, index) {
-				list.splice(index, 1)
+				const temp = list.splice(index, 1)
+				let indexTemp = null
+				this.detailList.findIndex((item, index) => {
+					if (temp[0].ruleItemCode === item.ruleItemCode) {
+						indexTemp = index
+					}
+				})
+				this.detailList.some((item, i) => {
+					if (indexTemp == i) {
+						this.detailList.splice(i, 1)
+						return true;
+					}
+				})
 			},
 			//选择了添加扣费或项目
 			projectChange(e) {
@@ -758,10 +786,6 @@
 			},
 			//表单提交
 			formSubmit(e) {
-				uni.showModal({
-					title: "提示",
-					content: JSON.stringify(e.detail.value.ruleDictValue)
-				})
 				if (e.detail.value.name === null || e.detail.value.name === "") {
 					this.toast("规则名称不能为空")
 					return
