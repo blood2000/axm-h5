@@ -150,6 +150,7 @@
 				updateAccountingIsDefault(sub.code, sub.isDefault == "Y" ? "N" : "Y", this.headerInfo).then(response => {
 					if (response.code == 200) {
 						sub.isDefault = sub.isDefault == "Y" ? "N" : "Y";
+						this.queryAccountingList()
 					}
 				})
 			},
