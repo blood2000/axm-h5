@@ -9,7 +9,7 @@
 				<text class="cuIcon-back back" @click="back"></text>
 				<view class="search-form round">
 					<text class="cuIcon-search"></text>
-					<input @blur="changeValue" :adjust-position="false" type="text" placeholder="加油站名称、高速、地区" confirm-type="search" />
+					<input @blur="changeValue" :adjust-position="false" type="text" placeholder="加油站名称、高速、地区" />
 				</view>
 				<view class="action">
 					<button class="cu-btn bg-blue shadow-blur round" @click="search">搜索</button>
