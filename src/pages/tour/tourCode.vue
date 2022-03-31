@@ -111,12 +111,7 @@ export default {
         foregroundColor: "#53A26B",
       },
       showCode: false,
-      pathRecord: [
-        { level: 3, date: "2022-03-31", address: "福建省福州市" },
-        { level: 3, date: "2022-03-31", address: "福建省宁德市" },
-        { level: 2, date: "2022-03-30", address: "浙江杭州市" },
-        { level: 1, date: "2022-03-28", address: "上海市" },
-      ],
+      pathRecord: [],
       today: "",
       curLevel: 3, //当前风险评级
       curDesc: "", //当前风险描述
@@ -191,6 +186,7 @@ export default {
             that.showCode = true;
             that.codeParams.text = that.driverInfo.licenseNumber;
             this.pathRecord = res.data.data;
+            if (this.pathRecord.length === 0) return;
             this.today = parseTime(new Date(), "{y}-{m}-{d}");
             let level = 3;
             this.pathRecord.map((item) => {
