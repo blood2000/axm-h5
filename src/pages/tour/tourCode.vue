@@ -58,7 +58,7 @@
       </div>
       <div class="code-box position-recode">
         <div class="title0">近14天途径城市</div>
-        <div class="show-path" @click="showPath">查看轨迹</div>
+        <!-- <div class="show-path" @click="showPath">查看轨迹</div> -->
         <div class="remark-title">
           注:风险标识为途径当日相关城市的全国风险评级
         </div>
