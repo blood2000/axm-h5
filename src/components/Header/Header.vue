@@ -28,7 +28,7 @@
 				<view v-else style="width: 18upx;"></view>
 				<view class="title"><slot name="title"></slot></view>
 				<view style="width: 18upx;">
-				<div class="top-right-icon" v-if="showRight" @click="toTourCode">车辆健康码</div>
+				<div class="top-right-icon" v-if="showRight" @click="toTourCode">超好运安行码</div>
 				</view>
 			</view>
 		</view>

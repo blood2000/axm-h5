@@ -38,7 +38,7 @@
     {
       "path": "pages/tour/tourCode",
       "style": {
-        "navigationBarTitleText": "车辆健康码",
+        "navigationBarTitleText": "超好运安行码",
         "navigationStyle": "custom",
         "enablePullDownRefresh": false
       }

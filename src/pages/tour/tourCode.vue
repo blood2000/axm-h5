@@ -5,7 +5,7 @@
       :show-bg="false"
       :showBack="true"
     >
-      <text slot="title">车辆健康码</text>
+      <text slot="title">超好运安行码</text>
     </Header>
     <div class="header">
       <div class="header-bg"></div>
