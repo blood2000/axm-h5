@@ -3,14 +3,14 @@ const store = {
 		isAndroid: false,
 		isiOS: false,
 		headerInfo: {
-			"Authorization": "b93f2253-ad5d-4323-8d4c-8d0da1b6bfb0",
-			"App-Type": "2",
-			"App-Code": "80bb50e40895928e2dc0d101350a25d0",
-			"Terminal-Type": "app",
-			"App-Version": "2.1.13",
-			"Produce-Code": "776ca8e240574192b6e0f69b417163df",
-			"statusBarHeight": 0,
-			"role-type": 2
+			// "Authorization": "b93f2253-ad5d-4323-8d4c-8d0da1b6bfb0",
+			// "App-Type": "2",
+			// "App-Code": "80bb50e40895928e2dc0d101350a25d0",
+			// "Terminal-Type": "app",
+			// "App-Version": "2.1.13",
+			// "Produce-Code": "776ca8e240574192b6e0f69b417163df",
+			// "statusBarHeight": 0,
+			// "role-type": 2
 		},
 		statusBarHeight: 0
 	},
