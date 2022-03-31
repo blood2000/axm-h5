@@ -115,7 +115,7 @@ export default {
       pathRecord: [],
       today: "",
       curLevel: 3, //当前风险评级
-      curDesc: "", //当前风险描述
+      curDesc: "绿码:健康状态为低风险", //当前风险描述
       curAddress: "", //当前地址
       statusOptions: [
         { label: "低风险", level: 3, desc: "绿码:健康状态为低风险" },
