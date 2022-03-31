@@ -63,6 +63,7 @@
           注:风险标识为途径当日相关城市的全国风险评级
         </div>
         <div class="path-record">
+          <div class="title3" v-if="pathRecord.length === 0">无行程记录</div>
           <div
             class="path-item"
             v-for="(item, index) in pathRecord"
@@ -194,13 +195,14 @@ export default {
               if (item.level < level) {
                 level = item.level;
               }
+              item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}")
               //判断是否为今日
-              if (item.date === this.today) {
+              if (item.passDate === this.today) {
                 this.$set(item, "isToday", true);
               } else {
                 this.$set(item, "isToday", false);
               }
-              item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}")
+              
               //装入各行程风险等级描述
               this.statusOptions.map((e) => {
                 if (e.level === item.level) {
