@@ -1,6 +1,6 @@
 <template>
 	<view class="home-page">
-		<Header>
+		<Header >
 			<text slot="title">统计</text>
 		</Header>
 		

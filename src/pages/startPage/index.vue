@@ -1,6 +1,6 @@
 <template>
 	<view class="start-page-index">
-		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
+		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage" >
 			<text slot="title">统计服务</text>
 		</Header>
 		<view v-if="loading" class="cu-load load-modal">

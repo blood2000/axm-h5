@@ -1,25 +1,6 @@
 <template>
-	<!-- <view class="header">
-		<view class="header-box">
-			<view class="status_bar">
-			  这里是状态栏
-			</view>
-			<view class="header-box__title flex align-center justify-between">
-				<text v-if="showBack" class="cuIcon-back" @click="back"></text>
-				<view v-else style="width: 18upx;"></view>
-				<slot name="title"></slot>
-				<view style="width: 18upx;"></view>
-			</view>
-			<view class="circle-big"></view>
-			<view class="circle-middle"></view>
-			<view class="circle-small"></view>
-		</view>
-	</view> -->
 	<view class="top">
 		<view class="top-frame" :style="{height: titleHeight + 'upx' }">
-			<!-- <view class="top-bgframe1">
-				<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
-			</view> -->
 			<view :style="{height: statusBarHeight*2 + 'upx' }">
 			  <!-- 这里是状态栏 -->
 			</view>
@@ -28,7 +9,7 @@
 				<view v-else style="width: 18upx;"></view>
 				<view class="title"><slot name="title"></slot></view>
 				<view style="width: 18upx;">
-				<div class="top-right-icon" v-if="showRight" @click="toTourCode">车辆健康码</div>
+				<!-- <div class="top-right-icon" v-if="showRight" @click="toTourCode">车辆健康码</div> -->
 				</view>
 			</view>
 		</view>
@@ -36,19 +17,7 @@
 			<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
 		</view>
 		<view class="bg-height" :style="{height: titleHeight + 'upx' }"></view>
-		<!-- <view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-green">确定</view>
-					<view class="action text-blue" @tap="hideModal">取消</view>
-				</view>
-				<view class="padding-xl">
-					状态栏高度：{{ statusBarHeight }}
-					是否安卓：{{ isAndroid }}
-					是否ios：{{ isiOS }}
-				</view>
-			</view>
-		</view> -->
+
 	</view>
 </template>
 
@@ -92,7 +61,7 @@
 		},
 		beforeMount(){
 			this.pages = getCurrentPages();
-			console.log(this.pages);
+			// console.log(this.pages);
 			this.titleHeight = this.statusBarHeight*2 + 100;
 			console.log(this.statusBarHeight);
 			console.log(this.titleHeight);
@@ -136,9 +105,8 @@
 				}
 			},
 			toTourCode() {
-				console.log(11)
 				uni.navigateTo({
-					url: '../../../pages/tour/tourCode'
+					url: '../../pages/tour/tourCode.vue'
 				})
 			},
 		}
@@ -154,8 +122,9 @@
 	// height: 185upx;
 	width: 100%;
 	overflow: hidden;
-	background: url('/static/tab_bg.png') no-repeat;
-	background-size: 100% 350upx;
+	// background: url('/static/tab_bg.png') no-repeat;
+	// background-size: 100% 350upx;
+  background: #4163FE;
 	.top-title{
 		height: 100upx;
 		width: 100%;

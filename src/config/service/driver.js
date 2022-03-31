@@ -5,10 +5,10 @@ export function getStatisticData(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/headStatistics',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -17,10 +17,10 @@ export function getTransportData(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/transportStatistics',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -29,10 +29,10 @@ export function getPeeData(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/shippingStatistics',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -41,10 +41,10 @@ export function getCarData(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/carStatistics',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -53,10 +53,10 @@ export function getVehicleReport(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/vehicleReport',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -65,10 +65,10 @@ export function getTransMonth(config) {
   return uniRequest({
     url: '/transportation/driverStatistics/transportReportHaveDataMonth',
     method: 'get',
-	data: {
-		year: ''
-	},
-	headers: config
+    data: {
+      year: ''
+    },
+    headers: config
   });
 }
 
@@ -77,10 +77,10 @@ export function getTransHead(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/transportReportHeadStatistics',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -89,10 +89,10 @@ export function getTransData(yearMonth, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/transportReportMonthData',
     method: 'get',
-	data: {
-		yearMonth: yearMonth
-	},
-	headers: config
+    data: {
+      yearMonth: yearMonth
+    },
+    headers: config
   });
 }
 
@@ -101,10 +101,10 @@ export function getCostMonth(config) {
   return uniRequest({
     url: '/transportation/driverStatistics/costReportHaveDataMonth',
     method: 'get',
-	data: {
-		year: ''
-	},
-	headers: config
+    data: {
+      year: ''
+    },
+    headers: config
   });
 }
 
@@ -113,10 +113,10 @@ export function getCostHead(timeType, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/costReportHeadStatistics',
     method: 'get',
-	data: {
-		timeType: timeType
-	},
-	headers: config
+    data: {
+      timeType: timeType
+    },
+    headers: config
   });
 }
 
@@ -125,9 +125,26 @@ export function getCostData(yearMonth, config) {
   return uniRequest({
     url: '/transportation/driverStatistics/costReportMonthData',
     method: 'get',
-	data: {
-		yearMonth: yearMonth
-	},
-	headers: config
+    data: {
+      yearMonth: yearMonth
+    },
+    headers: config
+  });
+}
+//获取默认车辆
+export function getDriverInfo(config) {
+  return uniRequest({
+    url: '/ddc-job/healthCode/getDriverInfo',
+    method: 'get',
+    headers: config
+  });
+}
+//车辆行程
+export function getTourData(data, config) {
+  return uniRequest({
+    url: '/schedule/epidemic/searchByCar',
+    method: 'post',
+    data: data,
+    headers: config
   });
 }
