@@ -43,6 +43,34 @@
         "enablePullDownRefresh": false
       }
     },
+
+    // 安行系统
+    {
+      "path": "pages/itinerary/code",
+      "style": {
+        "navigationBarTitleText": "超好运安行码",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    
+    {
+      "path": "pages/itinerary/login",
+      "style": {
+        "navigationBarTitleText": "登录超好运安行码",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/itinerary/query",
+      "style": {
+        "navigationBarTitleText": "输入车辆信息",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    
     {
       "path": "pages/finance/carDetail/index",
       "style": {
