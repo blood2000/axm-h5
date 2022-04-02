@@ -46,7 +46,7 @@
 		computed: {
 			...mapState({
 				// headerInfo: state => state.header.headerInfo,
-				statusBarHeight: state => state.header.statusBarHeight,
+				// statusBarHeight: state => state.header.statusBarHeight,
 				isAndroid: state => state.header.isAndroid,
 				isiOS: state => state.header.isiOS
 			})
@@ -56,6 +56,7 @@
 				pages: {},
 				titleHeight: 0, //状态栏和导航栏的总高度
 				naviBarHeight:0,//导航栏高度
+        statusBarHeight: 0,
 				// modalName: 'bottomModal'
 			}
 		},
@@ -65,6 +66,12 @@
 			this.titleHeight = this.statusBarHeight*2 + 100;
 			console.log(this.statusBarHeight);
 			console.log(this.titleHeight);
+      uni.getSystemInfo({
+      success: (res) => {
+        console.log("系统信息1", res);
+        this.statusBarHeight = res.statusBarHeight;
+      }
+    });
 		},
 		async onLoad() {
 			await this.$onLaunched;

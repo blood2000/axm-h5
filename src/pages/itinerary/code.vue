@@ -49,6 +49,7 @@
       <div class="code-box position-title">
         <div class="title0">最新位置</div>
         <div class="title3">{{ curAddress }}</div>
+        <!-- <div class="title3">{{ pathRecord[0][0].address || '无' }}</div> -->
       </div>
       <div class="code-box position-recode">
         <div class="title0">近14天途径城市</div>
@@ -64,7 +65,10 @@
               v-for="(item, index) in pathRecord"
               :key="index"
             >
-              <div class="path-first-line">
+              <div
+                class="path-first-line"
+                v-if="loadingStatus[index] && item.length > 0"
+              >
                 <div
                   class="path-status"
                   :class="'bg-status-' + levelStatus[index]"
@@ -78,17 +82,22 @@
                 <div class="title3">{{ dateList[index] }}</div>
                 <div v-if="index === 0" class="today-mark">今日</div>
               </div>
-              <div class="path-record-content">
-                <div class="no-data" v-if="loadingStatus[index] && item.length === 0">
+              <div
+                class="path-record-content"
+                v-if="loadingStatus[index] && item.length > 0"
+              >
+                <!-- <div
+                  class="no-data"
+                  v-if="loadingStatus[index] && item.length === 0"
+                >
                   <div class="no-data-icon"></div>
                   <div>暂无数据</div>
-                </div>
-                <div  v-if="!loadingStatus[index]" class="loding-data">
+                </div> -->
+                <div v-if="!loadingStatus[index]" class="loding-data">
                   <div class="loading-data-icon"></div>
                   <div>大数据检索中...</div>
                 </div>
                 <div class="title4" v-else>
-                  
                   <span
                     v-for="(e, i) in item"
                     :key="i"
@@ -148,18 +157,19 @@ export default {
       tourAddress: [], //每天省市列表
       today: "",
       curLevel: 3, //当前风险评级
+      isEmpty: false,
       curDesc: "绿码:健康状态为低风险", //当前风险描述
       curAddress: "", //当前地址
       statusOptions: [
-        { label: "低风险", level: 3, desc: "绿码:健康状态为低风险" },
-        { label: "中风险", level: 2, desc: "黄码:健康状态为中风险" },
-        { label: "高风险", level: 1, desc: "红码:健康状态为高风险" },
+        { label: "低风险", level: 3, desc: "安行码评估:低风险" },
+        { label: "中风险", level: 2, desc: "安行码评估:中风险" },
+        { label: "高风险", level: 1, desc: "安行码评估:高风险" },
       ],
       levelDesc: [""],
     };
   },
 
-  components: {Header },
+  components: { Header },
 
   computed: {
     ...mapState({
@@ -202,8 +212,7 @@ export default {
             level = item;
           }
         });
-        console.log("监听属性curLevel", level);
-
+        // console.log("监听属性curLevel", level);
         this.curLevel = level;
       },
       // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
@@ -221,7 +230,7 @@ export default {
           leap && (leap = item);
         });
         this.showCode = leap;
-        console.log("showCode", leap);
+        // console.log("showCode", leap);
       },
       // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
       deep: true,
@@ -239,6 +248,30 @@ export default {
           this.codeParams.foregroundColor = "#53A26B";
           break;
       }
+
+      this.statusOptions.map((e) => {
+        if (e.level === val) {
+          this.curDesc = e.desc;
+        }
+      });
+    },
+    showCode(val) {
+      if (val) {
+        let leap = true;
+        this.pathRecord.map((item) => {
+          leap && (leap = item.length === 0);
+        });
+        this.isEmpty = leap;
+        if (this.isEmpty) {
+          this.codeParams.foregroundColor = "#dadada";
+        }
+        // if (this.pathRecord[0].length > 0) {
+        //   this.curAddress = this.pathRecord[0][0].address || '无';
+        // } else {
+        //   this.curAddress = '无'
+        // }
+      }
+      // console.log(val);
     },
   },
 
@@ -257,14 +290,13 @@ export default {
     getList() {
       this.codeParams.text = this.carNo;
       let curDate = new Date().getTime();
-      // let
 
       for (let i = 0; i < 14; i++) {
         this.loadingStatus[i] = false;
         this.levelStatus[i] = 3;
         this.tourAddress[i] = "";
         this.pathRecord[i] = [];
-        this.levelDesc[i] = '';
+        this.levelDesc[i] = "";
 
         let intraday = curDate - 3600 * 24 * i * 1000;
         let time = parseTime(new Date(intraday), "{y}-{m}-{d}");
@@ -290,6 +322,9 @@ export default {
       };
       uniRequest(config).then((res) => {
         console.log(obj.time + "行程记录", res);
+
+
+
         this.$set(this.loadingStatus, i, true);
         this.$set(this.pathRecord, i, res.data.data);
 
@@ -594,7 +629,7 @@ export default {
 }
 
 .path-record {
-  width: 70%;
+  width: 74%;
   padding: 30rpx 0 0;
 }
 
@@ -684,7 +719,11 @@ export default {
   box-sizing: border-box;
   padding: 0 20rpx;
   height: 98rpx;
-  background: linear-gradient(270deg, rgba(255,255,255,.4) 0%, rgba(241, 241, 241, .4) 100%);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(241, 241, 241, 0.4) 100%
+  );
   // opacity: 0.4;
   border-radius: 4px;
   display: flex;
@@ -697,7 +736,7 @@ export default {
   margin-right: 20rpx;
   width: 72rpx;
   height: 72rpx;
-  background: url('../../static/code/no_data.png') no-repeat center;
+  background: url("../../static/code/no_data.png") no-repeat center;
   background-size: 100% 100%;
 }
 
@@ -705,7 +744,7 @@ export default {
   margin-right: 20rpx;
   width: 72rpx;
   height: 72rpx;
-  background: url('../../static/code/search.png') no-repeat center;
+  background: url("../../static/code/search.webp") no-repeat center;
   background-size: 100% 100%;
 }
 .path-status {

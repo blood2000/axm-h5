@@ -14,6 +14,7 @@
             type="text"
             class="axm-input"
             placeholder="请输入账户"
+            maxlength=11
             v-model="account"
           />
         </div>
@@ -25,6 +26,7 @@
             type="password"
             class="axm-input"
             placeholder="请输入密码"
+            maxlength=16
             v-model="password"
           />
           <input
@@ -32,6 +34,7 @@
             type="text"
             class="axm-input"
             placeholder="请输入密码"
+            maxlength=16
             v-model="password"
           />
           <div
@@ -48,6 +51,7 @@
             class="axm-input"
             placeholder="请输入验证码"
             v-model="verificationCode"
+            maxlength=4
           />
           <div class="captcha-box" @click="getCaptcha">
             <img :src="captchaUrl" alt=" " />

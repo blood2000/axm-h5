@@ -186,7 +186,7 @@ export default {
     border-radius: 13rpx;
     height: 70rpx;
     width: 70rpx;
-    box-shadow: 0px 8px 7px 0px rgba(152, 152, 152, 0.1);
+    box-shadow: 0px 0 7px 0px rgba(152, 152, 152, 0.4);
     .val {
       flex: 1;
       display: flex;
