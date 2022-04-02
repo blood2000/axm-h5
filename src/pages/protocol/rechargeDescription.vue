@@ -62,34 +62,30 @@
 		</uni-table>
 		
 		<!-- 浦发银行 -->
-		<!-- <uni-table border emptyText="暂无数据" v-if="form.paymentChannels === 'SPDB'">
+		<uni-table border emptyText="暂无数据" v-if="form.paymentChannels === 'SPDB'">
 			<tbody>
 				<uni-tr>
 				   <uni-td>银行账号</uni-td>
-				   <uni-td>171913247</uni-td>
+				   <uni-td>{{ form.bankAcc ? form.bankAcc : '' }}</uni-td>
 				</uni-tr>
 				<uni-tr>
 				   <uni-td>开户名称</uni-td>
-				   <uni-td>福建大道成物流科技有限公司</uni-td>
+				   <uni-td>{{ form.accName ? form.accName : '' }}</uni-td>
 				</uni-tr>
 				<uni-tr>
 				   <uni-td>开户行</uni-td>
-				   <uni-td>中国民生银行福州福清龙田支行</uni-td>
-				</uni-tr>
-				<uni-tr>
-				   <uni-td>省份选</uni-td>
-				   <uni-td>福建省</uni-td>
-				</uni-tr>
-				<uni-tr>
-				   <uni-td>城市选</uni-td>
-				   <uni-td>福州市</uni-td>
+				   <uni-td>上海浦东发展银行股份有限公司福州福清支行</uni-td>
 				</uni-tr>
 				<uni-tr>
 				   <uni-td>联行号</uni-td>
-				   <uni-td>305391015267</uni-td>
+				   <uni-td>310391000045</uni-td>
+				</uni-tr>
+				<uni-tr>
+				   <uni-td>当前绑定卡号（请使用当前绑定卡号充值，否则无法到账）</uni-td>
+				   <uni-td>43060078801400001078</uni-td>
 				</uni-tr>
 			</tbody>
-		</uni-table> -->
+		</uni-table>
 		
 		<view style="margin-bottom: 100rpx"></view>
 	</view>
@@ -117,9 +113,9 @@
 				if (this.form.paymentChannels === 'CMBC') {
 					result = `银行账号：${this.form.bankAcc ? this.form.bankAcc : ''}; 开户名称：${this.form.accName ? this.form.accName : ''}; 开户行：民生银行; 当前绑定卡号（请使用当前绑定卡号充值，否则无法到账）：${this.form.atBindBankCard ? this.form.atBindBankCard : ''}`;
 				}
-				// if (this.form.paymentChannels === 'SPDB') {
-				// 	result = `银行账号：171913247; 开户名称：福建大道成物流科技有限公司; 开户行：中国民生银行福州福清龙田支行; 省份选：福建省; 城市选：福州市; 联行号：305391015267`;
-				// }
+				if (this.form.paymentChannels === 'SPDB') {
+					result = `银行账号：${this.form.bankAcc ? this.form.bankAcc : ''}; 开户名称：${this.form.accName ? this.form.accName : ''}; 开户行：上海浦东发展银行股份有限公司福州福清支行; 联行号：310391000045; 当前绑定卡号（请使用当前绑定卡号充值，否则无法到账）：43060078801400001078`;
+				}
 				return result;
 			}
 		},
