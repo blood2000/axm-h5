@@ -61,7 +61,7 @@
 		},
 		beforeMount(){
 			this.pages = getCurrentPages();
-			// console.log(this.pages);
+			console.log(this.pages);
 			this.titleHeight = this.statusBarHeight*2 + 100;
 			console.log(this.statusBarHeight);
 			console.log(this.titleHeight);

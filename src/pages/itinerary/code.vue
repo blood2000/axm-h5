@@ -1,11 +1,7 @@
-<!-- 车辆行程二维码 -->
+<!-- 安行系统车辆行程二维码 -->
 <template>
   <div class="home-page">
-    <Header
-      :show-bg="false"
-      :showBack="true"
-      :isSecondaryPage="isSecondaryPage"
-    >
+    <Header :show-bg="false" :showBack="true">
       <text slot="title">超好运安行码</text>
     </Header>
     <div class="header">
@@ -26,7 +22,7 @@
             <div>{{ desNum }}</div>
           </div>
           <div class="splite-line"></div>
-          <div class="title2">{{ tourReqData.passDateEnd }}</div>
+          <div class="title2">{{ today }}</div>
           <div class="code-img">
             <div class="code" v-show="showCode">
               <div class="code-icon"></div>
@@ -64,7 +60,7 @@
           注:风险标识为途径当日相关城市的全国风险评级
         </div>
         <div class="path-record">
-          <div class="title3" v-if="pathRecord.length === 0">无行程记录</div>
+          <!-- <div class="title3" v-if="pathRecord.length === 0">无行程记录</div> -->
           <div
             class="path-item"
             v-for="(item, index) in pathRecord"
@@ -74,15 +70,25 @@
               <div
                 :class="index === 0 ? 'current-mark' : 'first-line-mark'"
               ></div>
-              <div class="title3">{{ item.passDate }}</div>
-              <div v-if="item.isToday" class="today-mark">今日</div>
+              <div class="title3">{{ dateList[index] }}</div>
+              <!-- <div v-if="item.isToday" class="today-mark">今日</div> -->
             </div>
             <div class="path-record-content">
-              <div class="title4">{{ item.address }}</div>
-              <div class="path-status" :class="'bg-status-' + item.level">
-                {{ item.desc }}
+              <div v-if="item.length === 0">无</div>
+              <div class="title3" v-else>
+                <span v-for="(e, i) in item" :key="i" :class="'status-' + e.level">
+                  {{e.provinceName || ''}}{{e.cityName || ''}}
+                  <text v-if="e.provinceName && i < item.length - 1">,</text>
+                </span>
+                
               </div>
             </div>
+            <!-- <div
+              class="path-status"
+              :class="'bg-status-' + levelStatus[index].level"
+            >
+              {{ item.desc }}
+            </div> -->
           </div>
         </div>
       </div>
@@ -96,14 +102,14 @@ import { getPageJump } from "@/config/service/startPage.js";
 import Header from "@/components/Header/CodeHeader.vue";
 import { parseTime } from "../../utils/ddc";
 //getTourData
-import { getTourData, getDriverInfo } from "@/config/service/driver.js";
+import { getTourData, getDriverInfo } from "@/config/service/itinerary.js";
 import tkiQrcode from "@/components/tki-qrcode/tki-qrcode.vue";
 export default {
   data() {
     return {
       loading: false,
       loadError: false,
-      isSecondaryPage: false,
+      isSecondaryPage: true,
       openEye: false,
       driverInfo: {},
       codeParams: {
@@ -112,10 +118,15 @@ export default {
         // foreground: "#53A26B",
         foregroundColor: "#53A26B",
       },
-      showCode: false,
+      // showCode: false,
+      isDanger: false,
       pathRecord: [],
+      loadingStatus: [], //每天记录加载状态
+      levelStatus: [], //每天行程的风险等级
+      dateList: [], //日期
+      tourAddress: [], //每天省市列表
       today: "",
-      curLevel: 3, //当前风险评级
+      // curLevel: 3, //当前风险评级
       curDesc: "绿码:健康状态为低风险", //当前风险描述
       curAddress: "", //当前地址
       statusOptions: [
@@ -152,161 +163,181 @@ export default {
         return this.driverInfo.desensitizationIdentificationNumber;
       }
     },
-  },
-  async onLoad(options) {},
+    showCode() {
+      if (this.isDanger) {
+        console.log("计算属性监听成功");
+        return true;
+      } else {
+        let leap = true;
+        this.loadingStatus.map((item, index) => {
+          leap && (leap = item);
+        });
+        return leap;
+      }
+    },
+    curLevel() {
+      //总体风险等级
+      // if (this.isDanger) {
+      //   return 1;
+      // } else {
 
-  async onLoad(options) {
-    await this.$onLaunched;
-    const isSecondaryPage = options.isSecondaryPage;
-    if (isSecondaryPage === "1") {
-      this.isSecondaryPage = true;
-    }
-    uni.showLoading();
-    getDriverInfo(this.headerInfo).then((res) => {
-      console.log("获取司机信息", res);
-      this.driverInfo = res.data;
-      let curDate = new Date().getTime();
-      // let endDate = parseTime(new Date(curDate), "{y}-{m}-{d} {h}:{i}:{s}");
-      let startDate = curDate - 3600 * 24 * 14 * 1000;
-      this.tourReqData.passDateEnd = parseTime(
-        new Date(curDate),
-        "{y}-{m}-{d} {h}:{i}:{s}"
-      );
-      this.tourReqData.passDateStart = parseTime(
-        new Date(startDate),
-        "{y}-{m}-{d} 00:00:00"
-      );
-      this.tourReqData.carNo = this.driverInfo.licenseNumber;
-      // this.tourReqData.carNo = "冀J5F355";
-      let that = this;
-      this.getTourList();
-      return;
-      uni.request({
-        url: process.env.VUE_APP_BASE_API + "/schedule/epidemic/searchByCar",
-        method: "post",
-        data: that.tourReqData,
-        header: Object.assign(
-          { "Content-Type": "application/json;charset=utf-8" },
-          this.headerInfo
-        ),
-        success: (res) => {
-          console.log("行程记录", res);
-          uni.hideLoading();
-          if (res.data.code === 200) {
-            that.showCode = true;
-            that.codeParams.text = that.driverInfo.licenseNumber;
-            this.pathRecord = res.data.data;
-            if (this.pathRecord.length === 0) return;
-            this.today = parseTime(new Date(), "{y}-{m}-{d}");
-            let level = 3;
-            this.pathRecord.map((item) => {
-              //判断当前等级，取level最低值
-              if (item.level < level) {
-                level = item.level;
-              }
-              item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}");
-              //判断是否为今日
-              if (item.passDate === this.today) {
-                this.$set(item, "isToday", true);
-              } else {
-                this.$set(item, "isToday", false);
-              }
-
-              //装入各行程风险等级描述
-              this.statusOptions.map((e) => {
-                if (e.level === item.level) {
-                  this.$set(item, "desc", e.label);
-                }
-              });
-            });
-            this.curLevel = level; //风险等级
-            this.curAddress = this.pathRecord[0].address; //地址
-            //二维码风险等级颜色
-            switch (this.curLevel) {
-              case 1:
-                this.codeParams.foregroundColor = "#e55e50";
-                break;
-              case 2:
-                this.codeParams.foregroundColor = "#ffa136";
-                break;
-              case 3:
-                this.codeParams.foregroundColor = "#53A26B";
-                break;
-            }
-            //获取当前风险评级描述
-            this.statusOptions.map((e) => {
-              if (e.level === this.curLevel) {
-                this.curDesc = e.desc;
-              }
-            });
-          }
-        },
-        fail: () => {
-          uni.hideLoading();
-        },
+      // }
+      let level = 3;
+      this.levelStatus.map((item) => {
+        if (item < level) {
+          level = item;
+        }
       });
-      // getTourData(this.tourReqData, this.headerInfo).then(res => {
-      //   console.log('行程记录', res)
-      // })
-    });
+      // console.log('计算属性curLevel', level);
+      return level;
+    },
+  },
 
-    // console.log(curDate, startDate,this.tourReqData)
+  watch: {
+    levelStatus: {
+      // 需要注意，因为对象引用的原因， newValue和oldValue的值一直相等
+      handler(newValue, oldValue) {
+        // 在这里标记页面编辑状态
+        let level = 3;
+        newValue.map((item) => {
+          if (item < level) {
+            level = item;
+          }
+        });
+        console.log("监听属性curLevel", level);
+      },
+      // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
+      deep: true,
+    },
+  },
+
+  onLoad() {
+    console.log("安行系统页面");
+    // this.getDriver();
+    this.driverInfo.licenseNumber = "冀J5F355";
+    this.getList();
+    this.today = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");
   },
 
   methods: {
-    desensitization(str, start, end) {
-      end = end || str.length;
-      let result = "";
-      let firstStr = str.slice(0, start);
-      let lastStr = str.slice(end);
-      result += firstStr;
-      for (let i = start; i < end; i++) {
-        result += "*";
-      }
-      result += lastStr;
-      return result;
+    getDriver() {
+      uni.showLoading();
+      getDriverInfo(this.headerInfo).then((res) => {
+        console.log("获取司机信息", res);
+        this.driverInfo = res.data;
+        let curDate = new Date().getTime();
+        // let endDate = parseTime(new Date(curDate), "{y}-{m}-{d} {h}:{i}:{s}");
+        let startDate = curDate - 3600 * 24 * 14 * 1000;
+        this.tourReqData.passDateEnd = parseTime(
+          new Date(curDate),
+          "{y}-{m}-{d} {h}:{i}:{s}"
+        );
+        this.tourReqData.passDateStart = parseTime(
+          new Date(startDate),
+          "{y}-{m}-{d} 00:00:00"
+        );
+        // this.tourReqData.carNo = this.driverInfo.licenseNumber;
+        this.tourReqData.carNo = "冀J5F355";
+        let that = this;
+        this.getTourList();
+      });
     },
+    getList() {
+      this.codeParams.text = "冀J5F355";
+      let curDate = new Date().getTime();
+      // let
+      for (let i = 0; i < 14; i++) {
+        this.loadingStatus[i] = false;
+        this.levelStatus[i] = 3;
+        this.tourAddress[i] = "";
+        this.pathRecord[i] = [];
+        let obj = {};
+        let intraday = curDate - 3600 * 24 * i * 1000;
+        obj.carNo = "冀J5F355";
+        obj.passDateEnd = parseTime(new Date(intraday), "{y}-{m}-{d} 23:59:59");
+        obj.passDateStart = parseTime(
+          new Date(intraday),
+          "{y}-{m}-{d} 00:00:00"
+        );
+        this.dateList[i] = parseTime(new Date(intraday), "{y}-{m}-{d}");
+        // console.log(obj)
+        this.getTourList(obj, i);
+      }
+    },
+
     toggleEye() {
       this.openEye = !this.openEye;
     },
-    getTourList() {
+    //获取行程
+    getTourList(obj, i) {
       let that = this;
-      getTourData(this.tourReqData, {
+      getTourData(obj, {
         ...this.headerInfo,
         "Content-Type": "application/json;charset=utf-8",
       }).then((res) => {
-        console.log("行程记录", res);
-        uni.hideLoading();
+        
         if (res.code === 200) {
-          that.showCode = true;
-          that.codeParams.text = that.driverInfo.licenseNumber;
-          this.pathRecord = res.data;
-          if (this.pathRecord.length === 0) return;
-          this.today = parseTime(new Date(), "{y}-{m}-{d}");
+          this.$set(this.loadingStatus, i, true);
+          this.$set(this.pathRecord, i, res.data);
+          console.log(obj.passDateStart +"行程记录", this.pathRecord[i]);
+          // if (this.pathRecord[i].length === 0) {
+          //   let curData = {
+          //     level: 3,
+          //     desc: "低风险",
+          //     passDate: parseTime(new Date(obj.passDateStart), "{y}-{m}-{d}"),
+          //     // addressList: [],
+          //   };
+          //   this.$set(this.pathRecord, i, curData);
+          //   return;
+          // }
+          // this.today = parseTime(new Date(), "{y}-{m}-{d}");
           let level = 3;
-          this.pathRecord.map((item) => {
+          let addressObj = {};
+          this.pathRecord[i].map((item) => {
+            //拼接地址
+            // let addressStr = "";
+            // if (item.provinceName) {
+            //   addressStr += item.provinceName;
+            // }
+            // if (item.cityName) {
+            //   addressStr += item.cityName;
+            // }
+
+            // addressObj.address = addressStr;
             //判断当前等级，取level最低值
-            if (item.level < level) {
+            if (item.level !== 0 && item.level < level) {
               level = item.level;
             }
-            item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}");
-            //判断是否为今日
-            if (item.passDate === this.today) {
-              this.$set(item, "isToday", true);
-            } else {
-              this.$set(item, "isToday", false);
+            if (item.level === 1) {
+              //风险一旦有高危，显示二维码二维码红码
+              this.isDanger = true;
             }
-
+            // this.$set(this.levelStatus, i, level); //各记录的风险等级
             //装入各行程风险等级描述
-            this.statusOptions.map((e) => {
-              if (e.level === item.level) {
-                this.$set(item, "desc", e.label);
-              }
-            });
+            // this.statusOptions.map((e) => {
+            //   if (e.level === item.level) {
+            //     this.$set(item, "desc", e.label);
+            //     this.$set(this.pathRecord, i, item);
+            //   }
+            // });
+            addressObj.level = level;
+            this.$set(this.tourAddress, i, addressObj); //各记录的省市
+
+            // item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}");
+            // //判断是否为今日
+            // if (item.passDate === this.today) {
+            //   this.$set(item, "isToday", true);
+            // } else {
+            //   this.$set(item, "isToday", false);
+            // }
           });
-          this.curLevel = level; //风险等级
-          this.curAddress = this.pathRecord[0].address; //地址
-          //二维码风险等级颜色
+          this.$set(this.levelStatus, i, level); //各记录的风险等级
+          this.$set(this.pathRecord, i, this.pathRecord[i])
+          // this.curLevel = level; //风险等级
+
+          // this.curAddress = this.pathRecord[0].address; //地址
+
+          //二维码风险等级颜色;
           switch (this.curLevel) {
             case 1:
               this.codeParams.foregroundColor = "#e55e50";
