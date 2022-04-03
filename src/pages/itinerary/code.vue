@@ -104,7 +104,7 @@
                     :class="'status-' + e.level"
                   >
                     {{ e.provinceName || "" }}{{ e.cityName || "" }}{{ e.countyName || "" }}
-                    <text v-if="e.provinceName && i < item.length - 1">,</text>
+                    <text v-if="e.provinceName && i < item.length - 1">、</text>
                   </span>
                 </div>
               </div>
@@ -250,9 +250,11 @@ export default {
       }
 
       this.statusOptions.map((e) => {
-        if (e.level === val) {
+        console.log('curDesc > ',e);
+        this.curDesc = e.desc;
+        /*if (e.level === val) {
           this.curDesc = e.desc;
-        }
+        }*/
       });
     },
     showCode(val) {
