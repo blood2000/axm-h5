@@ -43,7 +43,7 @@
           >
             {{ curDesc }}
           </div>
-          <div class="code-status" v-else>二维码正在努力生成中...</div>
+          <div class="code-status" v-else>安行码评估中...</div>
         </div>
       </div>
       <div class="code-box position-title">
@@ -95,7 +95,7 @@
                 </div> -->
                 <div v-if="!loadingStatus[index]" class="loding-data">
                   <div class="loading-data-icon"></div>
-                  <div>大数据检索中...</div>
+                  <div>行程评估中...</div>
                 </div>
                 <div class="title4" v-else>
                   <span
@@ -103,7 +103,7 @@
                     :key="i"
                     :class="'status-' + e.level"
                   >
-                    {{ e.provinceName || "" }}{{ e.cityName || "" }}
+                    {{ e.provinceName || "" }}{{ e.cityName || "" }}{{ e.countyName || "" }}
                     <text v-if="e.provinceName && i < item.length - 1">,</text>
                   </span>
                 </div>
