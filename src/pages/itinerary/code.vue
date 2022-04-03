@@ -158,7 +158,7 @@ export default {
       today: "",
       curLevel: 3, //当前风险评级
       isEmpty: false,
-      curDesc: "绿码:健康状态为低风险", //当前风险描述
+      curDesc: "安行码评估中...", //当前风险描述
       curAddress: "", //当前地址
       statusOptions: [
         { label: "低风险", level: 3, desc: "安行码评估:低风险" },
@@ -265,11 +265,11 @@ export default {
         if (this.isEmpty) {
           this.codeParams.foregroundColor = "#dadada";
         }
-        // if (this.pathRecord[0].length > 0) {
-        //   this.curAddress = this.pathRecord[0][0].address || '无';
-        // } else {
-        //   this.curAddress = '无'
-        // }
+        if (this.pathRecord[0].length > 0) {
+           this.curAddress = this.pathRecord[0][0].address || '';
+         } else {
+           this.curAddress = ''
+        }
       }
       // console.log(val);
     },
