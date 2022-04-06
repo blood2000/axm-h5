@@ -1,6 +1,6 @@
 <template>
 	<view class="shipment-index">
-		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage" :showRight='true'>
+		<Header :show-bg="false" :showBack="isSecondaryPage" :isSecondaryPage="isSecondaryPage">
 			<text slot="title">统计服务</text>
 		</Header>
 		
