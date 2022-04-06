@@ -281,7 +281,7 @@ export default {
   async onLoad(options) {
     console.log("安行系统页面");
     await this.$onLaunched;
-    // console.log(options)
+    // console.log('app地址传值', options)
     if (options.isSecondaryPage) {
       const isSecondaryPage = options.isSecondaryPage;
       if (isSecondaryPage === "1") {
@@ -333,8 +333,8 @@ export default {
         let time = parseTime(new Date(intraday), "{y}-{m}-{d}");
         // obj.carNo = this.carNo;
         let obj = {
-          // carNo: this.carNo,
-          carNo: "冀J5F355",
+          carNo: this.carNo,
+          // carNo: "冀J5F355",
           time: time,
         };
 
