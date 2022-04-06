@@ -82,6 +82,13 @@
                 <div class="title3">{{ dateList[index] }}</div>
                 <div v-if="index === 0" class="today-mark">今日</div>
               </div>
+              <!-- 加载状态 -->
+              <div class="path-record-content" v-if="!loadingStatus[index]">
+                <div class="loding-data">
+                  <div class="loading-data-icon"></div>
+                  <div>行程评估中...</div>
+                </div>
+              </div>
               <div
                 class="path-record-content"
                 v-if="loadingStatus[index] && item.length > 0"
@@ -93,11 +100,9 @@
                   <div class="no-data-icon"></div>
                   <div>暂无数据</div>
                 </div> -->
-                <div v-if="!loadingStatus[index]" class="loding-data">
-                  <div class="loading-data-icon"></div>
-                  <div>行程评估中...</div>
-                </div>
-                <div class="title4" v-else>
+                
+                <!-- <div class="title4" v-else> -->
+                <div class="title4">
                   <span
                     v-for="(e, i) in item"
                     :key="i"
