@@ -43,7 +43,7 @@
           >
             {{ curDesc }}
           </div>
-          <div class="code-status" v-else>二维码正在努力生成中...</div>
+          <div class="code-status" v-else>安行码评估中...</div>
         </div>
       </div>
       <div class="code-box position-title">
@@ -95,7 +95,7 @@
                 </div> -->
                 <div v-if="!loadingStatus[index]" class="loding-data">
                   <div class="loading-data-icon"></div>
-                  <div>大数据检索中...</div>
+                  <div>行程评估中...</div>
                 </div>
                 <div class="title4" v-else>
                   <span
@@ -103,8 +103,8 @@
                     :key="i"
                     :class="'status-' + e.level"
                   >
-                    {{ e.provinceName || "" }}{{ e.cityName || "" }}
-                    <text v-if="e.provinceName && i < item.length - 1">,</text>
+                    {{ e.provinceName || "" }}{{ e.cityName || "" }}{{ e.countyName || "" }}
+                    <text v-if="e.provinceName && i < item.length - 1">、</text>
                   </span>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default {
         size: 186,
         text: "",
         // foreground: "#53A26B",
-        foregroundColor: "#53A26B",
+        foregroundColor: "#f3f3f3",
       },
       showCode: false,
       isDanger: false,
@@ -156,16 +156,35 @@ export default {
       dateList: [], //日期
       tourAddress: [], //每天省市列表
       today: "",
-      curLevel: 3, //当前风险评级
+      curLevel: 99, //当前风险评级
       isEmpty: false,
-      curDesc: "绿码:健康状态为低风险", //当前风险描述
+      curDesc: "安行码评估：评估中", //当前风险描述
       curAddress: "", //当前地址
       statusOptions: [
         { label: "低风险", level: 3, desc: "安行码评估:低风险" },
         { label: "中风险", level: 2, desc: "安行码评估:中风险" },
         { label: "高风险", level: 1, desc: "安行码评估:高风险" },
       ],
+      levelMapper:{
+        99: {
+          color:'#f3f3f3',
+          text:'安行码评估：评估中'
+        },
+        3:{
+          color:'#53a26b',
+          text:'安行码评估：低风险'
+        },
+        2:{
+          color:'#ffa136',
+          text:'安行码评估：中风险'
+        },
+        1:{
+          color:'#e55e50',
+          text:'安行码评估：高风险'
+        }
+      },
       levelDesc: [""],
+      levelObj:{}
     };
   },
 
@@ -202,6 +221,34 @@ export default {
   },
 
   watch: {
+    levelObj:{
+      handler(newValue, oldValue) {
+        console.log('levelObj',newValue);
+        let lv = 99;
+        if(newValue !== undefined){
+          for(let i in newValue){
+            if (newValue[i] < lv) {
+              lv = newValue[i];
+            }
+          }
+        }
+        if(newValue!==undefined &&Object.keys(newValue).length == 14){
+          this.curDesc = this.levelMapper[lv];
+          this.showCode = {
+            level:lv,
+            length:Object.keys(newValue).length
+          };
+        }else{
+          if(lv === 1){
+            this.curDesc = this.levelMapper[lv];
+            this.showCode = {
+              level:lv,
+              length:Object.keys(newValue).length
+            };
+          }
+        }
+      }
+    },
     levelStatus: {
       // 需要注意，因为对象引用的原因， newValue和oldValue的值一直相等
       handler(newValue, oldValue) {
@@ -212,7 +259,7 @@ export default {
             level = item;
           }
         });
-        // console.log("监听属性curLevel", level);
+        console.log("监听属性curLevel", newValue,oldValue);
         this.curLevel = level;
       },
       // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
@@ -220,7 +267,7 @@ export default {
     },
     loadingStatus: {
       handler(newValue, oldValue) {
-        if (this.isDanger) {
+        /*if (this.isDanger) {
           console.log("计算属性监听成功");
           this.showCode = true;
           return;
@@ -229,13 +276,14 @@ export default {
         newValue.map((item, index) => {
           leap && (leap = item);
         });
-        this.showCode = leap;
+        this.showCode = leap;*/
         // console.log("showCode", leap);
       },
       // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
       deep: true,
     },
     curLevel(val) {
+      /*console.log('curlevel == ',val);
       //二维码风险等级颜色;
       switch (val) {
         case 1:
@@ -247,16 +295,23 @@ export default {
         case 3:
           this.codeParams.foregroundColor = "#53A26B";
           break;
-      }
-
-      this.statusOptions.map((e) => {
+      }*/
+      /*this.statusOptions.map((e) => {
+        console.log('curDesc > ',e);
         if (e.level === val) {
           this.curDesc = e.desc;
         }
-      });
+      });*/
     },
     showCode(val) {
-      if (val) {
+      let lv = this.levelMapper[val.level];
+      this.codeParams.foregroundColor = lv.color;
+      if(val.length === 14 && val.level ===99){
+        this.curDesc = "暂无行程轨迹信息";
+      }else{
+        this.curDesc = lv.text;
+      }
+      /*if (val) {
         let leap = true;
         this.pathRecord.map((item) => {
           leap && (leap = item.length === 0);
@@ -265,12 +320,12 @@ export default {
         if (this.isEmpty) {
           this.codeParams.foregroundColor = "#dadada";
         }
-        // if (this.pathRecord[0].length > 0) {
-        //   this.curAddress = this.pathRecord[0][0].address || '无';
-        // } else {
-        //   this.curAddress = '无'
-        // }
-      }
+        if (this.pathRecord[0].length > 0) {
+           this.curAddress = this.pathRecord[0][0].address || '';
+         } else {
+           this.curAddress = ''
+        }
+      }*/
       // console.log(val);
     },
   },
@@ -322,64 +377,60 @@ export default {
       };
       uniRequest(config).then((res) => {
         console.log(obj.time + "行程记录", res);
-
-
-
-        this.$set(this.loadingStatus, i, true);
-        this.$set(this.pathRecord, i, res.data.data);
-
-        let level = 3;
-        let addressObj = {};
-        this.pathRecord[i].map((item) => {
-          //拼接地址
-          // let addressStr = "";
-          // if (item.provinceName) {
-          //   addressStr += item.provinceName;
-          // }
-          // if (item.cityName) {
-          //   addressStr += item.cityName;
-          // }
-
-          // addressObj.address = addressStr;
-          //判断当前等级，取level最低值
-          if (item.level !== 0 && item.level < level) {
-            level = item.level;
-          }
-          if (item.level === 1) {
-            //风险一旦有高危，显示二维码二维码红码
-            this.isDanger = true;
-          }
-          // this.$set(this.levelStatus, i, level); //各记录的风险等级
-          //装入各行程风险等级描述
-          // this.statusOptions.map((e) => {
-          //   if (e.level === item.level) {
-          //     this.$set(item, "desc", e.label);
-          //     this.$set(this.pathRecord, i, item);
-          //   }
-          // });
-          addressObj.level = level;
-          this.$set(this.tourAddress, i, addressObj); //各记录的省市
-
-          // item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}");
-          // //判断是否为今日
-          // if (item.passDate === this.today) {
-          //   this.$set(item, "isToday", true);
-          // } else {
-          //   this.$set(item, "isToday", false);
-          // }
-        });
-
-        this.$set(this.levelStatus, i, level); //各记录的风险等级
-        //获取当前风险评级描述
-        this.statusOptions.map((e) => {
-          if (e.level === level) {
-            this.$set(this.levelDesc, i, e.label); //各记录的风险等级
-          }
-        });
-        // console.log("各记录风险等级", this.levelStatus);
-        this.$set(this.pathRecord, i, this.pathRecord[i]);
+        let level = 99;
+        if(res.data.data!==undefined){
+          this.$set(this.loadingStatus, i, true);
+          this.$set(this.pathRecord, i, res.data.data);
+          let addressObj = {};
+          this.pathRecord[i].map((item) => {
+            //拼接地址
+            // let addressStr = "";
+            // if (item.provinceName) {
+            //   addressStr += item.provinceName;
+            // }
+            // if (item.cityName) {
+            //   addressStr += item.cityName;
+            // }
+            // addressObj.address = addressStr;
+            //判断当前等级，取level最低值
+            if (item.level !== 0 && item.level < level) {
+              level = item.level;
+            }
+            if (item.level === 1) {
+              //风险一旦有高危，显示二维码二维码红码
+              this.isDanger = true;
+            }
+            // this.$set(this.levelStatus, i, level); //各记录的风险等级
+            //装入各行程风险等级描述
+            // this.statusOptions.map((e) => {
+            //   if (e.level === item.level) {
+            //     this.$set(item, "desc", e.label);
+            //     this.$set(this.pathRecord, i, item);
+            //   }
+            // });
+            addressObj.level = level;
+            this.$set(this.tourAddress, i, addressObj); //各记录的省市
+            // item.passDate = parseTime(new Date(item.passDate), "{y}-{m}-{d}");
+            // //判断是否为今日
+            // if (item.passDate === this.today) {
+            //   this.$set(item, "isToday", true);
+            // } else {
+            //   this.$set(item, "isToday", false);
+            // }
+          });
+          this.$set(this.levelStatus, i, level); //各记录的风险等级
+          //获取当前风险评级描述
+          this.statusOptions.map((e) => {
+            console.log('获取当前风险评级描述',i,e.level,level);
+            if (e.level === level) {
+              this.$set(this.levelDesc, i, e.label); //各记录的风险等级
+            }
+          });
+          // console.log("各记录风险等级", this.levelStatus);
+          this.$set(this.pathRecord, i, this.pathRecord[i]);
+        }
+        this.$set(this.levelObj,i,level);
         // this.curLevel = level; //风险等级
-
         // this.curAddress = this.pathRecord[0].address; //地址
       });
     },
@@ -474,6 +525,7 @@ export default {
   font-family: PingFang SC;
   font-weight: bold;
   color: #333333;
+  margin-bottom:15px;
 }
 
 .title2 {
