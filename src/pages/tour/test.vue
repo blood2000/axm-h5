@@ -153,7 +153,7 @@ export default {
       }
     },
   },
-  async onLoad(options) {},
+  // async onLoad(options) {},
 
   async onLoad(options) {
     await this.$onLaunched;

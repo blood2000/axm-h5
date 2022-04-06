@@ -103,7 +103,8 @@
                     :key="i"
                     :class="'status-' + e.level"
                   >
-                    {{ e.provinceName || "" }}{{ e.cityName || "" }}{{ e.countyName || "" }}
+                    {{ e.provinceName || "" }}{{ e.cityName || ""
+                    }}{{ e.countyName || "" }}
                     <text v-if="e.provinceName && i < item.length - 1">、</text>
                   </span>
                 </div>
@@ -165,26 +166,26 @@ export default {
         { label: "中风险", level: 2, desc: "安行码评估:中风险" },
         { label: "高风险", level: 1, desc: "安行码评估:高风险" },
       ],
-      levelMapper:{
+      levelMapper: {
         99: {
-          color:'#f3f3f3',
-          text:'安行码评估：评估中'
+          color: "#f3f3f3",
+          text: "安行码评估：评估中",
         },
-        3:{
-          color:'#53a26b',
-          text:'安行码评估：低风险'
+        3: {
+          color: "#53a26b",
+          text: "安行码评估：低风险",
         },
-        2:{
-          color:'#ffa136',
-          text:'安行码评估：中风险'
+        2: {
+          color: "#ffa136",
+          text: "安行码评估：中风险",
         },
-        1:{
-          color:'#e55e50',
-          text:'安行码评估：高风险'
-        }
+        1: {
+          color: "#e55e50",
+          text: "安行码评估：高风险",
+        },
       },
       levelDesc: [""],
-      levelObj:{}
+      levelObj: {},
     };
   },
 
@@ -221,33 +222,38 @@ export default {
   },
 
   watch: {
-    levelObj:{
+    levelObj: {
       handler(newValue, oldValue) {
-        console.log('levelObj',newValue);
+        console.log("levelObj", newValue);
         let lv = 99;
-        if(newValue !== undefined){
-          for(let i in newValue){
+        if (newValue !== undefined) {
+          for (let i in newValue) {
             if (newValue[i] < lv) {
               lv = newValue[i];
             }
           }
         }
-        if(newValue!==undefined &&Object.keys(newValue).length == 14){
-          this.curDesc = this.levelMapper[lv];
+        if (newValue !== undefined && Object.keys(newValue).length == 14) {
+          // this.curDesc = this.levelMapper[lv];
           this.showCode = {
-            level:lv,
-            length:Object.keys(newValue).length
+            level: lv,
+            length: Object.keys(newValue).length,
           };
-        }else{
-          if(lv === 1){
-            this.curDesc = this.levelMapper[lv];
+          if (this.pathRecord[0].length > 0) {
+            this.curAddress = this.pathRecord[0][0].address || " ";
+          } else {
+            this.curAddress = " ";
+          }
+        } else {
+          if (lv === 1) {
+            // this.curDesc = this.levelMapper[lv];
             this.showCode = {
-              level:lv,
-              length:Object.keys(newValue).length
+              level: lv,
+              length: Object.keys(newValue).length,
             };
           }
         }
-      }
+      },
     },
     levelStatus: {
       // 需要注意，因为对象引用的原因， newValue和oldValue的值一直相等
@@ -259,7 +265,7 @@ export default {
             level = item;
           }
         });
-        console.log("监听属性curLevel", newValue,oldValue);
+        console.log("监听属性curLevel", newValue, oldValue);
         this.curLevel = level;
       },
       // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
@@ -296,21 +302,22 @@ export default {
           this.codeParams.foregroundColor = "#53A26B";
           break;
       }*/
-      /*this.statusOptions.map((e) => {
-        console.log('curDesc > ',e);
-        if (e.level === val) {
-          this.curDesc = e.desc;
-        }
-      });*/
+      // this.statusOptions.map((e) => {
+      //   console.log('curDesc > ',e);
+      //   if (e.level === val) {
+      //     this.curDesc = e.desc;
+      //   }
+      // });
     },
     showCode(val) {
       let lv = this.levelMapper[val.level];
       this.codeParams.foregroundColor = lv.color;
-      if(val.length === 14 && val.level ===99){
+      if (val.length === 14 && val.level === 99) {
         this.curDesc = "暂无行程轨迹信息";
-      }else{
+      } else {
         this.curDesc = lv.text;
       }
+
       /*if (val) {
         let leap = true;
         this.pathRecord.map((item) => {
@@ -378,7 +385,7 @@ export default {
       uniRequest(config).then((res) => {
         console.log(obj.time + "行程记录", res);
         let level = 99;
-        if(res.data.data!==undefined){
+        if (res.data.data !== undefined) {
           this.$set(this.loadingStatus, i, true);
           this.$set(this.pathRecord, i, res.data.data);
           let addressObj = {};
@@ -421,7 +428,7 @@ export default {
           this.$set(this.levelStatus, i, level); //各记录的风险等级
           //获取当前风险评级描述
           this.statusOptions.map((e) => {
-            console.log('获取当前风险评级描述',i,e.level,level);
+            console.log("获取当前风险评级描述", i, e.level, level);
             if (e.level === level) {
               this.$set(this.levelDesc, i, e.label); //各记录的风险等级
             }
@@ -429,7 +436,7 @@ export default {
           // console.log("各记录风险等级", this.levelStatus);
           this.$set(this.pathRecord, i, this.pathRecord[i]);
         }
-        this.$set(this.levelObj,i,level);
+        this.$set(this.levelObj, i, level);
         // this.curLevel = level; //风险等级
         // this.curAddress = this.pathRecord[0].address; //地址
       });
@@ -525,7 +532,7 @@ export default {
   font-family: PingFang SC;
   font-weight: bold;
   color: #333333;
-  margin-bottom:15px;
+  margin-bottom: 15px;
 }
 
 .title2 {

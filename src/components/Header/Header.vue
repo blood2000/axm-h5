@@ -139,6 +139,7 @@
 				console.log(11)
 				uni.navigateTo({
 					url: '../../../pages/tour/tourCode'
+					// url: '../../pages/tour/tourCode'
 					// url: '../../../pages/itinerary/code'
 					// url: '../../../pages/itinerary/login'
 					// url: '../../pages/itinerary/login'
