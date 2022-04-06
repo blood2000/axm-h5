@@ -2,11 +2,7 @@
 <template>
   <div class="content">
     <!-- <HeaderBar :title="title" :barStyle="barStyle"></HeaderBar> -->
-    <Header
-      :show-bg="false"
-      :showBack="true"
-      :isSecondaryPage="isSecondaryPage"
-    >
+    <Header :show-bg="false" :showBack="true">
       <text slot="title">超好运安行码</text>
     </Header>
     <div class="header">
@@ -104,10 +100,8 @@
                   <div class="no-data-icon"></div>
                   <div>暂无数据</div>
                 </div> -->
-                <!-- <div v-if="!loadingStatus[index]" class="loding-data">
-                  <div class="loading-data-icon"></div>
-                  <div>行程评估中...</div>
-                </div> -->
+                
+                <!-- <div class="title4" v-else> -->
                 <div class="title4">
                   <span
                     v-for="(e, i) in item"
@@ -140,14 +134,13 @@ import { mapState } from "vuex";
 import Header from "@/components/Header/CodeHeader.vue";
 import { parseTime } from "../../utils/ddc";
 //getTourData
-import { getDriverInfo } from "@/config/service/driver.js";
 import uniRequest from "../../config/axmRequest.js";
 export default {
   data() {
     return {
       loading: false,
       loadError: false,
-      isSecondaryPage: false,
+      isSecondaryPage: true,
       barStyle: {
         background: "#4163FE",
         color: "#fff",
@@ -205,10 +198,32 @@ export default {
 
   computed: {
     ...mapState({
-      headerInfo: (state) => state.header.headerInfo,
+      headerInfo: (state) => state.native.headerInfo,
     }),
 
-    
+    // showCode() {
+    //   if (this.isDanger) {
+    //     console.log("计算属性监听成功");
+    //     return true;
+    //   } else {
+    //     let leap = true;
+    //     this.loadingStatus.map((item, index) => {
+    //       leap && (leap = item);
+    //     });
+    //     return leap;
+    //   }
+    // },
+    // curLevel() {
+
+    //   let level = 3;
+    //   this.levelStatus.map((item) => {
+    //     if (item < level) {
+    //       level = item;
+    //     }
+    //   });
+    //   // console.log('计算属性curLevel', level);
+    //   return level;
+    // },
   },
 
   watch: {
@@ -224,7 +239,7 @@ export default {
           }
         }
         if (newValue !== undefined && Object.keys(newValue).length == 14) {
-          this.curDesc = this.levelMapper[lv];
+          // this.curDesc = this.levelMapper[lv];
           this.showCode = {
             level: lv,
             length: Object.keys(newValue).length,
@@ -236,7 +251,7 @@ export default {
           }
         } else {
           if (lv === 1) {
-            this.curDesc = this.levelMapper[lv];
+            // this.curDesc = this.levelMapper[lv];
             this.showCode = {
               level: lv,
               length: Object.keys(newValue).length,
@@ -262,11 +277,43 @@ export default {
       deep: true,
     },
     loadingStatus: {
-      handler(newValue, oldValue) {},
+      handler(newValue, oldValue) {
+        /*if (this.isDanger) {
+          console.log("计算属性监听成功");
+          this.showCode = true;
+          return;
+        }
+        let leap = true;
+        newValue.map((item, index) => {
+          leap && (leap = item);
+        });
+        this.showCode = leap;*/
+        // console.log("showCode", leap);
+      },
       // 通过指定deep属性为true, watch会监听对象里面每一个值的变化
       deep: true,
     },
-    curLevel(val) {},
+    curLevel(val) {
+      /*console.log('curlevel == ',val);
+      //二维码风险等级颜色;
+      switch (val) {
+        case 1:
+          this.codeParams.foregroundColor = "#e55e50";
+          break;
+        case 2:
+          this.codeParams.foregroundColor = "#ffa136";
+          break;
+        case 3:
+          this.codeParams.foregroundColor = "#53A26B";
+          break;
+      }*/
+      // this.statusOptions.map((e) => {
+      //   console.log('curDesc > ',e);
+      //   if (e.level === val) {
+      //     this.curDesc = e.desc;
+      //   }
+      // });
+    },
     showCode(val) {
       let lv = this.levelMapper[val.level];
       this.codeParams.foregroundColor = lv.color;
@@ -275,49 +322,38 @@ export default {
       } else {
         this.curDesc = lv.text;
       }
+
+      /*if (val) {
+        let leap = true;
+        this.pathRecord.map((item) => {
+          leap && (leap = item.length === 0);
+        });
+        this.isEmpty = leap;
+        if (this.isEmpty) {
+          this.codeParams.foregroundColor = "#dadada";
+        }
+        if (this.pathRecord[0].length > 0) {
+           this.curAddress = this.pathRecord[0][0].address || '';
+         } else {
+           this.curAddress = ''
+        }
+      }*/
+      // console.log(val);
     },
   },
 
-  async onLoad(options) {
-    console.log("安行系统页面");
-    await this.$onLaunched;
-    // console.log('app地址传值', options)
-    if (options.isSecondaryPage) {
-      const isSecondaryPage = options.isSecondaryPage;
-      if (isSecondaryPage === "1") {
-        this.isSecondaryPage = true;
-      }
-    }
+  onLoad() {
+    console.log("安行系统页面1");
+    this.account = uni.getStorageSync("account");
+    this.carNo = uni.getStorageSync("carNo");
 
-    getDriverInfo(this.headerInfo).then((driverRes) => {
-      console.log("获取司机信息", driverRes);
-      this.driverInfo = driverRes.data;
-      this.carNo = this.driverInfo.licenseNumber;
-      this.axmLogin();
-    });
+    this.today = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");
+    this.getList();
   },
 
   onShow() {},
 
   methods: {
-    //获取安行码token
-    axmLogin() {
-      this.account = "default";
-      const config = {
-        url: "getAxmToken",
-        // method: "POST",
-        account: this.account,
-        noToken: true,
-      };
-      uniRequest(config).then((tRes) => {
-        console.log("安行码tk", tRes);
-        if (tRes.code === 200) {
-          this.today = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");
-          uni.setStorageSync("token", tRes.data.token);
-          this.getList();
-        }
-      });
-    },
     getList() {
       this.codeParams.text = this.carNo;
       let curDate = new Date().getTime();

@@ -1,254 +1,267 @@
 <template>
-	<view class="top">
-		<view class="top-frame" :style="{height: titleHeight + 'upx' }">
-			<view :style="{height: statusBarHeight*2 + 'upx' }">
-			  <!-- 这里是状态栏 -->
-			</view>
-			<view class="top-title flex align-center justify-between">
-				<text v-if="showBack" class="cuIcon-back back" @click="back"></text>
-				<view v-else style="width: 18upx;"></view>
-				<view class="title"><slot name="title"></slot></view>
-				<view style="width: 18upx;">
-				<!-- <div class="top-right-icon" v-if="showRight" @click="toTourCode">车辆健康码</div> -->
-				</view>
-			</view>
-		</view>
-		<view v-if="showBg" class="top-bgframe2">
-			<image class="top-bg" src="/static/tab_bg.png" mode=""></image>
-		</view>
-		<view class="bg-height" :style="{height: titleHeight + 'upx' }"></view>
-
-	</view>
+  <view class="top">
+    <view class="top-frame" :style="{ height: titleHeight + 'upx' }">
+      <view :style="{ height: statusBarHeight * 2 + 'upx' }">
+        <!-- 这里是状态栏 -->
+      </view>
+      <view class="top-title flex align-center justify-between">
+        <text v-if="showBack" class="cuIcon-back back" @click="back"></text>
+        <view v-else style="width: 18upx"></view>
+        <view class="title"><slot name="title"></slot></view>
+        <view style="width: 18upx">
+          <!-- <div class="top-right-icon" v-if="showRight" @click="toTourCode">车辆健康码</div> -->
+        </view>
+      </view>
+    </view>
+    <view v-if="showBg" class="top-bgframe2">
+      <image class="top-bg" src="/static/tab_bg.png" mode=""></image>
+    </view>
+    <view class="bg-height" :style="{ height: titleHeight + 'upx' }"></view>
+  </view>
 </template>
 
 <script>
-	import { mapState } from 'vuex'
-	export default {
-		props:{
-			showBack: {
-				type: Boolean,
-				default: false
-			},
-			showRight: {
-				type: Boolean,
-				default: false
-			},
-			showBg: {
-				type: Boolean,
-				default: true
-			},
-			// 是否二级页面
-			isSecondaryPage: {
-				type: Boolean,
-				default: false
-			}
-		},
-		computed: {
-			...mapState({
-				// headerInfo: state => state.header.headerInfo,
-				statusBarHeight: state => state.header.statusBarHeight,
-				isAndroid: state => state.header.isAndroid,
-				isiOS: state => state.header.isiOS
-			})
-		},
-		data() {
-			return {
-				pages: {},
-				titleHeight: 0, //状态栏和导航栏的总高度
-				naviBarHeight:0,//导航栏高度
-				// modalName: 'bottomModal'
-			}
-		},
-		beforeMount(){
-			this.pages = getCurrentPages();
-			// console.log(this.pages);
-			this.titleHeight = this.statusBarHeight*2 + 100;
-			console.log(this.statusBarHeight);
-			console.log(this.titleHeight);
-		},
-		async onLoad() {
-			await this.$onLaunched;
-		},
-		onShow() {
-			
-		},
-		methods: {
-			// showModal(e) {
-			// 	this.modalName = e.currentTarget.dataset.target
-			// },
-			// hideModal(e) {
-			// 	this.modalName = null
-			// },
-			back() {
-				this.$emit('close')
-				//@zxyuns 处理兼容，如果没有上一级界面则返回首页
-				if (this.isSecondaryPage) {
-					if (this.isAndroid) {
-						if(window.Android !== null && typeof(window.Android) !== 'undefined') {
-							window.Android.back();
-						}
-					} else if (this.isiOS) {
-						this.$WebViewJavascriptBridge.callHandler('back');
-					}
-				} else if (this.pages.length === 2) {
-					uni.navigateBack({
-						delta: 1
-					});
-				} else if (this.pages.length === 1) {
-					uni.switchTab({
-						url: '/pages/home/home',
-					})
-				} else {
-					uni.navigateBack({
-						delta: 1
-					});
-				}
-			},
-			toTourCode() {
-				uni.navigateTo({
-					url: '../../pages/tour/tourCode.vue'
-				})
-			},
-		}
-	}
+import { mapState } from "vuex";
+export default {
+  props: {
+    showBack: {
+      type: Boolean,
+      default: false,
+    },
+    showRight: {
+      type: Boolean,
+      default: false,
+    },
+    showBg: {
+      type: Boolean,
+      default: true,
+    },
+    // 是否二级页面
+    isSecondaryPage: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapState({
+      headerInfo: (state) => state.header.headerInfo,
+      statusBarHeight: (state) => state.header.statusBarHeight,
+      isAndroid: (state) => state.header.isAndroid,
+      isiOS: (state) => state.header.isiOS,
+    }),
+  },
+  data() {
+    return {
+      pages: {},
+      titleHeight: 0, //状态栏和导航栏的总高度
+      naviBarHeight: 0, //导航栏高度
+      // statusBarHeight: 0,
+      // modalName: 'bottomModal'
+    };
+  },
+  beforeMount() {
+    this.pages = getCurrentPages();
+    console.log(this.pages);
+    this.titleHeight = this.statusBarHeight * 2 + 100;
+    console.log(this.statusBarHeight);
+    console.log(this.titleHeight);
+    // uni.getSystemInfo({
+    //   success: (res) => {
+    //     console.log("系统信息1", res);
+    //     this.statusBarHeight = res.statusBarHeight;
+    //   },
+    // });
+  },
+  async onLoad() {
+    await this.$onLaunched;
+  },
+  onShow() {},
+  methods: {
+    // showModal(e) {
+    // 	this.modalName = e.currentTarget.dataset.target
+    // },
+    // hideModal(e) {
+    // 	this.modalName = null
+    // },
+    back() {
+      this.$emit("close");
+      //@zxyuns 处理兼容，如果没有上一级界面则返回首页
+      if (this.isSecondaryPage) {
+        if (this.isAndroid) {
+          if (
+            window.Android !== null &&
+            typeof window.Android !== "undefined"
+          ) {
+            window.Android.back();
+          }
+        } else if (this.isiOS) {
+          this.$WebViewJavascriptBridge.callHandler("back");
+        }
+      } else if (this.pages.length === 2) {
+        uni.navigateBack({
+          delta: 1,
+        });
+      } else if (this.pages.length === 1) {
+        uni.switchTab({
+          url: "/pages/home/home",
+        });
+      } else {
+        uni.navigateBack({
+          delta: 1,
+        });
+      }
+    },
+    toTourCode() {
+      uni.navigateTo({
+        url: "../../pages/tour/tourCode.vue",
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.top-frame{
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 10;
-	// height: 185upx;
-	width: 100%;
-	overflow: hidden;
-	// background: url('/static/tab_bg.png') no-repeat;
-	// background-size: 100% 350upx;
-  background: #4163FE;
-	.top-title{
-		height: 100upx;
-		width: 100%;
-		padding: 0 20upx;
-		font-size: 36rpx;
-		font-family: PingFang SC;
-		font-weight: 500;
-		color: #FFFFFF;
-		position: relative;
-		z-index: 10;
-		>.title{
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
-	}
-	.top-bgframe1{
-		position: relative;
-		top: 0;
-		left: 0;
-		height: 0;
-		width: 100%;
-		z-index: 9;
-	}
+.top-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  // height: 185upx;
+  width: 100%;
+  overflow: hidden;
+  // background: url('/static/tab_bg.png') no-repeat;
+  // background-size: 100% 350upx;
+  background: #4163fe;
+  .top-title {
+    height: 100upx;
+    width: 100%;
+    padding: 0 20upx;
+    font-size: 36rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    position: relative;
+    z-index: 10;
+    > .title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  .top-bgframe1 {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 0;
+    width: 100%;
+    z-index: 9;
+  }
 }
-.top-bgframe2{
-	position: relative;
-	top: 0;
-	left: 0;
-	z-index: 0;
-	height: 0;
-	width: 100%;
+.top-bgframe2 {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  height: 0;
+  width: 100%;
 }
-.top-bg{
-	height: 350upx;
-	width: 100%;
+.top-bg {
+  height: 350upx;
+  width: 100%;
 }
-.status_bar{
-	height: 35upx;
+.status_bar {
+  height: 35upx;
 }
-.back{
-	line-height: 100upx;
-	width: 60upx;
-	font-size: 42upx;
+.back {
+  line-height: 100upx;
+  width: 60upx;
+  font-size: 42upx;
 }
 
-.header{
-	position: fixed;
-	width: 200%;
-	height: 800rpx;
-	border-radius: 50%;
-	left: 50%;
-	margin-left: -100%;
-	top: -460rpx;
-	background: #3D6DCC;
-	overflow: hidden;
-	.header-box{
-		width: 50%;
-		height: 340rpx;
-		position: absolute;
-		bottom: 0;
-		left: 25%;
-		z-index: 0;
-		.status_bar{
-			height: var(--status-bar-height);
-			width: 100%;
-		}
-		&__title{
-			height: calc(185rpx - var(--status-bar-height));
-			line-height: calc(185rpx - var(--status-bar-height));
-			// text-align: center;
-			padding: 0 20upx;
-			font-size: 36rpx;
-			font-family: PingFang SC;
-			font-weight: 500;
-			color: #FFFFFF;
-			position: relative;
-			z-index: 5;
-		}
-		.circle-big{
-			position: absolute;
-			top: 30rpx;
-			right: 180rpx;
-			width: 453rpx;
-			height: 454rpx;
-			background: linear-gradient(117deg, #B3C2E4 0%, #5671F7 96%);
-			opacity: 0.1;
-			border-radius: 50%;
-			z-index: 1;
-		}
-		.circle-middle{
-			position: absolute;
-			top: -300rpx;
-			right: -150rpx;
-			width: 600rpx;
-			height: 500rpx;
-			background: linear-gradient(166deg, #ECF6FE 0%, #72AAFD 98%);
-			opacity: 0.2;
-			border-radius: 50%;
-			z-index: 2;
-		}
-		.circle-small{
-			position: absolute;
-			right: -160rpx;
-			top: 10rpx;
-			width: 304rpx;
-			height: 304rpx;
-			background: linear-gradient(117deg, #9DD9FF 0%, #2942FF 100%, #FFC34D 100%, #FFC34D 100%);
-			opacity: 0.15;
-			border-radius: 50%;
-			z-index: 3;
-		}
-	}
+.header {
+  position: fixed;
+  width: 200%;
+  height: 800rpx;
+  border-radius: 50%;
+  left: 50%;
+  margin-left: -100%;
+  top: -460rpx;
+  background: #3d6dcc;
+  overflow: hidden;
+  .header-box {
+    width: 50%;
+    height: 340rpx;
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    z-index: 0;
+    .status_bar {
+      height: var(--status-bar-height);
+      width: 100%;
+    }
+    &__title {
+      height: calc(185rpx - var(--status-bar-height));
+      line-height: calc(185rpx - var(--status-bar-height));
+      // text-align: center;
+      padding: 0 20upx;
+      font-size: 36rpx;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #ffffff;
+      position: relative;
+      z-index: 5;
+    }
+    .circle-big {
+      position: absolute;
+      top: 30rpx;
+      right: 180rpx;
+      width: 453rpx;
+      height: 454rpx;
+      background: linear-gradient(117deg, #b3c2e4 0%, #5671f7 96%);
+      opacity: 0.1;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .circle-middle {
+      position: absolute;
+      top: -300rpx;
+      right: -150rpx;
+      width: 600rpx;
+      height: 500rpx;
+      background: linear-gradient(166deg, #ecf6fe 0%, #72aafd 98%);
+      opacity: 0.2;
+      border-radius: 50%;
+      z-index: 2;
+    }
+    .circle-small {
+      position: absolute;
+      right: -160rpx;
+      top: 10rpx;
+      width: 304rpx;
+      height: 304rpx;
+      background: linear-gradient(
+        117deg,
+        #9dd9ff 0%,
+        #2942ff 100%,
+        #ffc34d 100%,
+        #ffc34d 100%
+      );
+      opacity: 0.15;
+      border-radius: 50%;
+      z-index: 3;
+    }
+  }
 }
 
 .top-right-icon {
-	position: absolute;
-	min-width: 100rpx;
-	top: 50%;
-	right: 20rpx;
-	transform: translateY(-50%);
-	text-align: center;
-	color: #fff;
-	font-size: 28rpx;
+  position: absolute;
+  min-width: 100rpx;
+  top: 50%;
+  right: 20rpx;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 28rpx;
 }
 </style>
