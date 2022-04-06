@@ -298,7 +298,7 @@ export default {
       this.account = "default";
       const config = {
         url: "getAxmToken",
-        method: "POST",
+        // method: "POST",
         account: this.account,
         noToken: true,
       };
